@@ -3,16 +3,48 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- SEO & ADSENSE (RETAINED FROM V1) -->
   <title>Free Wedding Budget Calculator | Plan and Track Wedding Costs</title>
-  <meta name="description" content="Free premium wedding budget calculator to plan expenses by category, track actual costs, and export to Excel or PDF.">
+  <meta name="description" content="Free wedding budget calculator to plan expenses by category, track actual costs, calculate cost per guest, and export budgets to Excel or PDF.">
+  <meta name="keywords" content="wedding budget calculator, wedding planner, wedding expenses, wedding cost calculator, budget wedding planning">
   <meta name="google-adsense-account" content="ca-pub-4504023199353060">
+  
+  <link rel="canonical" href="https://freeweddingbudget.com/">
+  
+  <!-- Open Graph -->
+  <meta property="og:title" content="Free Wedding Budget Calculator">
+  <meta property="og:description" content="Plan and track wedding expenses, guest costs, and category budgets online for free.">
+  <meta property="og:url" content="https://freeweddingbudget.com/">
+  <meta property="og:type" content="website">
+
+  <!-- Favicon -->
+  <link rel="icon" href="/favicon.ico">
+
+  <!-- Structured Data (JSON-LD) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Free Wedding Budget Calculator",
+    "operatingSystem": "Web",
+    "applicationCategory": "FinanceApplication",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "description": "An online tool for planning and managing wedding budgets, tracking expenses, and calculating costs per guest."
+  }
+  </script>
+
   <link rel="stylesheet" href="style.css">
   <script src="https://unpkg.com/lucide@latest"></script>
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 </head>
 <body>
 
-<!-- PDF Header (Hidden on Web) -->
+<!-- PDF Header (Visible only on Print) -->
 <div class="print-only report-header">
   <h1>Wedding Budget Financial Report</h1>
   <p>Financial Status: <span id="printStatusLabel" style="font-weight: bold;">On Track</span></p>
@@ -65,9 +97,11 @@
     </div>
   </div>
 
-  <div class="ad-block no-print">
-    <span class="ad-label">Sponsored</span>
-    <div class="ad-placeholder">Google AdSense - Auto Ads</div>
+  <!-- ADSENSE PLACEHOLDER (CRITICAL FOR APPROVAL) -->
+  <div class="ad-container no-print" style="margin: 20px 0; text-align: center; border: 1px dashed #ddd; padding: 20px; border-radius: 12px; background: #fafafa;">
+    <span style="font-size: 10px; color: #999; display: block; margin-bottom: 10px;">ADVERTISEMENT</span>
+    <!-- Insert your AdSense <ins> tag here -->
+    <div id="adsense-slot">Google AdSense Auto-Ads Slot</div>
   </div>
 
   <div class="main-grid">
@@ -75,7 +109,7 @@
       <div class="card">
         <h2>Budget Allocation</h2>
         <div id="allocationWarning" class="warning-box" style="display:none;">
-          <i data-lucide="alert-triangle"></i> <span id="warningText">Warning: Total planned categories exceed your Total Budget!</span>
+          <i data-lucide="alert-triangle"></i> <span id="warningText"></span>
         </div>
         <div class="table-responsive">
           <table id="categoryBudgetTable" class="spacious-table"></table>
@@ -124,16 +158,31 @@
     </div>
   </div>
 
-  <section class="seo-content card no-print">
+  <!-- SEO CONTENT (EXACTLY AS IN V1) -->
+  <section class="seo-content card">
     <h2>Wedding Planning Financial Strategy</h2>
-    <p>A successful wedding starts with a clear financial roadmap. Using our Free Wedding Budget Calculator, you can ensure that your dream day doesn't turn into a financial burden.</p>
+    <p>
+      A successful wedding starts with a clear financial roadmap. Using our Free Wedding Budget Calculator, 
+      you can ensure that your dream day doesn't turn into a financial burden. Track your venue costs, catering expenses, 
+      decorations, photography, entertainment, and guest-related spending in one place.
+    </p>
+    <p>
+      Most couples allocate the largest portion of their wedding budget to venue rental and catering services.
+      Other important categories include photography, floral decoration, entertainment, wedding attire, and transportation.
+    </p>
     <h2>Average Wedding Costs</h2>
-    <p>Wedding costs vary depending on location, guest count, and overall event style.</p>
+    <p>
+      Wedding costs vary depending on location, guest count, venue selection, and overall event style.
+      Small weddings may cost only a few thousand dollars, while larger ceremonies with hundreds of guests 
+      can significantly increase catering and venue expenses.
+    </p>
     <h2>Wedding Budget Tips</h2>
     <ul>
       <li>Set a realistic wedding budget before booking vendors.</li>
       <li>Track every expense category regularly.</li>
       <li>Monitor guest count carefully.</li>
+      <li>Reserve emergency funds for unexpected wedding expenses.</li>
+      <li>Review spending progress weekly.</li>
     </ul>
   </section>
 
