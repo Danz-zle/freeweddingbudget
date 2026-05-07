@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+
+  <!-- Mobile first -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- SEO -->
+  <title>Free Wedding Budget Calculator | Plan and Track Wedding Costs</title>
+  <meta name="description" content="Free wedding budget calculator to plan expenses by category, track actual costs, calculate cost per guest, and export budgets to Excel or PDF.">
+
+  <!-- AdSense verification -->
+  <meta name="google-adsense-account" content="ca-pub-4504023199353060">
+
+  <!-- Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Free Wedding Budget Calculator",
+    "applicationCategory": "FinanceApplication",
+    "operatingSystem": "Web",
+    "description": "A free wedding budget calculator to plan and track wedding expenses, calculate cost per guest, and export budgets to Excel or PDF.",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    }
+  }
+  </script>
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="./style.css">
+
+  <!-- AdSense script (LOAD ONCE) -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4504023199353060"
+          crossorigin="anonymous"></script>
+</head>
+
+<body>
+
+<div class="container">
+  <h1>Free Wedding Budget Calculator</h1>
+
+  <p class="intro-text">
+    Plan and track your wedding expenses in one place. Allocate your budget by
+    category, track actual spending, and instantly see remaining budget and cost
+    per guest. Export to Excel or PDF anytime.
+  </p>
+
+  <!-- ✅ SAFE FIRST ADSENSE PLACEMENT -->
+  <div class="ad-container no-print" style="margin:24px 0; text-align:center;">
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-client="ca-pub-4504023199353060"
+         data-ad-slot="7437035292"
+         data-ad-format="auto"
+         data-full-width-responsive="true"></ins>
+    <script>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+  </div>
+
+  <!-- SUMMARY CARDS -->
+  <div class="summary-grid">
+    <div class="summary-card no-print">
+      <label>Total Wedding Budget</label>
+      <input type="number" id="totalBudget" value="30000">
+    </div>
+
+    <div class="summary-card">
+      <label>Remaining Budget</label>
+      <strong id="remainingBudget">30000</strong>
+    </div>
+
+    <div class="summary-card">
+      <label>Total Guests</label>
+      <strong id="totalGuests">0</strong>
+    </div>
+
+    <div class="summary-card">
+      <label>Actual Cost per Guest</label>
+      <strong id="actualCostPerGuest">0</strong>
+    </div>
+  </div>
+
+  <p class="print-only">
+    Total Wedding Budget:
+    <strong id="printTotalBudget">30000</strong>
+  </p>
+
+  <div id="insights"></div>
+
+  <!-- PLANNED BUDGET -->
+  <div class="section">
+    <h2>Planned Budget by Category</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Category</th>
+          <th>Planned Budget</th>
+        </tr>
+      </thead>
+      <tbody id="categoryBudgetTable"></tbody>
+    </table>
+  </div>
+
+  <!-- EXPENSES -->
+  <div class="section">
+    <h2>Expenses</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Description</th>
+          <th>Category</th>
+          <th>Amount</th>
+          <th class="no-print"></th>
+        </tr>
+      </thead>
+      <tbody id="expenseTable"></tbody>
+    </table>
+
+    <div class="export-buttons no-print">
+      <button id="addExpense">Add Expense</button>
+    </div>
+  </div>
+
+  <!-- CATEGORY PROGRESS -->
+  <div class="section">
+    <h2>Category Budget Progress</h2>
+    <div id="categoryProgress"></div>
+  </div>
+
+  <!-- GUEST LIST -->
+  <div class="section">
+    <h2>Guest List</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Group</th>
+          <th>Guests</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Family</td><td><input class="guestGroup" type="number" value="0"></td></tr>
+        <tr><td>Friends</td><td><input class="guestGroup" type="number" value="0"></td></tr>
+        <tr><td>Colleagues</td><td><input class="guestGroup" type="number" value="0"></td></tr>
+        <tr><td>Others</td><td><input class="guestGroup" type="number" value="0"></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- OVERALL -->
+  <div class="section overall-section">
+    <h3>Overall Spending Progress</h3>
+    <p id="spendingLabel">0 / 0 (0%)</p>
+    <p id="spendingStatus"></p>
+    <div class="progress-bar">
+      <div id="progressFill" class="progress-fill"></div>
+    </div>
+  </div>
+
+  <!-- EXPORT -->
+  <div class="export-buttons no-print">
+    <button id="exportCsv">Export CSV</button>
+    <button id="exportExcel">Export Excel</button>
+    <button onclick="window.print()">Print PDF</button>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="site-footer no-print">
+    <a href="/about.html">About</a>
+    <span>•</span>
+    <a href="/privacy.html">Privacy Policy</a>
+    <span>•</span>
+    <a href="mailto:liubigcow@yahoo.com">Contact</a>
+  </footer>
+</div>
+
+<!-- SheetJS -->
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+
+<!-- App logic -->
+<script src="./script.js"></script>
+
+</body>
+</html>
