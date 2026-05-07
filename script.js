@@ -24,17 +24,17 @@ function refresh() {
     const planned = totalPlanned();
     const guests = Array.from(document.querySelectorAll(".guestGroup")).reduce((s,g) => s + (Number(g.value)||0), 0);
 
-    // Global Status for Header
+    // PDF Global Status
     const statusText = spent > budget ? "Over Budget" : "On Track";
     if (printStatusLabel) {
         printStatusLabel.innerText = statusText;
         printStatusLabel.style.color = spent > budget ? "#e53e3e" : "#48bb78";
     }
 
-    // Budget Warnings
+    // Allocation Warning Logic
     if (planned > budget) {
         allocationWarning.style.display = "flex";
-        warningText.innerText = `Warning: Total planned categories exceed your budget by $${(planned - budget).toLocaleString()}!`;
+        warningText.innerText = `Warning: Total planned categories ($${planned.toLocaleString()}) exceed your budget by $${(planned - budget).toLocaleString()}!`;
     } else {
         allocationWarning.style.display = "none";
     }
@@ -55,7 +55,7 @@ function refresh() {
         `;
     });
 
-    // History Table
+    // Expense History Table
     expenseTable.innerHTML = `<tr><th>Description</th><th>Category</th><th>Amount</th><th class="no-print"></th></tr>`;
     expenses.forEach((e, i) => {
         const row = expenseTable.insertRow();
@@ -63,7 +63,7 @@ function refresh() {
         <td class="no-print" style="text-align:right;"><button onclick="deleteExp(${i})" style="padding:6px 12px; background:#fee2e2; color:#ef4444; font-size:11px; border-radius:6px; border:none;">Remove</button></td>`;
     });
 
-    // Spending Progress with Restored Status Messages
+    // Spending Progress with Status Bars & Sub-Labels
     categoryProgress.innerHTML = "";
     Object.keys(categories).forEach(c => {
         const s = getSpent(c);
@@ -113,6 +113,7 @@ addExpenseBtn.onclick = () => {
     }
 };
 
+// Excel Export with 3 Essential Tabs
 document.getElementById("exportExcel").onclick = () => {
     const wb = XLSX.utils.book_new();
     const summary = [
