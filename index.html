@@ -3,15 +3,41 @@
 <head>
   <meta charset="UTF-8">
 
-  <!-- Mobile first -->
+  <!-- Mobile -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <!-- SEO -->
   <title>Free Wedding Budget Calculator | Plan and Track Wedding Costs</title>
-  <meta name="description" content="Free wedding budget calculator to plan expenses by category, track actual costs, calculate cost per guest, and export budgets to Excel or PDF.">
 
-  <!-- AdSense verification -->
-  <meta name="google-adsense-account" content="ca-pub-4504023199353060">
+  <meta name="description"
+        content="Free wedding budget calculator to plan expenses by category, track actual costs, calculate cost per guest, and export budgets to Excel or PDF.">
+
+  <meta name="keywords"
+        content="wedding budget calculator, wedding planner, wedding expenses, wedding cost calculator, budget wedding planning">
+
+  <meta name="google-adsense-account"
+        content="ca-pub-4504023199353060">
+
+  <!-- Canonical -->
+  <link rel="canonical"
+        href="https://freeweddingbudget.com/">
+
+  <!-- Open Graph -->
+  <meta property="og:title"
+        content="Free Wedding Budget Calculator">
+
+  <meta property="og:description"
+        content="Plan and track wedding expenses, guest costs, and category budgets online for free.">
+
+  <meta property="og:url"
+        content="https://freeweddingbudget.com/">
+
+  <meta property="og:type"
+        content="website">
+
+  <!-- Favicon -->
+  <link rel="icon"
+        href="/favicon.ico">
 
   <!-- Structured Data -->
   <script type="application/ld+json">
@@ -30,43 +56,53 @@
   }
   </script>
 
-  <!-- Styles -->
-  <link rel="stylesheet" href="./style.css">
+  <!-- CSS -->
+  <link rel="stylesheet"
+        href="./style.css">
 
-  <!-- AdSense script (LOAD ONCE) -->
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4504023199353060"
+  <!-- Google AdSense -->
+  <script async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4504023199353060"
           crossorigin="anonymous"></script>
 </head>
 
 <body>
 
 <div class="container">
+
   <h1>Free Wedding Budget Calculator</h1>
 
   <p class="intro-text">
-    Plan and track your wedding expenses in one place. Allocate your budget by
-    category, track actual spending, and instantly see remaining budget and cost
-    per guest. Export to Excel or PDF anytime.
+    Plan and track your wedding expenses in one place.
+    Allocate your budget by category, track actual spending,
+    and instantly see remaining budget and cost per guest.
+    Export to Excel or PDF anytime.
   </p>
 
-  <!-- ✅ SAFE FIRST ADSENSE PLACEMENT -->
-  <div class="ad-container no-print" style="margin:24px 0; text-align:center;">
+  <!-- ADSENSE -->
+  <div class="ad-container no-print">
+
     <ins class="adsbygoogle"
          style="display:block"
          data-ad-client="ca-pub-4504023199353060"
          data-ad-slot="7437035292"
          data-ad-format="auto"
          data-full-width-responsive="true"></ins>
-    <script>
-      (adsbygoogle = window.adsbygoogle || []).push({});
-    </script>
+
   </div>
 
-  <!-- SUMMARY CARDS -->
+  <script>
+    (adsbygoogle = window.adsbygoogle || []).push({});
+  </script>
+
+  <!-- SUMMARY -->
   <div class="summary-grid">
+
     <div class="summary-card no-print">
       <label>Total Wedding Budget</label>
-      <input type="number" id="totalBudget" value="30000">
+      <input type="number"
+             id="totalBudget"
+             value="30000">
     </div>
 
     <div class="summary-card">
@@ -83,6 +119,7 @@
       <label>Actual Cost per Guest</label>
       <strong id="actualCostPerGuest">0</strong>
     </div>
+
   </div>
 
   <p class="print-only">
@@ -90,11 +127,14 @@
     <strong id="printTotalBudget">30000</strong>
   </p>
 
+  <!-- INSIGHTS -->
   <div id="insights"></div>
 
-  <!-- PLANNED BUDGET -->
+  <!-- BUDGET -->
   <div class="section">
+
     <h2>Planned Budget by Category</h2>
+
     <table>
       <thead>
         <tr>
@@ -102,13 +142,17 @@
           <th>Planned Budget</th>
         </tr>
       </thead>
+
       <tbody id="categoryBudgetTable"></tbody>
     </table>
+
   </div>
 
   <!-- EXPENSES -->
   <div class="section">
+
     <h2>Expenses</h2>
+
     <table>
       <thead>
         <tr>
@@ -118,23 +162,30 @@
           <th class="no-print"></th>
         </tr>
       </thead>
+
       <tbody id="expenseTable"></tbody>
     </table>
 
     <div class="export-buttons no-print">
       <button id="addExpense">Add Expense</button>
     </div>
+
   </div>
 
-  <!-- CATEGORY PROGRESS -->
+  <!-- CATEGORY -->
   <div class="section">
+
     <h2>Category Budget Progress</h2>
+
     <div id="categoryProgress"></div>
+
   </div>
 
-  <!-- GUEST LIST -->
+  <!-- GUESTS -->
   <div class="section">
+
     <h2>Guest List</h2>
+
     <table>
       <thead>
         <tr>
@@ -142,46 +193,118 @@
           <th>Guests</th>
         </tr>
       </thead>
+
       <tbody>
-        <tr><td>Family</td><td><input class="guestGroup" type="number" value="0"></td></tr>
-        <tr><td>Friends</td><td><input class="guestGroup" type="number" value="0"></td></tr>
-        <tr><td>Colleagues</td><td><input class="guestGroup" type="number" value="0"></td></tr>
-        <tr><td>Others</td><td><input class="guestGroup" type="number" value="0"></td></tr>
+        <tr>
+          <td>Family</td>
+          <td><input class="guestGroup" type="number" value="0"></td>
+        </tr>
+
+        <tr>
+          <td>Friends</td>
+          <td><input class="guestGroup" type="number" value="0"></td>
+        </tr>
+
+        <tr>
+          <td>Colleagues</td>
+          <td><input class="guestGroup" type="number" value="0"></td>
+        </tr>
+
+        <tr>
+          <td>Others</td>
+          <td><input class="guestGroup" type="number" value="0"></td>
+        </tr>
       </tbody>
     </table>
+
   </div>
 
   <!-- OVERALL -->
   <div class="section overall-section">
+
     <h3>Overall Spending Progress</h3>
+
     <p id="spendingLabel">0 / 0 (0%)</p>
+
     <p id="spendingStatus"></p>
+
     <div class="progress-bar">
-      <div id="progressFill" class="progress-fill"></div>
+      <div id="progressFill"
+           class="progress-fill"></div>
     </div>
+
   </div>
 
   <!-- EXPORT -->
   <div class="export-buttons no-print">
+
     <button id="exportCsv">Export CSV</button>
+
     <button id="exportExcel">Export Excel</button>
+
     <button onclick="window.print()">Print PDF</button>
+
   </div>
+
+  <!-- SEO CONTENT -->
+  <section class="section seo-content">
+
+    <h2>How to Plan a Wedding Budget</h2>
+
+    <p>
+      Planning a wedding budget is one of the most important steps when organizing a wedding ceremony or reception.
+      A clear wedding budget helps couples estimate expenses, manage spending categories, and avoid overspending.
+      This free wedding budget calculator helps track venue costs, catering expenses, decorations, photography,
+      entertainment, and guest-related spending in one place.
+    </p>
+
+    <p>
+      Most couples allocate the largest portion of their wedding budget to venue rental and catering services.
+      Other important categories include photography, floral decoration, entertainment, wedding attire,
+      and transportation.
+    </p>
+
+    <h2>Average Wedding Costs</h2>
+
+    <p>
+      Wedding costs vary depending on location, guest count, venue selection, and overall event style.
+      Small weddings may cost only a few thousand dollars,
+      while larger ceremonies with hundreds of guests can significantly increase catering and venue expenses.
+    </p>
+
+    <h2>Wedding Budget Tips</h2>
+
+    <ul>
+      <li>Set a realistic wedding budget before booking vendors.</li>
+      <li>Track every expense category regularly.</li>
+      <li>Monitor guest count carefully.</li>
+      <li>Reserve emergency funds for unexpected wedding expenses.</li>
+      <li>Review spending progress weekly.</li>
+    </ul>
+
+  </section>
 
   <!-- FOOTER -->
   <footer class="site-footer no-print">
+
     <a href="/about.html">About</a>
+
     <span>•</span>
+
     <a href="/privacy.html">Privacy Policy</a>
+
     <span>•</span>
+
     <a href="mailto:liubigcow@yahoo.com">Contact</a>
+
   </footer>
+
 </div>
 
-<!-- SheetJS -->
+<!-- XLSX -->
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 
-<!-- App logic -->
+<!-- APP -->
 <script src="./script.js"></script>
 
 </body>
