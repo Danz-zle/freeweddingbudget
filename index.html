@@ -112,7 +112,7 @@
     </div>
   </div>
 
-  <!-- ADSENSE AD UNIT (RESTORED EXACTLY FROM V1) -->
+  <!-- ADSENSE AD UNIT -->
   <div class="ad-container no-print">
     <ins class="adsbygoogle"
          style="display:block"
@@ -131,13 +131,13 @@
       <div class="card">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem; border-bottom: 2px solid #fff5f5; padding-bottom:8px;">
           <h2 style="border:none; margin:0; padding:0;">Budget Allocation</h2>
-          <span style="font-size:0.85rem; font-weight:600; color:var(--text-muted);" id="allocationMeta">Planned: $0 / $40,000</span>
+          <span style="font-size:0.85rem; font-weight:600; color:var(--text-muted);" id="allocationMeta">Planned: $44,000 / $40,000</span>
         </div>
         <div id="allocationWarning" class="warning-box" style="display:none;">
           <i data-lucide="alert-triangle"></i> <span id="warningText"></span>
         </div>
-        <div class="table-responsive">
-          <table id="categoryBudgetTable" class="spacious-table"></table>
+        <div id="budgetAllocationList" class="budget-allocation-container">
+          <!-- Dynamically populated rows with spent progress lines -->
         </div>
       </div>
 
@@ -151,6 +151,8 @@
             <option>Photography</option>
             <option>Decor</option>
             <option>Entertainment</option>
+            <option>Attire</option>
+            <option>Transportation</option>
           </select>
           <input type="number" id="expAmt" placeholder="Amount">
           <button id="addExpense">Add</button>
@@ -160,7 +162,19 @@
       <div class="card">
         <h2>Expense History</h2>
         <div class="table-responsive">
-          <table id="expenseTable" class="spacious-table"></table>
+          <table class="spacious-table">
+            <thead>
+              <tr>
+                <th>Item</th>
+                <th>Category</th>
+                <th>Amount</th>
+                <th class="no-print" style="width: 50px;"></th>
+              </tr>
+            </thead>
+            <tbody id="expenseTable">
+              <!-- Empty by default, populated dynamically by user -->
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
@@ -219,7 +233,7 @@
         </div>
       </div>
 
-      <!-- Smart Tips Widget (Appears dynamically on warning triggers) -->
+      <!-- Smart Tips Widget -->
       <div id="smartTipsCard" class="card" style="display: none;">
         <h2>Smart Tips</h2>
         <div id="smartTipsContent" style="display: flex; flex-direction: column; gap: 12px;">
@@ -229,7 +243,7 @@
     </div>
   </div>
 
-  <!-- Featured Planning Resources (Blog Section) -->
+  <!-- Featured Planning Resources -->
   <section class="card no-print" style="margin-top: 2.5rem;">
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; border-bottom: 2px solid #fff5f5; padding-bottom: 8px;">
       <h2 style="margin: 0; border: none; padding: 0; font-size: 1.4rem;">Featured Planning Resources</h2>
