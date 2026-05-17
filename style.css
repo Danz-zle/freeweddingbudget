@@ -1,127 +1,114 @@
-:root {
-  --blush: #fff5f5; --blush-accent: #ff8e9e;
-  --sage: #f0fff4; --sage-accent: #48bb78;
-  --lavender: #faf5ff; --lavender-accent: #9f7aea;
-  --peach: #fffaf0; --peach-accent: #ed8936;
-  --text-main: #2d3748; --text-muted: #718096;
-  --primary: #be185d;
-  --primary-light: #fdf2f8;
-  --input-border: #e2e8f0;
-}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Expert Wedding Planning Guides & Budgets | Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+<header class="top-nav">
+  <div class="logo">Wedding Budget Planner</div>
+  <nav class="nav-links">
+    <a href="index.html">Dashboard</a>
+    <a href="blog.html" class="active">Blog</a>
+    <a href="about.html">About</a>
+    <a href="privacy.html">Privacy</a>
+    <a href="mailto:liubigcow@yahoo.com">Contact</a>
+  </nav>
+</header>
 
-body {
-  font-family: 'Inter', Arial, sans-serif;
-  background: linear-gradient(135deg, #fffafa 0%, #fdf2f8 100%);
-  color: var(--text-main); margin: 0; padding: 0;
-  min-height: 100vh;
-}
+<main class="dashboard-container">
+  <div class="card">
+    <h1 style="font-size: 2rem; margin: 0 0 0.5rem 0; font-weight: 800; color: var(--text-main);">Wedding Sourcing, Financial Guides & Insights</h1>
+    <p style="color: var(--text-muted); margin-bottom: 2rem;">Thorough, data-driven breakdowns to help you optimize asset parameters, negotiate service options, and track costs safely.</p>
+    
+    <div class="filter-container">
+      <button class="filter-btn active" onclick="filterArticles('all', this)">All Content</button>
+      <button class="filter-btn" onclick="filterArticles('budget', this)">Budget Planning</button>
+      <button class="filter-btn" onclick="filterArticles('saving', this)">Money Saving</button>
+      <button class="filter-btn" onclick="filterArticles('data', this)">Industry Data</button>
+      <button class="filter-btn" onclick="filterArticles('diy', this)">DIY & Decor</button>
+      <button class="filter-btn" onclick="filterArticles('timeline', this)">Planning Guide</button>
+    </div>
 
-.print-only { display: none; }
+    <div class="featured-grid" id="articlesGrid">
+      <a href="blog-create-budget.html" class="blog-card" data-cat="budget">
+        <div class="blog-card-body">
+          <span class="badge badge-budget">Budget Planning</span>
+          <h3 style="font-size: 1.2rem; margin: 0.5rem 0; font-weight: 700;">How to Create a Wedding Budget That Actually Works</h3>
+          <p style="color: var(--text-muted); font-size: 0.85rem; line-height: 1.6; margin: 0; flex-grow: 1;">A comprehensive, structured breakdown of establishing resource baselines across modern service metrics.</p>
+          <div style="margin-top:1.25rem; font-size:0.75rem; color:var(--primary); font-weight:600;"><i data-lucide="clock" style="width:12px; height:12px; display:inline; vertical-align:middle;"></i> 8 min read</div>
+        </div>
+      </a>
+      <a href="blog-hidden-costs.html" class="blog-card" data-cat="saving">
+        <div class="blog-card-body">
+          <span class="badge badge-saving">Money Saving</span>
+          <h3 style="font-size: 1.2rem; margin: 0.5rem 0; font-weight: 700;">Hidden Wedding Costs Nobody Tells You About</h3>
+          <p style="color: var(--text-muted); font-size: 0.85rem; line-height: 1.6; margin: 0; flex-grow: 1;">Overlooked logistical expenses, service delivery fees, tailoring additions, and hidden contract parameters.</p>
+          <div style="margin-top:1.25rem; font-size:0.75rem; color:#ed8936; font-weight:600;"><i data-lucide="clock" style="width:12px; height:12px; display:inline; vertical-align:middle;"></i> 7 min read</div>
+        </div>
+      </a>
+      <a href="blog-spend-vs-save.html" class="blog-card" data-cat="data">
+        <div class="blog-card-body">
+          <span class="badge badge-data">Industry Data</span>
+          <h3 style="font-size: 1.2rem; margin: 0.5rem 0; font-weight: 700;">Wedding Budget Breakdown: Where to Spend & Save</h3>
+          <p style="color: var(--text-muted); font-size: 0.85rem; line-height: 1.6; margin: 0; flex-grow: 1;">Analysis compiled across extensive transaction groups to balance media and venue items gracefully.</p>
+          <div style="margin-top:1.25rem; font-size:0.75rem; color:#3182ce; font-weight:600;"><i data-lucide="clock" style="width:12px; height:12px; display:inline; vertical-align:middle;"></i> 9 min read</div>
+        </div>
+      </a>
+      <a href="blog-average-cost-2026.html" class="blog-card" data-cat="data">
+        <div class="blog-card-body">
+          <span class="badge badge-data">Industry Data</span>
+          <h3 style="font-size: 1.2rem; margin: 0.5rem 0; font-weight: 700;">Average Wedding Cost in 2026: Regional & Season Guide</h3>
+          <p style="color: var(--text-muted); font-size: 0.85rem; line-height: 1.6; margin: 0; flex-grow: 1;">An itemized, geographical look at modern pricing benchmarks, venue structures, and seasonal rates.</p>
+          <div style="margin-top:1.25rem; font-size:0.75rem; color:#3182ce; font-weight:600;"><i data-lucide="clock" style="width:12px; height:12px; display:inline; vertical-align:middle;"></i> 10 min read</div>
+        </div>
+      </a>
+      <a href="blog-diy-decor.html" class="blog-card" data-cat="diy">
+        <div class="blog-card-body">
+          <span class="badge badge-diy">DIY & Decor</span>
+          <h3 style="font-size: 1.2rem; margin: 0.5rem 0; font-weight: 700;">DIY Wedding Decor That Looks Professional</h3>
+          <p style="color: var(--text-muted); font-size: 0.85rem; line-height: 1.6; margin: 0; flex-grow: 1;">Production tips, clear timelines, material procurement paths, and layout designs that protect budgets.</p>
+          <div style="margin-top:1.25rem; font-size:0.75rem; color:#9f7aea; font-weight:600;"><i data-lucide="clock" style="width:12px; height:12px; display:inline; vertical-align:middle;"></i> 8 min read</div>
+        </div>
+      </a>
+      <a href="blog-planning-timeline.html" class="blog-card" data-cat="timeline">
+        <div class="blog-card-body">
+          <span class="badge badge-timeline">Planning Guide</span>
+          <h3 style="font-size: 1.2rem; margin: 0.5rem 0; font-weight: 700;">The Ultimate Wedding Planning Timeline Checklist</h3>
+          <p style="color: var(--text-muted); font-size: 0.85rem; line-height: 1.6; margin: 0; flex-grow: 1;">A rigorous, calendar-mapped master checklist tracking project items cleanly across all timelines.</p>
+          <div style="margin-top:1.25rem; font-size:0.75rem; color:#38a169; font-weight:600;"><i data-lucide="clock" style="width:12px; height:12px; display:inline; vertical-align:middle;"></i> 9 min read</div>
+        </div>
+      </a>
+    </div>
+  </div>
+</main>
 
-@media print {
-  .no-print { display: none !important; }
-  .print-only { display: block !important; }
-  body { background: white !important; }
-  .dashboard-container { padding: 0; max-width: 100%; margin: 0; }
-  .card { box-shadow: none !important; border: 1px solid #eee !important; page-break-inside: avoid; margin-bottom: 30px; padding: 25px !important; }
-  .main-grid { display: block !important; }
-  .report-header { text-align: center; margin-bottom: 40px; }
-  .report-header h1 { color: var(--primary); font-size: 28px; margin-bottom: 10px; }
-}
+<footer class="site-footer">
+  <p>&copy; 2026 Wedding Budget Planner</p>
+  <div class="footer-links">
+    <a href="about.html">About</a> <span>•</span>
+    <a href="privacy.html">Privacy Policy</a> <span>•</span>
+    <a href="mailto:liubigcow@yahoo.com">Contact</a>
+  </div>
+</footer>
 
-.top-nav {
-  background: white; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.04); position: sticky; top: 0; z-index: 100;
-}
-.logo { font-weight: 800; color: var(--primary); font-size: 1.25rem; }
-.nav-links a { margin-left: 1.5rem; text-decoration: none; color: var(--text-muted); font-size: 0.9rem; font-weight: 500; transition: color 0.2s; }
-.nav-links a:hover, .nav-links a.active { color: var(--primary); }
-
-.dashboard-container { max-width: 1100px; margin: 2rem auto; padding: 0 1rem; }
-.card { background: white; border-radius: 16px; padding: 2rem; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); margin-bottom: 2rem; border: 1px solid #f7fafc; }
-
-.main-grid { display: grid; grid-template-columns: 1fr 380px; gap: 2rem; }
-@media (max-width: 900px) { .main-grid { grid-template-columns: 1fr; } }
-
-h2 { margin-top: 0; font-size: 1.25rem; font-weight: 700; color: var(--text-main); margin-bottom: 1.5rem; border-left: 4px solid var(--primary); padding-left: 12px; }
-
-table { width: 100%; border-collapse: collapse; margin-bottom: 1rem; }
-th { text-align: left; padding: 12px; font-size: 0.75rem; text-transform: uppercase; color: var(--text-muted); border-bottom: 1px solid #edf2f7; }
-td { padding: 12px; border-bottom: 1px solid #f7fafc; vertical-align: middle; }
-input, select { width: 100%; padding: 10px; border: 1px solid var(--input-border); border-radius: 8px; font-size: 0.9rem; transition: border-color 0.2s; box-sizing: border-box; }
-input:focus { outline: none; border-color: var(--primary); }
-
-.button, button {
-  background: var(--primary); color: white; border: none; padding: 12px 24px; border-radius: 8px;
-  font-weight: 600; cursor: pointer; transition: opacity 0.2s; width: 100%; font-size: 0.95rem;
-}
-.button:hover, button:hover { opacity: 0.9; }
-.button.outline, button.outline { background: white; color: var(--primary); border: 2px solid var(--primary); }
-.button.secondary, button.secondary { background: #4a5568; }
-
-.action-bar { display: flex; gap: 1rem; margin-top: 1rem; }
-@media (max-width: 600px) { .action-bar { flex-direction: column; } }
-
-.warning-box { background: #fff5f5; border: 1px solid #feb2b2; color: #c53030; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 10px; font-weight: 600; font-size: 0.9rem; }
-.guest-card { background: #f8fafc; padding: 15px; border-radius: 12px; margin-bottom: 10px; border: 1px solid #edf2fc; font-size: 15px; }
-
-/* Progress Bars & Statuses */
-.progress-item { margin-bottom: 1.8rem; }
-.p-label { display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 6px; font-weight: 600; }
-.p-bar { height: 8px; background: #edf2f7; border-radius: 6px; overflow: hidden; margin-bottom: 4px; }
-.p-fill { height: 100%; transition: width 0.5s ease-out; }
-.p-status-msg { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; }
-
-.bg-safe { background-color: var(--sage-accent); }
-.bg-warning { background-color: var(--peach-accent); }
-.bg-danger { background-color: #e53e3e; }
-
-.status-safe { color: var(--sage-accent); }
-.status-warning { color: var(--peach-accent); }
-.status-danger { color: #e53e3e; }
-
-.site-footer { margin-top: 4rem; padding: 2rem; text-align: center; border-top: 1px solid #eee; color: var(--text-muted); font-size: 0.9rem; }
-.footer-links a { color: var(--primary); text-decoration: none; margin: 0 8px; font-weight: 500; }
-
-/* ==========================================================================
-   BLOG ENGINE & CONTENT HUB STYLES 
-   ========================================================================== */
-.blog-layout { display: grid; grid-template-columns: 1fr 300px; gap: 2rem; margin-top: 2rem; }
-@media (max-width: 900px) { .blog-layout { grid-template-columns: 1fr; } }
-
-.featured-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin-top: 1.5rem; }
-
-.filter-container { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 2rem; border-bottom: 1px solid var(--input-border); padding-bottom: 1rem; }
-.filter-btn { background: #fff; border: 1px solid var(--input-border); padding: 0.5rem 1rem; border-radius: 20px; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: all 0.2s; color: var(--text-muted); }
-.filter-btn.active, .filter-btn:hover { background: var(--primary); color: #fff; border-color: var(--primary); }
-
-.blog-card { background: #fff; border: 1px solid var(--input-border); border-radius: 12px; overflow: hidden; display: flex; flex-direction: column; transition: transform 0.2s, box-shadow 0.2s; text-decoration: none; color: inherit; }
-.blog-card:hover { transform: translateY(-4px); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05); }
-.blog-card-body { padding: 1.5rem; flex-grow: 1; display: flex; flex-direction: column; }
-
-.badge { display: inline-block; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; padding: 0.25rem 0.6rem; border-radius: 4px; margin-bottom: 0.75rem; width: fit-content; }
-.badge-budget { background: #fff5f5; color: var(--primary); }
-.badge-saving { background: #fffaf0; color: #ed8936; }
-.badge-data { background: #ebf8ff; color: #3182ce; }
-.badge-diy { background: #faf5ff; color: #9f7aea; }
-.badge-timeline { background: #f0fff4; color: #38a169; }
-
-.article-header { margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 1px solid #edf2f7; }
-.article-body h2 { font-size: 1.5rem; color: var(--text-main); margin-top: 2rem; margin-bottom: 1rem; border: none !important; padding: 0 !important; font-weight: 700; }
-.article-body h3 { font-size: 1.2rem; color: var(--text-main); margin-top: 1.5rem; font-weight: 700; }
-.article-body p { line-height: 1.8; color: #4a5568; margin-bottom: 1.5rem; font-size: 1.05rem; }
-.article-body ul, .article-body ol { margin-bottom: 1.5rem; padding-left: 1.5rem; color: #4a5568; line-height: 1.8; }
-.article-body li { margin-bottom: 0.5rem; }
-
-.pro-tip { background: #fefcbf; border-left: 4px solid #d69e2e; padding: 1.25rem; border-radius: 0 8px 8px 0; margin: 2rem 0; font-size: 0.95rem; line-height: 1.6; color: #744210; }
-.pro-tip strong { color: #5f370e; }
-.article-quote { border-left: 4px solid var(--primary); padding-left: 1.5rem; font-style: italic; color: var(--text-muted); margin: 2rem 0; font-size: 1.1rem; line-height: 1.7; }
-
-.sidebar-box { background: #fff; border: 1px solid var(--input-border); border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; }
-.sidebar-box h4 { margin: 0 0 1rem 0; font-size: 1.1rem; font-weight: 700; color: var(--text-main); }
-.newsletter-form input { width: 100%; padding: 0.6rem; border: 1px solid var(--input-border); border-radius: 6px; margin-bottom: 0.75rem; box-sizing: border-box; }
-.newsletter-form button { width: 100%; padding: 0.6rem; }
-
-.share-container { display: flex; gap: 0.5rem; margin: 2rem 0; align-items: center; }
-.share-btn { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.4rem 0.8rem; border-radius: 6px; border: 1px solid var(--input-border); background: #fff; font-size: 0.85rem; font-weight: 600; text-decoration: none; color: var(--text-main); cursor: pointer; }
-.share-btn:hover { background: #f7fafc; }
+<script>
+  lucide.createIcons();
+  function filterArticles(category, buttonElement) {
+      document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+      buttonElement.classList.add('active');
+      const cards = document.querySelectorAll('#articlesGrid .blog-card');
+      cards.forEach(card => {
+          if (category === 'all' || card.getAttribute('data-cat') === category) {
+              card.style.display = 'flex';
+          } else {
+              card.style.display = 'none';
+          }
+      });
+  }
+</script>
+</body>
+</html>
