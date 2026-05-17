@@ -6,7 +6,7 @@
 
   <!-- SEO & ADSENSE VERIFICATION -->
   <title>Free Wedding Budget Calculator | Plan and Track Wedding Costs</title>
-  <meta name="description" content="Free wedding budget calculator to plan expenses, track costs, and export reports.">
+  <meta name="description" content="Free wedding budget calculator to plan expenses by category, track actual costs, calculate cost per guest, and export budgets to Excel or PDF.">
   <meta name="keywords" content="wedding budget calculator, wedding planner, wedding expenses, wedding cost calculator, budget wedding planning">
   <meta name="google-adsense-account" content="ca-pub-4504023199353060">
   
@@ -50,10 +50,10 @@
 <!-- PDF Header (Print Only) -->
 <div class="print-only report-header">
   <h1>Wedding Budget Financial Report</h1>
-  <p>Financial Status: <span id="printStatusLabel" style="font-weight: bold;">On Track</span></p>
+  <p id="printDateMeta" style="margin: 5px 0 15px 0; color: var(--text-muted); font-size: 0.9rem;"></p>
+  <div id="printWeddingDetails" style="margin-bottom: 25px; padding: 15px; background: var(--blush); border-radius: 12px; display: inline-block;"></div>
 </div>
 
-<!-- Restored Original Top Nav -->
 <header class="top-nav no-print">
   <div class="logo">Wedding Budget Planner</div>
   <nav class="nav-links">
@@ -65,7 +65,7 @@
   </nav>
 </header>
 
-<!-- Wedding Countdown Banner Header Widget -->
+<!-- Main Wedding Countdown Header Banner -->
 <div id="countdownBanner" class="countdown-hero no-print" style="display: none;">
   <div class="countdown-hero-content">
     <span class="countdown-label">WEDDING DAY COUNTDOWN</span>
@@ -127,17 +127,17 @@
 
   <div class="main-grid">
     <div class="content-col">
-      <!-- Budget Allocation Widget (Screenshot 1 Layout) -->
+      <!-- Budget Allocation Card -->
       <div class="card">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem; border-bottom: 2px solid #fff5f5; padding-bottom:8px;">
           <h2 style="border:none; margin:0; padding:0;">Budget Allocation</h2>
-          <span style="font-size:0.85rem; font-weight:600; color:var(--text-muted);" id="allocationMeta">Planned: $44,000 / $40,000</span>
+          <span style="font-size:0.85rem; font-weight:600; color:var(--text-muted);" id="allocationMeta">Planned: $0 / $40,000</span>
         </div>
         <div id="allocationWarning" class="warning-box" style="display:none;">
           <i data-lucide="alert-triangle"></i> <span id="warningText"></span>
         </div>
-        <div id="budgetAllocationList" class="budget-allocation-container">
-          <!-- Dynamically populated rows with status lines -->
+        <div class="table-responsive">
+          <table id="categoryBudgetTable" class="spacious-table"></table>
         </div>
       </div>
 
@@ -151,8 +151,6 @@
             <option>Photography</option>
             <option>Decor</option>
             <option>Entertainment</option>
-            <option>Attire</option>
-            <option>Transportation</option>
           </select>
           <input type="number" id="expAmt" placeholder="Amount">
           <button id="addExpense">Add</button>
@@ -168,18 +166,18 @@
     </div>
 
     <div class="sidebar-col">
-      <!-- Spending Progress Sidebar Widget (Matches screenshot 2) -->
+      <!-- Spending Progress Sidebar Widget -->
       <div class="card">
         <h2>Spending Progress</h2>
         <div id="categoryProgress" class="progress-list"></div>
       </div>
 
-      <!-- Wedding Day Date Tracker (Screenshot 4 Layout) -->
+      <!-- Wedding Day Date Tracker Widget -->
       <div class="card no-print tracking-card" id="weddingDayCard">
-        <!-- JS Swaps this card dynamically between set and change state -->
+        <!-- Swapped dynamically in JavaScript -->
       </div>
 
-      <!-- Guest Count Widget (Manual input + Button adjusters layout) -->
+      <!-- Guest Count Widget (Dual Manual + Stepper controls) -->
       <div class="card no-print">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; border-bottom: 2px solid #fff5f5; padding-bottom: 8px;">
           <h2 style="border:none; margin:0; padding:0;">Guest Count</h2>
@@ -221,17 +219,17 @@
         </div>
       </div>
 
-      <!-- Smart Tips Widget (Dynamic alerting area) -->
+      <!-- Smart Tips Widget (Appears dynamically on warning triggers) -->
       <div id="smartTipsCard" class="card" style="display: none;">
         <h2>Smart Tips</h2>
         <div id="smartTipsContent" style="display: flex; flex-direction: column; gap: 12px;">
-          <!-- Dynamically populated warning elements -->
+          <!-- Dynamically populated notifications -->
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Featured Planning Resources (Blog Section Restored) -->
+  <!-- Featured Planning Resources (Blog Section) -->
   <section class="card no-print" style="margin-top: 2.5rem;">
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; border-bottom: 2px solid #fff5f5; padding-bottom: 8px;">
       <h2 style="margin: 0; border: none; padding: 0; font-size: 1.4rem;">Featured Planning Resources</h2>
@@ -265,7 +263,7 @@
     </div>
   </section>
 
-  <!-- Detailed informational text (SEO section restored) -->
+  <!-- Detailed informational text (SEO section) -->
   <section class="seo-content card" style="margin-top: 2rem;">
     <h2>About Wedding Budgeting</h2>
     <p>A well-planned wedding budget is essential for a stress-free experience. Most weddings allocate the majority of their funds to venue rental and catering services. Other important categories include photography, floral decoration, entertainment, wedding attire, and transportation.</p>
@@ -281,7 +279,7 @@
     </ul>
   </section>
 
-  <!-- Restored Original Action Bar Layout -->
+  <!-- Action Bar Export Panel -->
   <div class="action-bar no-print">
     <button id="exportCsv" class="outline">Export Raw CSV</button>
     <button id="exportExcel" class="secondary">Export Professional Excel</button>
@@ -289,7 +287,6 @@
   </div>
 </main>
 
-<!-- Restored Original Footers (Terms Page Added) -->
 <footer class="site-footer no-print">
   <p>&copy; 2026 Wedding Budget Planner</p>
   <div class="footer-links">
