@@ -131,7 +131,7 @@
       <div class="card">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem; border-bottom: 2px solid #fff5f5; padding-bottom:8px;">
           <h2 style="border:none; margin:0; padding:0;">Budget Allocation</h2>
-          <span style="font-size:0.85rem; font-weight:600; color:var(--text-muted);" id="allocationMeta">Planned: $44,000 / $40,000</span>
+          <span style="font-size:0.85rem; font-weight:600; color:var(--text-muted);" id="allocationMeta">Planned: $0 / $40,000</span>
         </div>
         <div id="allocationWarning" class="warning-box" style="display:none;">
           <i data-lucide="alert-triangle"></i> <span id="warningText"></span>
@@ -180,18 +180,18 @@
     </div>
 
     <div class="sidebar-col">
+      <!-- Wedding Day Date Tracker Widget (Relocated on top of Spending Progress) -->
+      <div class="card no-print tracking-card" id="weddingDayCard">
+        <!-- Swapped dynamically in JavaScript -->
+      </div>
+
       <!-- Spending Progress Sidebar Widget -->
       <div class="card">
         <h2>Spending Progress</h2>
         <div id="categoryProgress" class="progress-list"></div>
       </div>
 
-      <!-- Wedding Day Date Tracker Widget -->
-      <div class="card no-print tracking-card" id="weddingDayCard">
-        <!-- Swapped dynamically in JavaScript -->
-      </div>
-
-      <!-- Guest Count Widget (Dual Manual + Stepper controls) -->
+      <!-- Guest Count Widget (Dual Manual + Stepper controls initialized to 0) -->
       <div class="card no-print">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; border-bottom: 2px solid #fff5f5; padding-bottom: 8px;">
           <h2 style="border:none; margin:0; padding:0;">Guest Count</h2>
@@ -202,7 +202,7 @@
             <span>Family</span>
             <div class="counter-ctrl">
               <button onclick="adjustGuests('Family', -1)" class="btn-circle">-</button>
-              <input type="number" id="input-Family" class="guest-num-input" value="8" onchange="setGuestManual('Family', this.value)">
+              <input type="number" id="input-Family" class="guest-num-input" value="0" onchange="setGuestManual('Family', this.value)">
               <button onclick="adjustGuests('Family', 1)" class="btn-circle">+</button>
             </div>
           </div>
@@ -210,7 +210,7 @@
             <span>Friends</span>
             <div class="counter-ctrl">
               <button onclick="adjustGuests('Friends', -1)" class="btn-circle">-</button>
-              <input type="number" id="input-Friends" class="guest-num-input" value="6" onchange="setGuestManual('Friends', this.value)">
+              <input type="number" id="input-Friends" class="guest-num-input" value="0" onchange="setGuestManual('Friends', this.value)">
               <button onclick="adjustGuests('Friends', 1)" class="btn-circle">+</button>
             </div>
           </div>
@@ -218,7 +218,7 @@
             <span>Colleagues</span>
             <div class="counter-ctrl">
               <button onclick="adjustGuests('Colleagues', -1)" class="btn-circle">-</button>
-              <input type="number" id="input-Colleagues" class="guest-num-input" value="7" onchange="setGuestManual('Colleagues', this.value)">
+              <input type="number" id="input-Colleagues" class="guest-num-input" value="0" onchange="setGuestManual('Colleagues', this.value)">
               <button onclick="adjustGuests('Colleagues', 1)" class="btn-circle">+</button>
             </div>
           </div>
@@ -226,14 +226,14 @@
             <span>Others</span>
             <div class="counter-ctrl">
               <button onclick="adjustGuests('Others', -1)" class="btn-circle">-</button>
-              <input type="number" id="input-Others" class="guest-num-input" value="10" onchange="setGuestManual('Others', this.value)">
+              <input type="number" id="input-Others" class="guest-num-input" value="0" onchange="setGuestManual('Others', this.value)">
               <button onclick="adjustGuests('Others', 1)" class="btn-circle">+</button>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Smart Tips Widget -->
+      <!-- Smart Tips Widget (Appears dynamically on warning triggers) -->
       <div id="smartTipsCard" class="card" style="display: none;">
         <h2>Smart Tips</h2>
         <div id="smartTipsContent" style="display: flex; flex-direction: column; gap: 12px;">
@@ -243,7 +243,7 @@
     </div>
   </div>
 
-  <!-- Featured Planning Resources -->
+  <!-- Featured Planning Resources (Blog Section) -->
   <section class="card no-print" style="margin-top: 2.5rem;">
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; border-bottom: 2px solid #fff5f5; padding-bottom: 8px;">
       <h2 style="margin: 0; border: none; padding: 0; font-size: 1.4rem;">Featured Planning Resources</h2>
