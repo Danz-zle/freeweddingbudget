@@ -2,6 +2,7 @@ const catIcons = { Venue: 'home', Catering: 'utensils', Photography: 'camera', D
 let categories = { Venue: 8000, Catering: 12000, Photography: 4000, Decor: 3000, Entertainment: 3000 };
 let expenses = [];
 
+// DOM Elements
 const totalBudgetInput = document.getElementById("totalBudget");
 const remainingBudgetText = document.getElementById("remainingBudget");
 const categoryBudgetTable = document.getElementById("categoryBudgetTable");
@@ -22,98 +23,98 @@ function refresh() {
     const budget = Number(totalBudgetInput.value) || 0;
     const spent = totalSpent();
     const planned = totalPlanned();
-    const guests = Array.from(document.querySelectorAll(".guestGroup")).reduce((s,g) => s + (Number(g.value)||0), 0);
+    
+    // Fixed Guest Calculation to match current index.html class names
+    const guests = Array.from(document.querySelectorAll(".guestCount")).reduce((s, g) => s + (Number(g.value) || 0), 0);
 
-    // PDF Global Status
-    const statusText = spent > budget ? "Over Budget" : "On Track";
-    if (printStatusLabel) {
-        printStatusLabel.innerText = statusText;
-        printStatusLabel.style.color = spent > budget ? "#e53e3e" : "#48bb78";
-    }
-
-    // Allocation Warning Logic
+    // Allocation Warning
     if (planned > budget) {
         allocationWarning.style.display = "flex";
-        warningText.innerText = `Warning: Total planned categories ($${planned.toLocaleString()}) exceed your budget by $${(planned - budget).toLocaleString()}!`;
+        warningText.innerText = `Warning: Allocated $${planned.toLocaleString()} exceeds your $${budget.toLocaleString()} budget by $${(planned - budget).toLocaleString()}!`;
     } else {
         allocationWarning.style.display = "none";
     }
 
-    remainingBudgetText.innerText = `$${(budget - spent).toLocaleString()}`;
-    remainingBudgetText.style.color = (budget - spent < 0) ? "#e53e3e" : "#2d3748";
-    totalGuestsText.innerText = guests;
+    // Remaining Balance UI
+    const remaining = budget - spent;
+    remainingBudgetText.innerText = `$${remaining.toLocaleString()}`;
+    remainingBudgetText.className = remaining < 0 ? "status-danger" : "status-safe";
+    printStatusLabel.innerText = remaining < 0 ? "OVER BUDGET" : "ON TARGET";
+    printStatusLabel.className = `p-status-msg ${remaining < 0 ? 'status-danger' : 'status-safe'}`;
+
+    // Table: Budget Allocation
+    categoryBudgetTable.querySelector("tbody").innerHTML = Object.keys(categories).map(c => `
+        <tr>
+            <td style="font-weight:600;">${c}</td>
+            <td><input type="number" value="${categories[c]}" onchange="updateCat('${c}', this.value)" style="width:80px; padding:4px;"></td>
+            <td class="${categories[c] - getSpent(c) < 0 ? 'status-danger' : ''}">$${(categories[c] - getSpent(c)).toLocaleString()}</td>
+        </tr>
+    `).join('');
+
+    // Table: Expenses
+    expenseTable.querySelector("tbody").innerHTML = expenses.map((e, i) => `
+        <tr>
+            <td>${e.desc}</td>
+            <td><span style="font-size:0.8rem; background:#f0f4f8; padding:2px 6px; border-radius:4px;">${e.cat}</span></td>
+            <td>$${e.amount.toLocaleString()}</td>
+            <td><button onclick="removeExpense(${i})" style="padding:4px 8px; background:#fed7d7; color:#c53030; width:auto;"><i data-lucide="trash-2" style="width:14px;"></i></button></td>
+        </tr>
+    `).join('');
+
+    // Progress Visualization
+    categoryProgress.innerHTML = Object.keys(categories).map(c => {
+        const pSpent = getSpent(c);
+        const perc = Math.min((pSpent / categories[c]) * 100, 100) || 0;
+        const statusClass = perc > 100 ? "bg-danger" : (perc > 85 ? "bg-warning" : "bg-safe");
+        return `
+            <div class="progress-item">
+                <div class="p-label">
+                    <span><i data-lucide="${catIcons[c]}" style="width:14px; display:inline; margin-right:5px;"></i>${c}</span>
+                    <span>$${pSpent.toLocaleString()} / $${categories[c].toLocaleString()}</span>
+                </div>
+                <div class="p-bar"><div class="p-fill ${statusClass}" style="width: ${perc}%"></div></div>
+            </div>
+        `;
+    }).join('');
+
+    totalGuestsText.innerText = guests.toLocaleString();
     actualCostText.innerText = guests > 0 ? `$${Math.round(spent / guests).toLocaleString()}` : "$0";
-
-    // Allocation Table
-    categoryBudgetTable.innerHTML = `<tr><th>Category</th><th>Planned ($)</th><th>Actual Spent</th></tr>`;
-    Object.keys(categories).forEach(c => {
-        const row = categoryBudgetTable.insertRow();
-        row.innerHTML = `
-            <td><i data-lucide="${catIcons[c]}" style="width:14px; vertical-align:middle; margin-right:8px; color:#be185d"></i> ${c}</td>
-            <td><input type="number" class="edit-planned" data-cat="${c}" value="${categories[c]}" style="width:110px; padding:6px; border:1px solid #ddd; border-radius:6px;"></td>
-            <td style="font-weight:600">$${getSpent(c).toLocaleString()}</td>
-        `;
-    });
-
-    // Expense History Table
-    expenseTable.innerHTML = `<tr><th>Description</th><th>Category</th><th>Amount</th><th class="no-print"></th></tr>`;
-    expenses.forEach((e, i) => {
-        const row = expenseTable.insertRow();
-        row.innerHTML = `<td>${e.desc}</td><td>${e.cat}</td><td>$${e.amount.toLocaleString()}</td>
-        <td class="no-print" style="text-align:right;"><button onclick="deleteExp(${i})" style="padding:6px 12px; background:#fee2e2; color:#ef4444; font-size:11px; border-radius:6px; border:none;">Remove</button></td>`;
-    });
-
-    // Spending Progress with Status Bars & Sub-Labels
-    categoryProgress.innerHTML = "";
-    Object.keys(categories).forEach(c => {
-        const s = getSpent(c);
-        const limit = categories[c] || 1;
-        const p = Math.min(100, (s / limit) * 100);
-        
-        let colorClass = "bg-safe";
-        let statusMsg = "Safe";
-        let statusClass = "status-safe";
-
-        if (s > limit) {
-            colorClass = "bg-danger";
-            statusMsg = "Over Budget";
-            statusClass = "status-danger";
-        } else if (p > 80) {
-            colorClass = "bg-warning";
-            statusMsg = "Near Limit";
-            statusClass = "status-warning";
-        }
-
-        const div = document.createElement("div");
-        div.className = "progress-item";
-        div.innerHTML = `
-            <div class="p-label"><span>${c}</span><span>${Math.round(p)}%</span></div>
-            <div class="p-bar"><div class="p-fill ${colorClass}" style="width:${p}%"></div></div>
-            <div class="p-status-msg ${statusClass}">${statusMsg}</div>
-        `;
-        categoryProgress.appendChild(div);
-    });
-
-    if (window.lucide) lucide.createIcons();
-    document.querySelectorAll(".edit-planned").forEach(input => {
-        input.oninput = (e) => {
-            categories[e.target.dataset.cat] = Number(e.target.value) || 0;
-            refresh();
-        };
-    });
+    
+    lucide.createIcons();
 }
 
+// Actions
+window.updateCat = (cat, val) => { categories[cat] = Number(val); refresh(); };
+window.removeExpense = (i) => { expenses.splice(i, 1); refresh(); };
+
 addExpenseBtn.onclick = () => {
-    const dInput = document.getElementById("expDesc");
-    const aInput = document.getElementById("expAmt");
-    const cSelect = document.getElementById("expCat");
+    const dInput = document.getElementById("expenseDesc");
+    const cSelect = document.getElementById("expenseCat");
+    const aInput = document.getElementById("expenseAmount");
     if (dInput.value && aInput.value) { 
         expenses.push({ desc: dInput.value, cat: cSelect.value, amount: Number(aInput.value) }); 
         dInput.value = ""; aInput.value = ""; refresh(); 
     }
 };
 
-// Excel Export with 3 Essential Tabs
+totalBudgetInput.oninput = refresh;
+
+document.getElementById("addGroup").onclick = () => {
+    const div = document.createElement("div");
+    div.className = "guestGroup";
+    div.style.marginBottom = "10px";
+    div.innerHTML = `
+        <input type="text" placeholder="Group Name" style="margin-bottom:5px;">
+        <div style="display:flex; gap:5px;">
+            <input type="number" class="guestCount" value="0" oninput="refresh()" style="flex:1;">
+            <button onclick="this.parentElement.parentElement.remove(); refresh();" style="width:40px; background:#fed7d7; color:#c53030;">×</button>
+        </div>
+    `;
+    document.getElementById("guestList").appendChild(div);
+    refresh();
+};
+
+// Excel Export
 document.getElementById("exportExcel").onclick = () => {
     const wb = XLSX.utils.book_new();
     const summary = [
@@ -130,10 +131,18 @@ document.getElementById("exportExcel").onclick = () => {
     const trans = [["Description", "Category", "Amount"]];
     expenses.forEach(e => trans.push([e.desc, e.cat, e.amount]));
     XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(trans), "Transactions");
-    XLSX.writeFile(wb, "Wedding_Budget_Planner.xlsx");
+    XLSX.writeFile(wb, "Wedding_Budget_Plan.xlsx");
 };
 
-window.deleteExp = (i) => { expenses.splice(i, 1); refresh(); };
-window.onload = refresh;
-totalBudgetInput.oninput = refresh;
-document.querySelectorAll(".guestGroup").forEach(i => i.oninput = refresh);
+document.getElementById("exportCsv").onclick = () => {
+    let csv = "Description,Category,Amount\n";
+    expenses.forEach(e => csv += `${e.desc},${e.cat},${e.amount}\n`);
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = 'wedding_expenses.csv'; a.click();
+};
+
+// Initial Load
+document.querySelectorAll(".guestCount").forEach(input => input.oninput = refresh);
+refresh();
