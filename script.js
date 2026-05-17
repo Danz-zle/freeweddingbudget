@@ -10,9 +10,9 @@ const catIcons = {
 
 // Planned reference budgets restored to standard default values for user reference
 let categories = { 
-  Venue: 12000, 
-  Catering: 15000, 
-  Photography: 5000, 
+  Venue: 11000, 
+  Catering: 13000, 
+  Photography: 4000, 
   Decor: 4000, 
   Entertainment: 3500,
   Attire: 3000,
