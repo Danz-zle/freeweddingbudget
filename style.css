@@ -26,6 +26,20 @@ body {
   .main-grid { display: block !important; }
   .report-header { text-align: center; margin-bottom: 40px; border-bottom: 2px solid var(--primary); padding-bottom: 15px; }
   .spacious-table th, .spacious-table td { padding: 15px !important; font-size: 14px !important; }
+  .p-bar { 
+    background-color: #edf2f7 !important; 
+    border: 1px solid #ddd !important;
+    -webkit-print-color-adjust: exact !important; 
+    print-color-adjust: exact !important; 
+  }
+  .p-fill { 
+    -webkit-print-color-adjust: exact !important; 
+    print-color-adjust: exact !important; 
+  }
+  .bg-primary { background-color: var(--primary) !important; }
+  .bg-safe { background-color: var(--sage-accent) !important; }
+  .bg-warning { background-color: var(--peach-accent) !important; }
+  .bg-danger { background-color: #e53e3e !important; }
 }
 
 .top-nav { display: flex; justify-content: space-between; align-items: center; padding: 1.2rem 4rem; background: white; border-bottom: 1px solid rgba(0,0,0,0.05); position: sticky; top: 0; z-index: 100; }
