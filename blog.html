@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Expert Wedding Planning Guides & Budgets | Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+<header class="top-nav">
+  <div class="logo">Wedding Budget Planner</div>
+  <nav class="nav-links">
+    <a href="index.html">Dashboard</a>
+    <a href="blog.html" class="active" style="font-weight: 700; color: #be185d;">Blog</a>
+    <a href="about.html">About</a>
+    <a href="privacy.html">Privacy</a>
+    <a href="mailto:liubigcow@yahoo.com">Contact</a>
+  </nav>
+</header>
+
+<main class="dashboard-container">
+  <div class="card">
+    <h1 style="font-size: 2rem; margin: 0 0 0.5rem 0; font-weight: 800; color: var(--text-main);">Wedding Sourcing, Financial Guides & Insights</h1>
+    <p style="color: var(--text-muted); margin-bottom: 2rem;">Thorough, data-driven breakdowns to help you optimize asset parameters, negotiate service options, and track costs safely.</p>
+    
+    <div class="filter-container">
+      <button class="filter-btn active" onclick="filterArticles('all', this)">All Content</button>
+      <button class="filter-btn" onclick="filterArticles('budget', this)">Budget Planning</button>
+      <button class="filter-btn" onclick="filterArticles('saving', this)">Money Saving</button>
+      <button class="filter-btn" onclick="filterArticles('data', this)">Industry Data</button>
+      <button class="filter-btn" onclick="filterArticles('diy', this)">DIY & Decor</button>
+      <button class="filter-btn" onclick="filterArticles('timeline', this)">Planning Guide</button>
+    </div>
+
+    <div class="featured-grid" id="articlesGrid">
+      <a href="blog-create-budget.html" class="blog-card" data-cat="budget">
+        <div class="blog-card-body">
+          <span class="badge badge-budget">Budget Planning</span>
+          <h3 style="font-size: 1.2rem; margin: 0.5rem 0; font-weight: 700;">How to Create a Wedding Budget That Actually Works</h3>
+          <p style="color: var(--text-muted); font-size: 0.85rem; line-height: 1.6; margin: 0; flex-grow: 1;">A comprehensive, structured breakdown of establishing resource baselines across modern service metrics.</p>
+          <div style="margin-top:1.25rem; font-size:0.75rem; color:var(--primary); font-weight:600;"><i data-lucide="clock" style="width:12px; height:12px; display:inline; vertical-align:middle;"></i> 8 min read</div>
+        </div>
+      </a>
+      <a href="blog-hidden-costs.html" class="blog-card" data-cat="saving">
+        <div class="blog-card-body">
+          <span class="badge badge-saving">Money Saving</span>
+          <h3 style="font-size: 1.2rem; margin: 0.5rem 0; font-weight: 700;">Hidden Wedding Costs Nobody Tells You About</h3>
+          <p style="color: var(--text-muted); font-size: 0.85rem; line-height: 1.6; margin: 0; flex-grow: 1;">Overlooked logistical expenses, service delivery fees, tailoring additions, and hidden contract parameters.</p>
+          <div style="margin-top:1.25rem; font-size:0.75rem; color:#ed8936; font-weight:600;"><i data-lucide="clock" style="width:12px; height:12px; display:inline; vertical-align:middle;"></i> 7 min read</div>
+        </div>
+      </a>
+      <a href="blog-spend-vs-save.html" class="blog-card" data-cat="data">
+        <div class="blog-card-body">
+          <span class="badge badge-data">Industry Data</span>
+          <h3 style="font-size: 1.2rem; margin: 0.5rem 0; font-weight: 700;">Wedding Budget Breakdown: Where to Spend & Save</h3>
+          <p style="color: var(--text-muted); font-size: 0.85rem; line-height: 1.6; margin: 0; flex-grow: 1;">Analysis compiled across extensive transaction groups to balance media and venue items gracefully.</p>
+          <div style="margin-top:1.25rem; font-size:0.75rem; color:#3182ce; font-weight:600;"><i data-lucide="clock" style="width:12px; height:12px; display:inline; vertical-align:middle;"></i> 9 min read</div>
+        </div>
+      </a>
+      <a href="blog-average-cost-2026.html" class="blog-card" data-cat="data">
+        <div class="blog-card-body">
+          <span class="badge badge-data">Industry Data</span>
+          <h3 style="font-size: 1.2rem; margin: 0.5rem 0; font-weight: 700;">Average Wedding Cost in 2026: Regional & Season Guide</h3>
+          <p style="color: var(--text-muted); font-size: 0.85rem; line-height: 1.6; margin: 0; flex-grow: 1;">An itemized, geographical look at modern pricing benchmarks, venue structures, and seasonal rates.</p>
+          <div style="margin-top:1.25rem; font-size:0.75rem; color:#3182ce; font-weight:600;"><i data-lucide="clock" style="width:12px; height:12px; display:inline; vertical-align:middle;"></i> 10 min read</div>
+        </div>
+      </a>
+      <a href="blog-diy-decor.html" class="blog-card" data-cat="diy">
+        <div class="blog-card-body">
+          <span class="badge badge-diy">DIY & Decor</span>
+          <h3 style="font-size: 1.2rem; margin: 0.5rem 0; font-weight: 700;">DIY Wedding Decor That Looks Professional</h3>
+          <p style="color: var(--text-muted); font-size: 0.85rem; line-height: 1.6; margin: 0; flex-grow: 1;">Production tips, clear timelines, material procurement paths, and layout designs that protect budgets.</p>
+          <div style="margin-top:1.25rem; font-size:0.75rem; color:#9f7aea; font-weight:600;"><i data-lucide="clock" style="width:12px; height:12px; display:inline; vertical-align:middle;"></i> 8 min read</div>
+        </div>
+      </a>
+      <a href="blog-planning-timeline.html" class="blog-card" data-cat="timeline">
+        <div class="blog-card-body">
+          <span class="badge badge-timeline">Planning Guide</span>
+          <h3 style="font-size: 1.2rem; margin: 0.5rem 0; font-weight: 700;">The Ultimate Wedding Planning Timeline Checklist</h3>
+          <p style="color: var(--text-muted); font-size: 0.85rem; line-height: 1.6; margin: 0; flex-grow: 1;">A rigorous, calendar-mapped master checklist tracking project items cleanly across all timelines.</p>
+          <div style="margin-top:1.25rem; font-size:0.75rem; color:#38a169; font-weight:600;"><i data-lucide="clock" style="width:12px; height:12px; display:inline; vertical-align:middle;"></i> 9 min read</div>
+        </div>
+      </a>
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <p>&copy; 2026 Wedding Budget Planner</p>
+  <div class="footer-links">
+    <a href="about.html">About</a> <span>•</span>
+    <a href="privacy.html">Privacy Policy</a> <span>•</span>
+    <a href="mailto:liubigcow@yahoo.com">Contact</a>
+  </div>
+</footer>
+
+<script>
+  lucide.createIcons();
+  function filterArticles(category, buttonElement) {
+      document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+      buttonElement.classList.add('active');
+      const cards = document.querySelectorAll('#articlesGrid .blog-card');
+      cards.forEach(card => {
+          if (category === 'all' || card.getAttribute('data-cat') === category) {
+              card.style.display = 'flex';
+          } else {
+              card.style.display = 'none';
+          }
+      });
+  }
+</script>
+</body>
+</html>
