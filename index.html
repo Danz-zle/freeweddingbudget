@@ -44,6 +44,12 @@
     <p>Official Spending Summary & Allocation Guide</p>
   </div>
 
+  <!-- Countdown Banner/Header Widget -->
+  <div id="countdownContainer" class="card no-print" style="display:none; background: linear-gradient(135deg, #be185d 0%, #da548a 100%); color: white; border: none; text-align: center; padding: 1.5rem;">
+    <div style="font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; opacity: 0.9;">WEDDING DAY COUNTDOWN</div>
+    <div id="countdownDisplay" style="font-size: 1.8rem; font-weight: 800; margin-top: 5px;"></div>
+  </div>
+
   <div id="allocationWarning" class="warning-box no-print" style="display:none;">
     <i data-lucide="alert-triangle"></i>
     <span id="warningText"></span>
@@ -59,14 +65,21 @@
         </div>
         
         <table id="categoryBudgetTable">
-          <thead><tr><th>Category</th><th>Planned Budget</th><th>Remaining</th></tr></thead>
+          <thead>
+            <tr>
+              <th>Category</th>
+              <th>Planned Budget</th>
+              <th>Spent Progress</th>
+              <th>Remaining</th>
+            </tr>
+          </thead>
           <tbody><!-- JS Populated --></tbody>
         </table>
       </div>
 
       <div class="card">
-        <h2>Expense Tracking</h2>
-        <div style="display: grid; grid-template-columns: 2fr 1fr 1fr auto; gap: 10px; margin-bottom: 1.5rem;" class="no-print">
+        <h2>Expense History & Tracking</h2>
+        <div style="display: grid; grid-template-columns: 2fr 1.2fr 1fr auto; gap: 10px; margin-bottom: 1.5rem;" class="no-print">
           <input type="text" id="expenseDesc" placeholder="Description (e.g. Venue Deposit)">
           <select id="expenseCat">
             <option>Venue</option><option>Catering</option><option>Photography</option><option>Decor</option><option>Entertainment</option>
@@ -93,10 +106,19 @@
       </div>
 
       <div class="card">
+        <h2>Wedding Day Tracker</h2>
+        <div style="display: flex; gap: 8px; flex-direction: column; margin-bottom: 1rem;">
+          <label style="font-size:0.8rem; font-weight: 700; color: var(--text-muted);">SELECT YOUR WEDDING DATE</label>
+          <input type="date" id="weddingDateInput" style="padding: 10px;">
+          <button id="saveDate" class="secondary" style="padding: 10px; font-size:0.85rem;">Save Wedding Date</button>
+        </div>
+      </div>
+
+      <div class="card">
         <h2>Guest Logistics</h2>
         <div id="guestList" style="margin-bottom: 1.5rem;">
           <div class="guestGroup">
-            <input type="text" placeholder="Group Name (e.g. Groom's Family)" style="margin-bottom:8px;">
+            <input type="text" placeholder="Group Name (e.g. Family Members)" value="Family" style="margin-bottom:8px;">
             <input type="number" class="guestCount" value="50" placeholder="Count">
           </div>
         </div>
@@ -113,7 +135,30 @@
           </div>
         </div>
       </div>
+
+      <!-- SMART PLANNING TIPS (Side-by-side with guest Logistics) -->
+      <div class="card" style="background: #fffaf0; border: 1px solid #feebc8;">
+        <h2 style="border-left-color: #ed8936;">Smart Sourcing Tips</h2>
+        <ul style="padding-left: 1.2rem; margin: 0; color: #7b341e; font-size: 0.85rem; line-height: 1.6;">
+          <li style="margin-bottom: 8px;">Keep total guests near planned metrics to optimize catering quotes.</li>
+          <li style="margin-bottom: 8px;">Always review vendor service taxes; average rates can append up to 22% onto baseline figures.</li>
+          <li style="margin-bottom: 8px;">Negotiate bundled photography & video collections to secure significant savings.</li>
+        </ul>
+      </div>
     </aside>
+  </div>
+
+  <!-- ADSENSE AD UNIT CONTAINER -->
+  <div class="ad-container no-print" style="margin: 2rem 0; text-align: center;">
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-client="ca-pub-4504023199353060"
+         data-ad-slot="7437035292"
+         data-ad-format="auto"
+         data-full-width-responsive="true"></ins>
+    <script>
+         (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
   </div>
 
   <!-- HOMEPAGE INTEGRATION: FEATURED POSTS -->
@@ -155,14 +200,6 @@
     <p>A well-planned wedding budget is essential for a stress-free experience. Most weddings allocate the majority of their funds to venue rental and catering services. Other important categories include photography, floral decoration, entertainment, wedding attire, and transportation.</p>
     <h2>Average Wedding Costs</h2>
     <p>Wedding costs vary depending on location, guest count, venue selection, and overall event style. Small weddings may cost only a few thousand dollars, while larger ceremonies with hundreds of guests can significantly increase catering and venue expenses.</p>
-    <h2>Wedding Budget Tips</h2>
-    <ul>
-      <li>Set a realistic wedding budget before booking vendors.</li>
-      <li>Track every expense category regularly.</li>
-      <li>Monitor guest count carefully.</li>
-      <li>Reserve emergency funds for unexpected wedding expenses.</li>
-      <li>Review spending progress weekly.</li>
-    </ul>
   </section>
 
   <div class="action-bar no-print">
@@ -177,6 +214,7 @@
   <div class="footer-links">
     <a href="about.html">About</a> <span>•</span>
     <a href="privacy.html">Privacy Policy</a> <span>•</span>
+    <a href="terms.html">Terms & Conditions</a> <span>•</span>
     <a href="mailto:liubigcow@yahoo.com">Contact</a>
   </div>
 </footer>
