@@ -10,52 +10,27 @@
   <meta name="keywords" content="wedding budget calculator, wedding planner, wedding expenses, wedding cost calculator, budget wedding planning">
   <meta name="google-adsense-account" content="ca-pub-4504023199353060">
   
-  <!-- GOOGLE ADSENSE LIBRARY SCRIPT (RESTORED) -->
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4504023199353060" crossorigin="anonymous"></script>
 
   <link rel="canonical" href="https://freeweddingbudget.com/">
   
-  <!-- Open Graph -->
   <meta property="og:title" content="Free Wedding Budget Calculator">
   <meta property="og:description" content="Plan and track wedding expenses, guest costs, and category budgets online for free.">
   <meta property="og:url" content="https://freeweddingbudget.com/">
   <meta property="og:type" content="website">
 
-  <!-- Favicon -->
-  <link rel="icon" href="/favicon.ico">
-
-  <!-- Structured Data (JSON-LD) -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
-    "name": "Free Wedding Budget Calculator",
-    "operatingSystem": "Web",
-    "applicationCategory": "FinanceApplication",
-    "offers": {
-      "@type": "Offer",
-      "price": "0",
-      "priceCurrency": "USD"
-    },
-    "description": "An online tool for planning and managing wedding budgets, tracking expenses, and calculating costs per guest."
-  }
-  </script>
-
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
   <link rel="stylesheet" href="style.css">
   <script src="https://unpkg.com/lucide@latest"></script>
-  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 </head>
 <body>
-
-<!-- PDF Header (Print Only) -->
-<div class="print-only report-header">
-  <h1>Wedding Budget Financial Report</h1>
-  <p>Financial Status: <span id="printStatusLabel" style="font-weight: bold;">On Track</span></p>
-</div>
 
 <header class="top-nav no-print">
   <div class="logo">Wedding Budget Planner</div>
   <nav class="nav-links">
+    <a href="index.html" class="active">Dashboard</a>
+    <a href="blog.html" style="font-weight: 700; color: #be185d;">Blog</a>
     <a href="about.html">About</a>
     <a href="privacy.html">Privacy</a>
     <a href="mailto:liubigcow@yahoo.com">Contact</a>
@@ -63,128 +38,123 @@
 </header>
 
 <main class="dashboard-container">
-  <section class="hero no-print">
-    <h1>Wedding Budget Dashboard</h1>
-    <p>Professional financial tracking for your special day.</p>
-  </section>
-
-  <!-- Summary Cards -->
-  <div class="summary-grid">
-    <div class="stat-card blush">
-      <div class="card-header">
-        <label>Total Budget</label>
-        <i data-lucide="wallet" class="icon-blush"></i>
-      </div>
-      <input type="number" id="totalBudget" value="30000">
-    </div>
-    <div class="stat-card green">
-      <div class="card-header">
-        <label>Remaining</label>
-        <i data-lucide="calculator" class="icon-green"></i>
-      </div>
-      <div class="value" id="remainingBudget">$0</div>
-    </div>
-    <div class="stat-card lavender">
-      <div class="card-header">
-        <label>Total Guests</label>
-        <i data-lucide="users" class="icon-lavender"></i>
-      </div>
-      <div class="value" id="totalGuests">0</div>
-    </div>
-    <div class="stat-card peach">
-      <div class="card-header">
-        <label>Cost per Guest</label>
-        <i data-lucide="banknote" class="icon-peach"></i>
-      </div>
-      <div class="value" id="actualCostPerGuest">$0</div>
-    </div>
+  
+  <div class="report-header print-only">
+    <h1>Wedding Budget Planning Report</h1>
+    <p>Official Spending Summary & Allocation Guide</p>
   </div>
 
-  <!-- ADSENSE AD UNIT (RESTORED EXACTLY FROM V1) -->
-  <div class="ad-container no-print">
-    <ins class="adsbygoogle"
-         style="display:block"
-         data-ad-client="ca-pub-4504023199353060"
-         data-ad-slot="7437035292"
-         data-ad-format="auto"
-         data-full-width-responsive="true"></ins>
-    <script>
-         (adsbygoogle = window.adsbygoogle || []).push({});
-    </script>
+  <div id="allocationWarning" class="warning-box no-print" style="display:none;">
+    <i data-lucide="alert-triangle"></i>
+    <span id="warningText"></span>
   </div>
 
   <div class="main-grid">
-    <div class="content-col">
+    <section class="left-col">
       <div class="card">
         <h2>Budget Allocation</h2>
-        <div id="allocationWarning" class="warning-box" style="display:none;">
-          <i data-lucide="alert-triangle"></i> <span id="warningText"></span>
+        <div style="margin-bottom: 2rem;">
+          <label style="font-size: 0.85rem; font-weight: 600; color: var(--text-muted); display: block; margin-bottom: 8px;">TOTAL WEDDING BUDGET ($)</label>
+          <input type="number" id="totalBudget" value="30000" style="font-size: 1.5rem; font-weight: 800; color: var(--primary); padding: 15px;">
         </div>
-        <div class="table-responsive">
-          <table id="categoryBudgetTable" class="spacious-table"></table>
-        </div>
+        
+        <table id="categoryBudgetTable">
+          <thead><tr><th>Category</th><th>Planned Budget</th><th>Remaining</th></tr></thead>
+          <tbody><!-- JS Populated --></tbody>
+        </table>
       </div>
 
-      <div class="card no-print">
-        <h2>Add Expense</h2>
-        <div class="add-expense-row">
-          <input type="text" id="expDesc" placeholder="Expense description">
-          <select id="expCat">
-            <option>Venue</option>
-            <option>Catering</option>
-            <option>Photography</option>
-            <option>Decor</option>
-            <option>Entertainment</option>
+      <div class="card">
+        <h2>Expense Tracking</h2>
+        <div style="display: grid; grid-template-columns: 2fr 1fr 1fr auto; gap: 10px; margin-bottom: 1.5rem;" class="no-print">
+          <input type="text" id="expenseDesc" placeholder="Description (e.g. Venue Deposit)">
+          <select id="expenseCat">
+            <option>Venue</option><option>Catering</option><option>Photography</option><option>Decor</option><option>Entertainment</option>
           </select>
-          <input type="number" id="expAmt" placeholder="Amount">
-          <button id="addExpense">Add</button>
+          <input type="number" id="expenseAmount" placeholder="Amount ($)">
+          <button id="addExpense" style="width: 50px; padding: 10px;"><i data-lucide="plus"></i></button>
         </div>
+        <table id="expenseTable">
+          <thead><tr><th>Description</th><th>Category</th><th>Amount</th><th></th></tr></thead>
+          <tbody><!-- JS Populated --></tbody>
+        </table>
+      </div>
+    </section>
+
+    <aside class="right-col">
+      <div class="card">
+        <h2>Financial Health</h2>
+        <div style="text-align: center; margin-bottom: 2rem;">
+          <div style="font-size: 0.85rem; font-weight: 600; color: var(--text-muted);">REMAINING BALANCE</div>
+          <div id="remainingBudget" style="font-size: 2.5rem; font-weight: 800; margin: 10px 0;">$0</div>
+          <div id="printStatusLabel" class="p-status-msg">ON TARGET</div>
+        </div>
+        <div id="categoryProgress"><!-- JS Populated --></div>
       </div>
 
       <div class="card">
-        <h2>Expense History</h2>
-        <div class="table-responsive">
-          <table id="expenseTable" class="spacious-table"></table>
+        <h2>Guest Logistics</h2>
+        <div id="guestList" style="margin-bottom: 1.5rem;">
+          <div class="guestGroup">
+            <input type="text" placeholder="Group Name (e.g. Groom's Family)" style="margin-bottom:8px;">
+            <input type="number" class="guestCount" value="50" placeholder="Count">
+          </div>
+        </div>
+        <button class="outline no-print" id="addGroup" style="margin-bottom: 1.5rem; font-size: 0.8rem; padding: 8px;">+ Add Guest Group</button>
+        
+        <div style="background: #f8fafc; padding: 15px; border-radius: 12px;">
+          <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+            <span style="font-size: 0.85rem; color: var(--text-muted);">Total Guests</span>
+            <span id="totalGuests" style="font-weight: 700;">0</span>
+          </div>
+          <div style="display: flex; justify-content: space-between;">
+            <span style="font-size: 0.85rem; color: var(--text-muted);">Cost Per Guest</span>
+            <span id="actualCostPerGuest" style="font-weight: 700; color: var(--primary);">$0</span>
+          </div>
         </div>
       </div>
-    </div>
-
-    <div class="sidebar-col">
-      <div class="card">
-        <h2>Spending Progress</h2>
-        <div id="categoryProgress" class="progress-list"></div>
-      </div>
-
-      <div class="card no-print">
-        <h2>Guest Count</h2>
-        <div class="guest-inputs">
-          <div class="g-row"><label>Family</label> <input type="number" class="guestGroup" value="0"></div>
-          <div class="g-row"><label>Friends</label> <input type="number" class="guestGroup" value="0"></div>
-          <div class="g-row"><label>Colleagues</label> <input type="number" class="guestGroup" value="0"></div>
-          <div class="g-row"><label>Others</label> <input type="number" class="guestGroup" value="0"></div>
-        </div>
-      </div>
-    </div>
+    </aside>
   </div>
 
-  <!-- SEO CONTENT -->
-  <section class="seo-content card">
-    <h2>Wedding Planning Financial Strategy</h2>
-    <p>
-      A successful wedding starts with a clear financial roadmap. Using our Free Wedding Budget Calculator, 
-      you can ensure that your dream day doesn't turn into a financial burden. Track your venue costs, catering expenses, 
-      decorations, photography, entertainment, and guest-related spending in one place.
-    </p>
-    <p>
-      Most couples allocate the largest portion of their wedding budget to venue rental and catering services.
-      Other important categories include photography, floral decoration, entertainment, wedding attire, and transportation.
-    </p>
+  <!-- HOMEPAGE INTEGRATION: FEATURED POSTS -->
+  <section class="card no-print" style="margin-top: 2.5rem;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; border-bottom: 2px solid #fff5f5; padding-bottom: 8px;">
+      <h2 style="margin: 0; border: none; padding: 0; font-size: 1.4rem;">Featured Planning Resources</h2>
+      <a href="blog.html" style="color: var(--primary); text-decoration: none; font-size: 0.9rem; font-weight: 600; display: flex; align-items: center; gap: 0.25rem;">View All Articles <i data-lucide="arrow-right" style="width:16px; height:16px;"></i></a>
+    </div>
+    <div class="featured-grid">
+      <a href="blog-create-budget.html" class="blog-card">
+        <div class="blog-card-body">
+          <span class="badge badge-budget">Budget Planning</span>
+          <h3 style="font-size: 1.1rem; margin: 0.5rem 0 0.75rem 0; font-weight: 700; line-height: 1.4;">How to Create a Wedding Budget That Actually Works</h3>
+          <p style="color: var(--text-muted); font-size: 0.85rem; line-height: 1.5; margin: 0; flex-grow: 1;">A comprehensive, data-driven strategy for establishing framework baselines across vendor options.</p>
+          <div style="margin-top: 1rem; font-size: 0.75rem; color: var(--primary); font-weight: 600; display: flex; align-items: center; gap: 4px;"><i data-lucide="clock" style="width:12px; height:12px;"></i> 8 min read</div>
+        </div>
+      </a>
+      <a href="blog-hidden-costs.html" class="blog-card">
+        <div class="blog-card-body">
+          <span class="badge badge-saving">Money Saving</span>
+          <h3 style="font-size: 1.1rem; margin: 0.5rem 0 0.75rem 0; font-weight: 700; line-height: 1.4;">Hidden Wedding Costs Nobody Tells You About</h3>
+          <p style="color: var(--text-muted); font-size: 0.85rem; line-height: 1.5; margin: 0; flex-grow: 1;">Overlooked expenditures, overtime contract traps, administration fees, and service gratuities.</p>
+          <div style="margin-top: 1rem; font-size: 0.75rem; color: #ed8936; font-weight: 600; display: flex; align-items: center; gap: 4px;"><i data-lucide="clock" style="width:12px; height:12px;"></i> 7 min read</div>
+        </div>
+      </a>
+      <a href="blog-spend-vs-save.html" class="blog-card">
+        <div class="blog-card-body">
+          <span class="badge badge-data">Industry Data</span>
+          <h3 style="font-size: 1.1rem; margin: 0.5rem 0 0.75rem 0; font-weight: 700; line-height: 1.4;">Wedding Budget Breakdown: Where to Spend & Save</h3>
+          <p style="color: var(--text-muted); font-size: 0.85rem; line-height: 1.5; margin: 0; flex-grow: 1;">Empirical expense data parsed from thousands of real weddings to manage cost priorities cleanly.</p>
+          <div style="margin-top: 1rem; font-size: 0.75rem; color: #3182ce; font-weight: 600; display: flex; align-items: center; gap: 4px;"><i data-lucide="clock" style="width:12px; height:12px;"></i> 9 min read</div>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <section class="card no-print" style="margin-top: 2rem; border: none; background: transparent; box-shadow: none;">
+    <h2>About Wedding Budgeting</h2>
+    <p>A well-planned wedding budget is essential for a stress-free experience. Most weddings allocate the majority of their funds to venue rental and catering services. Other important categories include photography, floral decoration, entertainment, wedding attire, and transportation.</p>
     <h2>Average Wedding Costs</h2>
-    <p>
-      Wedding costs vary depending on location, guest count, venue selection, and overall event style.
-      Small weddings may cost only a few thousand dollars, while larger ceremonies with hundreds of guests 
-      can significantly increase catering and venue expenses.
-    </p>
+    <p>Wedding costs vary depending on location, guest count, venue selection, and overall event style. Small weddings may cost only a few thousand dollars, while larger ceremonies with hundreds of guests can significantly increase catering and venue expenses.</p>
     <h2>Wedding Budget Tips</h2>
     <ul>
       <li>Set a realistic wedding budget before booking vendors.</li>
@@ -207,7 +177,6 @@
   <div class="footer-links">
     <a href="about.html">About</a> <span>•</span>
     <a href="privacy.html">Privacy Policy</a> <span>•</span>
-    <a href="terms.html">Terms & Conditions</a> <span>•</span>
     <a href="mailto:liubigcow@yahoo.com">Contact</a>
   </div>
 </footer>
