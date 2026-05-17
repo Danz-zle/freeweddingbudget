@@ -1,6 +1,7 @@
 const catIcons = { Venue: 'home', Catering: 'utensils', Photography: 'camera', Decor: 'flower', Entertainment: 'music' };
 let categories = { Venue: 8000, Catering: 12000, Photography: 4000, Decor: 3000, Entertainment: 3000 };
 let expenses = [];
+let weddingDate = null;
 
 // DOM Elements
 const totalBudgetInput = document.getElementById("totalBudget");
@@ -14,17 +15,38 @@ const addExpenseBtn = document.getElementById("addExpense");
 const allocationWarning = document.getElementById("allocationWarning");
 const warningText = document.getElementById("warningText");
 const printStatusLabel = document.getElementById("printStatusLabel");
+const weddingDateInput = document.getElementById("weddingDateInput");
+const countdownContainer = document.getElementById("countdownContainer");
+const countdownDisplay = document.getElementById("countdownDisplay");
 
 const getSpent = (cat) => expenses.filter(e => e.cat === cat).reduce((s, e) => s + e.amount, 0);
 const totalSpent = () => expenses.reduce((s, e) => s + e.amount, 0);
 const totalPlanned = () => Object.values(categories).reduce((a, b) => a + b, 0);
+
+function updateCountdown() {
+    if (!weddingDate) {
+        countdownContainer.style.display = "none";
+        return;
+    }
+    const now = new Date();
+    const diff = weddingDate - now;
+    
+    if (diff <= 0) {
+        countdownDisplay.innerText = "It's Wedding Day! ❤️";
+        countdownContainer.style.display = "block";
+        return;
+    }
+
+    const days = Math.ceil(diff / (1000 * 60 * 60 * 24));
+    countdownDisplay.innerText = `${days} Days to go! 🌸`;
+    countdownContainer.style.display = "block";
+}
 
 function refresh() {
     const budget = Number(totalBudgetInput.value) || 0;
     const spent = totalSpent();
     const planned = totalPlanned();
     
-    // Fixed Guest Calculation to match current index.html class names
     const guests = Array.from(document.querySelectorAll(".guestCount")).reduce((s, g) => s + (Number(g.value) || 0), 0);
 
     // Allocation Warning
@@ -42,14 +64,28 @@ function refresh() {
     printStatusLabel.innerText = remaining < 0 ? "OVER BUDGET" : "ON TARGET";
     printStatusLabel.className = `p-status-msg ${remaining < 0 ? 'status-danger' : 'status-safe'}`;
 
-    // Table: Budget Allocation
-    categoryBudgetTable.querySelector("tbody").innerHTML = Object.keys(categories).map(c => `
-        <tr>
-            <td style="font-weight:600;">${c}</td>
-            <td><input type="number" value="${categories[c]}" onchange="updateCat('${c}', this.value)" style="width:80px; padding:4px;"></td>
-            <td class="${categories[c] - getSpent(c) < 0 ? 'status-danger' : ''}">$${(categories[c] - getSpent(c)).toLocaleString()}</td>
-        </tr>
-    `).join('');
+    // Table: Budget Allocation with inline Status Bars
+    categoryBudgetTable.querySelector("tbody").innerHTML = Object.keys(categories).map(c => {
+        const cSpent = getSpent(c);
+        const perc = Math.min((cSpent / categories[c]) * 100, 100) || 0;
+        const barClass = perc >= 100 ? "bg-danger" : (perc > 85 ? "bg-warning" : "bg-safe");
+        
+        return `
+            <tr>
+                <td style="font-weight:600;">
+                   <div style="display:flex; align-items:center; gap:8px;">
+                     <i data-lucide="${catIcons[c]}" style="width:14px;"></i> ${c}
+                   </div>
+                </td>
+                <td><input type="number" value="${categories[c]}" onchange="updateCat('${c}', this.value)" style="width:90px; padding:4px;"></td>
+                <td>
+                    <div style="font-size:0.8rem; margin-bottom:4px; color:var(--text-muted); font-weight:600;">$${cSpent.toLocaleString()} spent</div>
+                    <div class="p-bar" style="height:6px; margin-bottom:0; width:120px;"><div class="p-fill ${barClass}" style="width: ${perc}%"></div></div>
+                </td>
+                <td class="${categories[c] - cSpent < 0 ? 'status-danger' : ''}">$${(categories[c] - cSpent).toLocaleString()}</td>
+            </tr>
+        `;
+    }).join('');
 
     // Table: Expenses
     expenseTable.querySelector("tbody").innerHTML = expenses.map((e, i) => `
@@ -61,16 +97,16 @@ function refresh() {
         </tr>
     `).join('');
 
-    // Progress Visualization
+    // Summary Visualization (Right Sidebar)
     categoryProgress.innerHTML = Object.keys(categories).map(c => {
         const pSpent = getSpent(c);
         const perc = Math.min((pSpent / categories[c]) * 100, 100) || 0;
-        const statusClass = perc > 100 ? "bg-danger" : (perc > 85 ? "bg-warning" : "bg-safe");
+        const statusClass = perc >= 100 ? "bg-danger" : (perc > 85 ? "bg-warning" : "bg-safe");
         return `
             <div class="progress-item">
                 <div class="p-label">
-                    <span><i data-lucide="${catIcons[c]}" style="width:14px; display:inline; margin-right:5px;"></i>${c}</span>
-                    <span>$${pSpent.toLocaleString()} / $${categories[c].toLocaleString()}</span>
+                    <span>${c}</span>
+                    <span>${perc.toFixed(0)}%</span>
                 </div>
                 <div class="p-bar"><div class="p-fill ${statusClass}" style="width: ${perc}%"></div></div>
             </div>
@@ -80,6 +116,7 @@ function refresh() {
     totalGuestsText.innerText = guests.toLocaleString();
     actualCostText.innerText = guests > 0 ? `$${Math.round(spent / guests).toLocaleString()}` : "$0";
     
+    updateCountdown();
     lucide.createIcons();
 }
 
@@ -98,6 +135,15 @@ addExpenseBtn.onclick = () => {
 };
 
 totalBudgetInput.oninput = refresh;
+
+// Wedding Date Action
+document.getElementById("saveDate").onclick = () => {
+    const val = weddingDateInput.value;
+    if (val) {
+        weddingDate = new Date(val);
+        refresh();
+    }
+};
 
 document.getElementById("addGroup").onclick = () => {
     const div = document.createElement("div");
@@ -119,18 +165,15 @@ document.getElementById("exportExcel").onclick = () => {
     const wb = XLSX.utils.book_new();
     const summary = [
         ["WEDDING BUDGET REPORT", ""],
+        ["Wedding Date", weddingDate ? weddingDate.toDateString() : "Not Set"],
         ["Total Budget", Number(totalBudgetInput.value)],
         ["Total Spent", totalSpent()],
-        ["Total Remaining", Number(totalBudgetInput.value) - totalSpent()],
-        ["Financial Status", totalSpent() > Number(totalBudgetInput.value) ? "OVER BUDGET" : "ON TARGET"]
+        ["Total Remaining", Number(totalBudgetInput.value) - totalSpent()]
     ];
     XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(summary), "Summary");
     const breakdn = [["Category", "Planned Budget", "Actual Spent", "Remaining Balance"]];
     Object.keys(categories).forEach(c => breakdn.push([c, categories[c], getSpent(c), categories[c] - getSpent(c)]));
     XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(breakdn), "Breakdown");
-    const trans = [["Description", "Category", "Amount"]];
-    expenses.forEach(e => trans.push([e.desc, e.cat, e.amount]));
-    XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(trans), "Transactions");
     XLSX.writeFile(wb, "Wedding_Budget_Plan.xlsx");
 };
 
@@ -139,8 +182,7 @@ document.getElementById("exportCsv").onclick = () => {
     expenses.forEach(e => csv += `${e.desc},${e.cat},${e.amount}\n`);
     const blob = new Blob([csv], { type: 'text/csv' });
     const url = window.URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url; a.download = 'wedding_expenses.csv'; a.click();
+    const a = document.createElement('a'); a.href = url; a.download = 'wedding_expenses.csv'; a.click();
 };
 
 // Initial Load
