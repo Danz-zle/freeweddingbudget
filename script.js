@@ -116,28 +116,56 @@ function refresh() {
     if (guestInvitedSub) guestInvitedSub.innerText = `${guests} guests invited`;
     if (guestTotalBadge) guestTotalBadge.innerText = `${guests} total`;
 
-    // Category Allocation Table with inline Progress lines
+    // Category Allocation Table: Render inputs ONCE to prevent losing keyboard focus while typing
     if (budgetAllocationList) {
-        budgetAllocationList.innerHTML = "";
+        if (budgetAllocationList.children.length === 0) {
+            Object.keys(categories).forEach(c => {
+                const row = document.createElement("div");
+                row.className = "budget-alloc-row";
+                row.innerHTML = `
+                    <div class="budget-alloc-meta">
+                        <div class="budget-alloc-title">
+                            <i data-lucide="${catIcons[c]}" style="width:16px; height:16px; color: var(--primary);"></i>
+                            <span>${c}</span>
+                        </div>
+                        <input type="number" class="edit-planned" id="alloc-input-${c}" data-cat="${c}" value="${categories[c]}">
+                    </div>
+                    <div class="p-bar"><div class="p-fill" id="alloc-fill-${c}"></div></div>
+                    <div class="budget-alloc-spent" id="alloc-spent-${c}">$0 spent</div>
+                `;
+                budgetAllocationList.appendChild(row);
+            });
+
+            // Bind inputs to trigger live refresh as the user keys in numbers manually
+            document.querySelectorAll(".edit-planned").forEach(input => {
+                input.oninput = (e) => {
+                    categories[e.target.dataset.cat] = Number(e.target.value) || 0;
+                    refresh();
+                };
+            });
+        }
+
+        // Live update progress fills and labels dynamically without redrawing the input fields
         Object.keys(categories).forEach(c => {
             const cSpent = getSpent(c);
             const limit = categories[c] || 1;
             const p = Math.min(100, (cSpent / limit) * 100);
             
-            const row = document.createElement("div");
-            row.className = "budget-alloc-row";
-            row.innerHTML = `
-                <div class="budget-alloc-meta">
-                    <div class="budget-alloc-title">
-                        <i data-lucide="${catIcons[c]}" style="width:16px; height:16px; color: var(--primary);"></i>
-                        <span>${c}</span>
-                    </div>
-                    <input type="number" class="edit-planned" data-cat="${c}" value="${categories[c]}">
-                </div>
-                <div class="p-bar"><div class="p-fill ${cSpent > limit && limit > 1 ? 'bg-danger' : 'bg-primary'}" style="width:${p}%"></div></div>
-                <div class="budget-alloc-spent">$${cSpent.toLocaleString()} spent</div>
-            `;
-            budgetAllocationList.appendChild(row);
+            const fillEl = document.getElementById(`alloc-fill-${c}`);
+            const spentEl = document.getElementById(`alloc-spent-${c}`);
+            const inputEl = document.getElementById(`alloc-input-${c}`);
+            
+            if (fillEl) {
+                fillEl.className = `p-fill ${cSpent > limit && limit > 1 ? 'bg-danger' : 'bg-primary'}`;
+                fillEl.style.width = `${p}%`;
+            }
+            if (spentEl) {
+                spentEl.innerText = `$${cSpent.toLocaleString()} spent`;
+            }
+            // Keep input values synchronized if changed programmatically elsewhere, but do not override active typing
+            if (inputEl && document.activeElement !== inputEl) {
+                inputEl.value = categories[c];
+            }
         });
     }
 
@@ -237,13 +265,6 @@ function refresh() {
     }
 
     if (window.lucide) lucide.createIcons();
-
-    document.querySelectorAll(".edit-planned").forEach(input => {
-        input.oninput = (e) => {
-            categories[e.target.dataset.cat] = Number(e.target.value) || 0;
-            refresh();
-        };
-    });
 }
 
 // Interactive Guest actions (Both Buttons and Manual inputs synchronized)
@@ -458,4 +479,4 @@ document.getElementById("exportCsv").onclick = () => {
 
 window.deleteExp = (i) => { expenses.splice(i, 1); refresh(); };
 window.onload = refresh;
-totalBudgetInput.oninput = refresh;
+if (totalBudgetInput) totalBudgetInput.oninput = refresh;
