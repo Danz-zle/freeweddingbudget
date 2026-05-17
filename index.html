@@ -3,279 +3,360 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-
-  <!-- SEO & ADSENSE VERIFICATION -->
-  <title>Free Wedding Budget Calculator | Plan and Track Wedding Costs</title>
-  <meta name="description" content="Free wedding budget calculator to plan expenses by category, track actual costs, calculate cost per guest, and export budgets to Excel or PDF.">
-  <meta name="keywords" content="wedding budget calculator, wedding planner, wedding expenses, wedding cost calculator, budget wedding planning">
-  <meta name="google-adsense-account" content="ca-pub-4504023199353060">
+  <title>Free Wedding Budget Calculator</title>
   
-  <!-- GOOGLE ADSENSE LIBRARY SCRIPT -->
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4504023199353060" crossorigin="anonymous"></script>
-
-  <link rel="canonical" href="https://freeweddingbudget.com/">
-  
-  <!-- Open Graph -->
-  <meta property="og:title" content="Free Wedding Budget Calculator">
-  <meta property="og:description" content="Plan and track wedding expenses, guest costs, and category budgets online for free.">
-  <meta property="og:url" content="https://freeweddingbudget.com/">
-  <meta property="og:type" content="website">
-
-  <!-- Favicon -->
-  <link rel="icon" href="/favicon.ico">
-
-  <!-- Structured Data (JSON-LD) -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
-    "name": "Free Wedding Budget Calculator",
-    "operatingSystem": "Web",
-    "applicationCategory": "FinanceApplication",
-    "offers": {
-      "@type": "Offer",
-      "price": "0",
-      "priceCurrency": "USD"
-    },
-    "description": "An online tool for planning and managing wedding budgets, tracking expenses, and calculating costs per guest."
-  }
-  </script>
-
-  <link rel="stylesheet" href="style.css">
   <script src="https://unpkg.com/lucide@latest"></script>
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+
+  <style>
+    :root {
+      --blush: #fff5f5; --blush-accent: #ff8e9e;
+      --sage: #f0fff4; --sage-accent: #48bb78;
+      --lavender: #faf5ff; --lavender-accent: #9f7aea;
+      --peach: #fffaf0; --peach-accent: #ed8936;
+      --text-main: #2d3748; --text-muted: #718096;
+      --primary: #be185d;
+      --input-border: #e2e8f0;
+    }
+
+    body {
+      font-family: 'Inter', Arial, sans-serif;
+      background: linear-gradient(135deg, #fffafa 0%, #fdf2f8 100%);
+      color: var(--text-main); margin: 0; padding: 0;
+    }
+
+    /* Nav */
+    .top-nav { display: flex; justify-content: space-between; align-items: center; padding: 1rem 4rem; background: white; border-bottom: 1px solid #eee; position: sticky; top: 0; z-index: 100; }
+    .logo { font-weight: 800; color: var(--primary); font-size: 1.2rem; }
+    .nav-links a { margin-left: 1.5rem; text-decoration: none; color: var(--text-muted); font-size: 0.85rem; font-weight: 600; }
+
+    /* Dashboard */
+    .dashboard-container { max-width: 1200px; margin: 0 auto; padding: 2rem 1.5rem; }
+    
+    .countdown-hero {
+      background: linear-gradient(135deg, var(--primary) 0%, #da548a 100%);
+      color: white; border-radius: 1.5rem; padding: 2.5rem; text-align: center; margin-bottom: 2rem;
+      box-shadow: 0 10px 25px rgba(190, 24, 93, 0.15); display: none;
+    }
+    .countdown-hero h1 { font-size: 2.5rem; margin: 5px 0; }
+
+    .summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; margin-bottom: 2rem; }
+    .stat-card { padding: 1.5rem; border-radius: 1.25rem; background: white; border-bottom: 4px solid #ddd; box-shadow: 0 4px 10px rgba(0,0,0,0.02); }
+    .stat-card label { font-size: 0.75rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; }
+    .stat-card .value, .stat-card input { font-size: 1.8rem; font-weight: 800; border: none; background: transparent; width: 100%; outline: none; margin-top: 5px; }
+
+    .main-grid { display: grid; grid-template-columns: 1.8fr 1fr; gap: 2rem; }
+    .card { background: white; padding: 1.5rem; border-radius: 1.5rem; box-shadow: 0 4px 20px rgba(0,0,0,0.03); margin-bottom: 1.5rem; }
+    .card h2 { font-size: 1.1rem; margin-bottom: 1.2rem; display: flex; align-items: center; gap: 8px; border-bottom: 2px solid #fff5f5; padding-bottom: 8px; }
+
+    /* Layout Components */
+    .p-bar { height: 8px; background: #edf2f7; border-radius: 10px; overflow: hidden; margin: 8px 0; }
+    .p-fill { height: 100%; transition: width 0.3s; }
+    .bg-safe { background: var(--sage-accent); }
+    .bg-danger { background: #e53e3e; }
+    .bg-track { background: var(--peach-accent); }
+
+    .budget-alloc-row { margin-bottom: 1.2rem; }
+    .alloc-meta { display: flex; justify-content: space-between; align-items: center; font-weight: 600; font-size: 0.9rem; }
+    .alloc-input { width: 80px; text-align: right; border: 1px solid #eee; padding: 4px; border-radius: 4px; }
+
+    .expense-row-input { display: grid; grid-template-columns: 2fr 1.2fr 1fr auto; gap: 8px; }
+    input, select { padding: 10px; border: 1px solid var(--input-border); border-radius: 8px; }
+
+    /* Progress Badges */
+    .badge { font-size: 0.65rem; padding: 2px 6px; border-radius: 4px; font-weight: 800; margin-left: 8px; }
+    .badge-safe { background: #e6fffa; color: #319795; }
+    .badge-over { background: #fff5f5; color: #e53e3e; }
+    .badge-track { background: #fffaf0; color: #dd6b20; }
+
+    /* Guest Counters */
+    .guest-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid #f9f9f9; }
+    .counter-ctrl { display: flex; align-items: center; gap: 12px; }
+    .btn-circle { width: 28px; height: 28px; border-radius: 50%; border: 1px solid #ddd; background: white; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+
+    /* Tips */
+    .tip-box { border-radius: 10px; padding: 12px; margin-bottom: 10px; border-left: 4px solid; font-size: 0.85rem; }
+    .tip-warning { background: #fffaf0; border-color: #ed8936; }
+    .tip-danger { background: #fff5f5; border-color: #e53e3e; }
+
+    @media (max-width: 800px) { .main-grid { grid-template-columns: 1fr; } .expense-row-input { grid-template-columns: 1fr; } }
+    .no-print { display: block; }
+    @media print { .no-print { display: none !important; } }
+  </style>
 </head>
 <body>
-
-<!-- PDF Header (Print Only) -->
-<div class="print-only report-header">
-  <h1>Wedding Budget Financial Report</h1>
-  <p>Financial Status: <span id="printStatusLabel" style="font-weight: bold;">On Track</span></p>
-</div>
 
 <header class="top-nav no-print">
   <div class="logo">Wedding Budget Planner</div>
   <nav class="nav-links">
-    <a href="index.html" class="active">Dashboard</a>
-    <a href="blog.html" style="font-weight: 700; color: #be185d;">Blog</a>
-    <a href="about.html">About</a>
-    <a href="privacy.html">Privacy</a>
-    <a href="mailto:liubigcow@yahoo.com">Contact</a>
+    <a href="#">Dashboard</a>
+    <a href="#" style="color:var(--primary)">Blog</a>
+    <a href="#">Contact</a>
   </nav>
 </header>
 
-<!-- Main Header Wedding Day Countdown Banner (Dynamic) -->
-<div id="countdownBanner" class="countdown-hero no-print" style="display: none;">
-  <div class="countdown-hero-content">
-    <span class="countdown-label">WEDDING DAY COUNTDOWN</span>
-    <h1 id="countdownDaysText">75 Days to go! 🌸</h1>
-  </div>
+<div id="heroCountdown" class="countdown-hero no-print">
+  <span style="letter-spacing: 2px; font-weight:700; font-size:0.8rem;">WEDDING DAY COUNTDOWN</span>
+  <h1 id="heroDays">-- Days to go! 🌸</h1>
 </div>
 
 <main class="dashboard-container">
-  <section class="hero no-print">
-    <h1>Wedding Budget Dashboard</h1>
-    <p>Professional financial tracking for your special day.</p>
-  </section>
-
-  <!-- Summary Cards -->
   <div class="summary-grid">
-    <div class="stat-card blush">
-      <div class="card-header">
-        <label>Total Budget</label>
-        <i data-lucide="wallet" class="icon-blush"></i>
-      </div>
-      <input type="number" id="totalBudget" value="40000">
+    <div class="stat-card" style="border-color: var(--blush-accent); background: var(--blush);">
+      <label>Total Budget</label>
+      <input type="number" id="totalBudget" value="0">
     </div>
-    <div class="stat-card red-light" id="remainingCard">
-      <div class="card-header">
-        <label>Remaining</label>
-        <i data-lucide="calculator" class="icon-red"></i>
-      </div>
-      <div class="value" id="remainingBudget">$0</div>
+    <div class="stat-card" id="remCard">
+      <label>Remaining</label>
+      <div class="value" id="remVal">$0</div>
     </div>
-    <div class="stat-card lavender">
-      <div class="card-header">
-        <label>Cost / Guest</label>
-        <i data-lucide="users" class="icon-lavender"></i>
-      </div>
-      <div class="value" id="actualCostPerGuest">$0</div>
-      <span style="font-size: 0.75rem; font-weight: 600; color: var(--text-muted);" id="guestInvitedSub">0 guests invited</span>
+    <div class="stat-card" style="border-color: var(--lavender-accent); background: var(--lavender);">
+      <label>Cost / Guest</label>
+      <div class="value" id="cpgVal">$0</div>
     </div>
-    <div class="stat-card peach">
-      <div class="card-header">
-        <label>Total Spent</label>
-        <i data-lucide="banknote" class="icon-peach"></i>
-      </div>
-      <div class="value" id="totalSpentValue">$0</div>
+    <div class="stat-card" style="border-color: var(--peach-accent); background: var(--peach);">
+      <label>Total Spent</label>
+      <div class="value" id="spentVal">$0</div>
     </div>
-  </div>
-
-  <!-- ADSENSE AD UNIT -->
-  <div class="ad-container no-print">
-    <ins class="adsbygoogle"
-         style="display:block"
-         data-ad-client="ca-pub-4504023199353060"
-         data-ad-slot="7437035292"
-         data-ad-format="auto"
-         data-full-width-responsive="true"></ins>
-    <script>
-         (adsbygoogle = window.adsbygoogle || []).push({});
-    </script>
   </div>
 
   <div class="main-grid">
-    <div class="content-col">
-      <!-- Budget Allocation Widget (Upgraded progress layout) -->
+    <div class="left-col">
       <div class="card">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem; border-bottom: 2px solid #fff5f5; padding-bottom:8px;">
-          <h2 style="border:none; margin:0; padding:0;">Budget Allocation</h2>
-          <span style="font-size:0.85rem; font-weight:600; color:var(--text-muted);" id="allocationMeta">Planned: $44,000 / $40,000</span>
-        </div>
-        <div id="allocationWarning" class="warning-box" style="display:none;">
-          <i data-lucide="alert-triangle"></i> <span id="warningText"></span>
-        </div>
-        <div id="budgetAllocationList" class="budget-allocation-container">
-          <!-- Dynamically populated rows with status lines as per screenshot 1 -->
-        </div>
+        <h2 id="allocTitle">Budget Allocation <span>Planned: $0 / $0</span></h2>
+        <div id="allocationList"></div>
       </div>
 
       <div class="card no-print">
         <h2>Add Expense</h2>
-        <div class="add-expense-row">
-          <input type="text" id="expDesc" placeholder="Expense description">
+        <div class="expense-row-input">
+          <input type="text" id="expDesc" placeholder="Item name">
           <select id="expCat">
-            <option>Venue</option>
-            <option>Catering</option>
-            <option>Photography</option>
-            <option>Decor</option>
-            <option>Entertainment</option>
-            <option>Attire</option>
-            <option>Transportation</option>
+            <option>Venue</option><option>Catering</option><option>Photography</option>
+            <option>Decor</option><option>Music</option><option>Attire</option>
           </select>
           <input type="number" id="expAmt" placeholder="Amount">
-          <button id="addExpense">Add</button>
+          <button onclick="addExp()" style="background:var(--primary); color:white; border:none; padding:10px 20px; border-radius:8px; cursor:pointer;">Add</button>
         </div>
       </div>
 
       <div class="card">
         <h2>Expense History</h2>
-        <div class="table-responsive">
-          <table id="expenseTable" class="spacious-table"></table>
-        </div>
+        <table style="width:100%; border-collapse: collapse; font-size:0.9rem;">
+          <thead style="background:#f9f9f9;">
+            <tr><th style="text-align:left; padding:10px;">Item</th><th>Category</th><th>Amount</th><th></th></tr>
+          </thead>
+          <tbody id="expTableBody"></tbody>
+        </table>
       </div>
     </div>
 
-    <div class="sidebar-col">
-      <!-- Spending Progress Sidebar Widget (Matches screenshot 2) -->
+    <div class="right-col">
       <div class="card">
         <h2>Spending Progress</h2>
-        <div id="categoryProgress" class="progress-list"></div>
+        <div id="progList"></div>
       </div>
 
-      <!-- Wedding Day Date Tracker (Matches state switching in screenshot 4) -->
-      <div class="card no-print tracking-card" id="weddingDayCard">
-        <!-- JS Swaps this card dynamically between state set & change -->
+      <div class="card no-print" id="dateCard">
+        <!-- Dynamic content for Date -->
       </div>
 
-      <!-- Guest Count Widget (Matches rounded step actions in screenshot 5) -->
       <div class="card no-print">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; border-bottom: 2px solid #fff5f5; padding-bottom: 8px;">
-          <h2 style="border:none; margin:0; padding:0;">Guest Count</h2>
-          <span class="badge" style="background: #fff5f5; color: var(--primary); margin: 0; font-size: 0.75rem;" id="guestTotalBadge">0 total</span>
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <h2 style="border:none; margin:0;">Guest Count</h2>
+          <span id="guestTotal" style="font-weight:700; color:var(--primary);">0 total</span>
         </div>
-        <div class="guest-counter-list">
-          <div class="guest-counter-row">
-            <span>Family</span>
-            <div class="counter-actions">
-              <button onclick="adjustGuests('Family', -1)" class="counter-btn"><i data-lucide="minus"></i></button>
-              <span id="count-Family" class="counter-value">8</span>
-              <button onclick="adjustGuests('Family', 1)" class="counter-btn"><i data-lucide="plus"></i></button>
-            </div>
-          </div>
-          <div class="guest-counter-row">
-            <span>Friends</span>
-            <div class="counter-actions">
-              <button onclick="adjustGuests('Friends', -1)" class="counter-btn"><i data-lucide="minus"></i></button>
-              <span id="count-Friends" class="counter-value">6</span>
-              <button onclick="adjustGuests('Friends', 1)" class="counter-btn"><i data-lucide="plus"></i></button>
-            </div>
-          </div>
-          <div class="guest-counter-row">
-            <span>Colleagues</span>
-            <div class="counter-actions">
-              <button onclick="adjustGuests('Colleagues', -1)" class="counter-btn"><i data-lucide="minus"></i></button>
-              <span id="count-Colleagues" class="counter-value">7</span>
-              <button onclick="adjustGuests('Colleagues', 1)" class="counter-btn"><i data-lucide="plus"></i></button>
-            </div>
-          </div>
-          <div class="guest-counter-row">
-            <span>Others</span>
-            <div class="counter-actions">
-              <button onclick="adjustGuests('Others', -1)" class="counter-btn"><i data-lucide="minus"></i></button>
-              <span id="count-Others" class="counter-value">10</span>
-              <button onclick="adjustGuests('Others', 1)" class="counter-btn"><i data-lucide="plus"></i></button>
-            </div>
-          </div>
-        </div>
+        <div id="guestList" style="margin-top:15px;"></div>
       </div>
 
-      <!-- Smart Tips Widget (Only displays when warnings/errors are triggered) -->
-      <div id="smartTipsCard" class="card" style="display: none;">
+      <div class="card" id="tipsCard" style="display:none;">
         <h2>Smart Tips</h2>
-        <div id="smartTipsContent" style="display: flex; flex-direction: column; gap: 12px;">
-          <!-- Dynamically populated notification banners -->
-        </div>
+        <div id="tipsContent"></div>
       </div>
     </div>
-  </div>
-
-  <!-- SEO CONTENT -->
-  <section class="seo-content card">
-    <h2>Wedding Planning Financial Strategy</h2>
-    <p>
-      A successful wedding starts with a clear financial roadmap. Using our Free Wedding Budget Calculator, 
-      you can ensure that your dream day doesn't turn into a financial burden. Track your venue costs, catering expenses, 
-      decorations, photography, entertainment, and guest-related spending in one place.
-    </p>
-    <p>
-      Most couples allocate the largest portion of their wedding budget to venue rental and catering services.
-      Other important categories include photography, floral decoration, entertainment, wedding attire, and transportation.
-    </p>
-    <h2>Average Wedding Costs</h2>
-    <p>
-      Wedding costs vary depending on location, guest count, venue selection, and overall event style.
-      Small weddings may cost only a few thousand dollars, while larger ceremonies with hundreds of guests 
-      can significantly increase catering and venue expenses.
-    </p>
-    <h2>Wedding Budget Tips</h2>
-    <ul>
-      <li>Set a realistic wedding budget before booking vendors.</li>
-      <li>Track every expense category regularly.</li>
-      <li>Monitor guest count carefully.</li>
-      <li>Reserve emergency funds for unexpected wedding expenses.</li>
-      <li>Review spending progress weekly.</li>
-    </ul>
-  </section>
-
-  <div class="action-bar no-print">
-    <button id="exportCsv" class="outline">Export Raw CSV</button>
-    <button id="exportExcel" class="secondary">Export Professional Excel</button>
-    <button onclick="window.print()">Print PDF Report</button>
   </div>
 </main>
 
-<footer class="site-footer no-print">
-  <p>&copy; 2026 Wedding Budget Planner</p>
-  <div class="footer-links">
-    <a href="about.html">About</a> <span>•</span>
-    <a href="privacy.html">Privacy Policy</a> <span>•</span>
-    <a href="terms.html">Terms & Conditions</a> <span>•</span>
-    <a href="mailto:liubigcow@yahoo.com">Contact</a>
-  </div>
-</footer>
+<script>
+  let state = {
+    budget: 0,
+    categories: { Venue: 0, Catering: 0, Photography: 0, Decor: 0, Music: 0, Attire: 0 },
+    expenses: [],
+    guests: { Family: 0, Friends: 0, Colleagues: 0, Others: 0 },
+    date: null
+  };
 
-<script src="script.js"></script>
-<script>lucide.createIcons();</script>
+  const icons = { Venue:'home', Catering:'utensils', Photography:'camera', Decor:'flower', Music:'music', Attire:'shirt' };
+
+  function refresh() {
+    const totalSpent = state.expenses.reduce((s, e) => s + e.amount, 0);
+    const totalPlanned = Object.values(state.categories).reduce((a, b) => a + b, 0);
+    const totalGuests = Object.values(state.guests).reduce((a, b) => a + b, 0);
+    const rem = state.budget - totalSpent;
+
+    // Summary
+    document.getElementById('remVal').innerText = `$${rem.toLocaleString()}`;
+    document.getElementById('spentVal').innerText = `$${totalSpent.toLocaleString()}`;
+    document.getElementById('cpgVal').innerText = `$${totalGuests > 0 ? Math.round(totalSpent/totalGuests) : 0}`;
+    document.getElementById('remCard').style.borderColor = rem < 0 ? '#e53e3e' : '#48bb78';
+    document.getElementById('remCard').style.background = rem < 0 ? '#fff5f5' : '#f0fff4';
+
+    // Allocation Meta
+    document.getElementById('allocTitle').innerHTML = `Budget Allocation <span style="margin-left:auto; font-size:0.8rem; color:${totalPlanned > state.budget ? '#e53e3e' : '#718096'}">Planned: $${totalPlanned.toLocaleString()} / $${state.budget.toLocaleString()}</span>`;
+
+    // 1. Budget Allocation List
+    const allocList = document.getElementById('allocationList');
+    allocList.innerHTML = '';
+    Object.keys(state.categories).forEach(cat => {
+      const spent = state.expenses.filter(e => e.cat === cat).reduce((s, e) => s + e.amount, 0);
+      const limit = state.categories[cat] || 1;
+      const pct = Math.min(100, (spent / limit) * 100);
+      allocList.innerHTML += `
+        <div class="budget-alloc-row">
+          <div class="alloc-meta">
+            <span>${cat}</span>
+            <input type="number" class="alloc-input" value="${state.categories[cat]}" onchange="updateCat('${cat}', this.value)">
+          </div>
+          <div class="p-bar"><div class="p-fill ${spent > limit ? 'bg-danger' : 'bg-primary'}" style="width:${pct}%; background:var(--primary)"></div></div>
+          <div style="font-size:0.75rem; color:#718096; text-align:right;">$${spent.toLocaleString()} spent</div>
+        </div>
+      `;
+    });
+
+    // 2. Spending Progress (Status logic)
+    const progList = document.getElementById('progList');
+    progList.innerHTML = '';
+    Object.keys(state.categories).forEach(cat => {
+      const spent = state.expenses.filter(e => e.cat === cat).reduce((s, e) => s + e.amount, 0);
+      const limit = state.categories[cat];
+      if (limit === 0 && spent === 0) return; // Hide zeros to keep it clean
+
+      let status = "SAFE", cls = "badge-safe", bar = "bg-safe";
+      const pct = limit > 0 ? (spent / limit) * 100 : 100;
+
+      if (spent > limit && limit > 0) { status = "OVER"; cls = "badge-over"; bar = "bg-danger"; }
+      else if (pct > 80) { status = "ON TRACK"; cls = "badge-track"; bar = "bg-track"; }
+
+      progList.innerHTML += `
+        <div style="margin-bottom:15px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.85rem; font-weight:700;">
+            <span>${cat} <span class="badge ${cls}">${status}</span></span>
+            <span style="color:#718096">${Math.round(pct)}% of $${limit.toLocaleString()}</span>
+          </div>
+          <div class="p-bar"><div class="p-fill ${bar}" style="width:${Math.min(100, pct)}%"></div></div>
+          <div style="font-size:0.75rem; color:#718096">Spent: $${spent.toLocaleString()} ${spent > limit ? `<span style="color:#e53e3e; font-weight:700;">(+$${(spent-limit).toLocaleString()} over)</span>` : ''}</div>
+        </div>
+      `;
+    });
+
+    // 3. Smart Tips (All categories check)
+    const tipsBox = document.getElementById('tipsCard');
+    const tipsCont = document.getElementById('tipsContent');
+    tipsCont.innerHTML = '';
+    let hasTips = false;
+
+    Object.keys(state.categories).forEach(cat => {
+      const spent = state.expenses.filter(e => e.cat === cat).reduce((s, e) => s + e.amount, 0);
+      const limit = state.categories[cat];
+      if (spent > limit && limit > 0) {
+        hasTips = true;
+        tipsCont.innerHTML += `
+          <div class="tip-box tip-danger">
+            <strong>${cat} Alert</strong>: You are over budget by $${(spent-limit).toLocaleString()}. Consider reducing costs here.
+          </div>`;
+      } else if (spent > limit * 0.9 && limit > 0) {
+        hasTips = true;
+        tipsCont.innerHTML += `
+          <div class="tip-box tip-warning">
+            <strong>${cat} Warning</strong>: You've used 90% of your ${cat} budget.
+          </div>`;
+      }
+    });
+
+    if (totalPlanned > state.budget && state.budget > 0) {
+      hasTips = true;
+      tipsCont.innerHTML += `<div class="tip-box tip-danger">Your total planned allocations exceed your budget!</div>`;
+    }
+
+    tipsBox.style.display = hasTips ? 'block' : 'none';
+
+    // 4. Date Tracker
+    const dateCard = document.getElementById('dateCard');
+    if (!state.date) {
+      dateCard.innerHTML = `
+        <h2>Wedding Day</h2>
+        <input type="date" id="datePick" style="width:100%; margin-bottom:10px;">
+        <button onclick="saveDate()" style="width:100%; padding:10px; background:var(--primary); color:white; border:none; border-radius:8px; font-weight:700;">Save Wedding Date</button>
+      `;
+      document.getElementById('heroCountdown').style.display = 'none';
+    } else {
+      const diff = Math.ceil((new Date(state.date) - new Date()) / (1000*60*60*24));
+      dateCard.innerHTML = `
+        <div style="display:flex; align-items:center; gap:10px;">
+          <div style="background:var(--primary); color:white; border-radius:50%; width:30px; height:30px; display:flex; align-items:center; justify-content:center;"><i data-lucide="heart" size="16"></i></div>
+          <h2 style="border:none; margin:0;">Wedding Day</h2>
+        </div>
+        <div style="text-align:center; padding:15px 0;">
+          <div style="font-size:3rem; font-weight:900;">${diff > 0 ? diff : 0}</div>
+          <div style="font-size:0.7rem; font-weight:700; color:var(--text-muted); letter-spacing:2px;">DAYS TO GO</div>
+        </div>
+        <div style="border-top:1px solid #eee; padding-top:10px; display:flex; justify-content:space-between; font-size:0.8rem; font-weight:700;">
+          <span>${new Date(state.date).toLocaleDateString()}</span>
+          <a href="#" onclick="state.date=null; refresh(); return false;" style="color:var(--primary); text-decoration:none;">Change</a>
+        </div>
+      `;
+      document.getElementById('heroCountdown').style.display = 'block';
+      document.getElementById('heroDays').innerText = `${diff > 0 ? diff : 0} Days to go! 🌸`;
+    }
+
+    // 5. Guest Count
+    const gList = document.getElementById('guestList');
+    gList.innerHTML = '';
+    Object.keys(state.guests).forEach(g => {
+      gList.innerHTML += `
+        <div class="guest-row">
+          <span>${g}</span>
+          <div class="counter-ctrl">
+            <button class="btn-circle" onclick="adjGuest('${g}', -1)">-</button>
+            <span style="font-weight:800; min-width:20px; text-align:center;">${state.guests[g]}</span>
+            <button class="btn-circle" onclick="adjGuest('${g}', 1)">+</button>
+          </div>
+        </div>
+      `;
+    });
+    document.getElementById('guestTotal').innerText = `${totalGuests} total`;
+
+    // 6. Expense Table
+    const table = document.getElementById('expTableBody');
+    table.innerHTML = '';
+    state.expenses.forEach((e, i) => {
+      table.innerHTML += `
+        <tr style="border-bottom:1px solid #f9f9f9;">
+          <td style="padding:12px;">${e.desc}</td>
+          <td style="text-align:center;">${e.cat}</td>
+          <td style="text-align:center; font-weight:700;">$${e.amount.toLocaleString()}</td>
+          <td style="text-align:right;"><button onclick="delExp(${i})" style="background:none; border:none; color:#ef4444; cursor:pointer;">&times;</button></td>
+        </tr>
+      `;
+    });
+
+    lucide.createIcons();
+  }
+
+  // Handlers
+  document.getElementById('totalBudget').oninput = (e) => { state.budget = Number(e.target.value) || 0; refresh(); };
+  window.updateCat = (c, v) => { state.categories[c] = Number(v) || 0; refresh(); };
+  window.adjGuest = (g, d) => { state.guests[g] = Math.max(0, state.guests[g] + d); refresh(); };
+  window.saveDate = () => { const v = document.getElementById('datePick').value; if(v) { state.date = v; refresh(); } };
+  window.addExp = () => {
+    const d = document.getElementById('expDesc').value;
+    const a = Number(document.getElementById('expAmt').value);
+    const c = document.getElementById('expCat').value;
+    if(d && a) { state.expenses.push({desc: d, amount: a, cat: c}); refresh(); document.getElementById('expDesc').value=''; document.getElementById('expAmt').value=''; }
+  };
+  window.delExp = (i) => { state.expenses.splice(i, 1); refresh(); };
+
+  window.onload = refresh;
+</script>
 </body>
 </html>
