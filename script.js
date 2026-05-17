@@ -1,6 +1,26 @@
-const catIcons = { Venue: 'home', Catering: 'utensils', Photography: 'camera', Decor: 'flower', Entertainment: 'music' };
-let categories = { Venue: 12000, Catering: 15000, Photography: 5000, Decor: 4000, Entertainment: 3500 };
-let expenses = []; // Clean state: Starts empty and only populates on user additions
+const catIcons = { 
+  Venue: 'home', 
+  Catering: 'utensils', 
+  Photography: 'camera', 
+  Decor: 'flower', 
+  Entertainment: 'music',
+  Attire: 'shirt',
+  Transportation: 'car'
+};
+
+// Hardcoded planned reference budgets (matching Image 00ee72 / image_007675)
+let categories = { 
+  Venue: 12000, 
+  Catering: 15000, 
+  Photography: 5000, 
+  Decor: 4000, 
+  Entertainment: 3500,
+  Attire: 3000,
+  Transportation: 1500
+};
+
+// Clean state: empty of actual spent items by default, populates dynamically
+let expenses = [];
 
 let guestCounts = {
   Family: 8,
@@ -9,13 +29,12 @@ let guestCounts = {
   Others: 10
 };
 
-let weddingDate = "2026-07-31"; // Default reference value (matches +75 days from May 17, 2026)
+let weddingDate = "2026-10-31"; // Default date matching image 167 Days countdown (May 17, 2026 -> Oct 31, 2026)
 let weddingLocation = ""; // Clean value on load, configurable by user
 
 const totalBudgetInput = document.getElementById("totalBudget");
 const remainingBudgetText = document.getElementById("remainingBudget");
 const remainingCard = document.getElementById("remainingCard");
-const categoryBudgetTable = document.getElementById("categoryBudgetTable");
 const expenseTable = document.getElementById("expenseTable");
 const categoryProgress = document.getElementById("categoryProgress");
 const totalGuestsText = document.getElementById("totalGuests");
@@ -28,6 +47,7 @@ const totalSpentValue = document.getElementById("totalSpentValue");
 const guestInvitedSub = document.getElementById("guestInvitedSub");
 const guestTotalBadge = document.getElementById("guestTotalBadge");
 const allocationMeta = document.getElementById("allocationMeta");
+const budgetAllocationList = document.getElementById("budgetAllocationList");
 const countdownBanner = document.getElementById("countdownBanner");
 const countdownDaysText = document.getElementById("countdownDaysText");
 const weddingDayCard = document.getElementById("weddingDayCard");
@@ -199,7 +219,7 @@ function refresh() {
     });
 }
 
-// Interactive Guest actions (Buttons and inputs synchronized)
+// Interactive Guest actions (Both Buttons and Manual inputs synchronized)
 window.adjustGuests = (group, delta) => {
     guestCounts[group] = Math.max(0, guestCounts[group] + delta);
     refresh();
@@ -215,7 +235,7 @@ function renderWeddingDayTracker() {
     if (weddingDate) {
         const target = new Date(weddingDate);
         target.setHours(0,0,0,0);
-        const current = new Date("2026-05-17"); // System default current baseline date
+        const current = new Date("2026-05-17"); // System default current baseline date (Sunday, May 17, 2026)
         current.setHours(0,0,0,0);
         
         const diffTime = target.getTime() - current.getTime();
@@ -256,7 +276,7 @@ function renderWeddingDayTracker() {
             </div>
             <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:1rem;">Set your wedding date</p>
             <div style="display:flex; flex-direction:column; gap:8px;">
-                <input type="date" id="weddingDateInput" style="width:100%; box-sizing:border-box;" value="2026-07-31">
+                <input type="date" id="weddingDateInput" style="width:100%; box-sizing:border-box;" value="2026-10-31">
                 <input type="text" id="weddingLocationInput" placeholder="Location Name (e.g., Paris)" value="${weddingLocation}" oninput="weddingLocation = this.value; refresh();" style="width:100%; box-sizing:border-box; margin-bottom: 8px;">
                 <button id="saveDate" onclick="saveDateValue()" style="width:100%;">Save Wedding Date</button>
             </div>
@@ -342,7 +362,7 @@ function updateSmartTips(planned, budget, spent, remaining, costPerGuest) {
         smartTipsContent.innerHTML = tips.map(t => `
             <div class="tip-alert-box tip-${t.type}" style="border-radius:12px; padding:12px; border:1px solid; margin-bottom:10px; font-size:0.85rem; line-height:1.4;">
                 <div class="tip-alert-header" style="display:flex; align-items:center; gap:8px; font-weight:700; margin-bottom:4px;">
-                    <i data-lucide="${t.icon || 'alert-circle'}" style="width:16px; height:16px;"></i>
+                    <i data-lucide="alert-circle" style="width:16px; height:16px;"></i>
                     <span>${t.title}</span>
                 </div>
                 <p style="margin:0; color:inherit; font-size:0.8rem;">${t.desc}</p>
@@ -387,7 +407,7 @@ document.getElementById("exportExcel").onclick = () => {
 };
 
 document.getElementById("exportCsv").onclick = () => {
-    let csv = "Description,Category,Amount\n";
+    let csv = `Wedding Date Target,${weddingDate ? weddingDate : "Not Set"}\nLocation,${weddingLocation ? weddingLocation : "Not Set"}\n\nDescription,Category,Amount\n`;
     expenses.forEach(e => csv += `"${e.desc}","${e.cat}",${e.amount}\n`);
     const blob = new Blob([csv], { type: 'text/csv' });
     const url = window.URL.createObjectURL(blob);
