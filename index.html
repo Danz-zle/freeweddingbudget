@@ -10,21 +10,48 @@
   <meta name="keywords" content="wedding budget calculator, wedding planner, wedding expenses, wedding cost calculator, budget wedding planning">
   <meta name="google-adsense-account" content="ca-pub-4504023199353060">
   
+  <!-- GOOGLE ADSENSE LIBRARY SCRIPT -->
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4504023199353060" crossorigin="anonymous"></script>
 
   <link rel="canonical" href="https://freeweddingbudget.com/">
   
+  <!-- Open Graph -->
   <meta property="og:title" content="Free Wedding Budget Calculator">
   <meta property="og:description" content="Plan and track wedding expenses, guest costs, and category budgets online for free.">
   <meta property="og:url" content="https://freeweddingbudget.com/">
   <meta property="og:type" content="website">
 
-  <link rel="icon" href="/favicon.ico" type="image/x-icon">
+  <!-- Favicon -->
+  <link rel="icon" href="/favicon.ico">
+
+  <!-- Structured Data (JSON-LD) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Free Wedding Budget Calculator",
+    "operatingSystem": "Web",
+    "applicationCategory": "FinanceApplication",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "description": "An online tool for planning and managing wedding budgets, tracking expenses, and calculating costs per guest."
+  }
+  </script>
+
   <link rel="stylesheet" href="style.css">
   <script src="https://unpkg.com/lucide@latest"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 </head>
 <body>
+
+<!-- PDF Header (Print Only) -->
+<div class="print-only report-header">
+  <h1>Wedding Budget Financial Report</h1>
+  <p>Financial Status: <span id="printStatusLabel" style="font-weight: bold;">On Track</span></p>
+</div>
 
 <header class="top-nav no-print">
   <div class="logo">Wedding Budget Planner</div>
@@ -37,119 +64,55 @@
   </nav>
 </header>
 
+<!-- Main Header Wedding Day Countdown Banner (Dynamic) -->
+<div id="countdownBanner" class="countdown-hero no-print" style="display: none;">
+  <div class="countdown-hero-content">
+    <span class="countdown-label">WEDDING DAY COUNTDOWN</span>
+    <h1 id="countdownDaysText">75 Days to go! 🌸</h1>
+  </div>
+</div>
+
 <main class="dashboard-container">
-  
-  <div class="report-header print-only">
-    <h1>Wedding Budget Planning Report</h1>
-    <p>Official Spending Summary & Allocation Guide</p>
+  <section class="hero no-print">
+    <h1>Wedding Budget Dashboard</h1>
+    <p>Professional financial tracking for your special day.</p>
+  </section>
+
+  <!-- Summary Cards -->
+  <div class="summary-grid">
+    <div class="stat-card blush">
+      <div class="card-header">
+        <label>Total Budget</label>
+        <i data-lucide="wallet" class="icon-blush"></i>
+      </div>
+      <input type="number" id="totalBudget" value="40000">
+    </div>
+    <div class="stat-card red-light" id="remainingCard">
+      <div class="card-header">
+        <label>Remaining</label>
+        <i data-lucide="calculator" class="icon-red"></i>
+      </div>
+      <div class="value" id="remainingBudget">$0</div>
+    </div>
+    <div class="stat-card lavender">
+      <div class="card-header">
+        <label>Cost / Guest</label>
+        <i data-lucide="users" class="icon-lavender"></i>
+      </div>
+      <div class="value" id="actualCostPerGuest">$0</div>
+      <span style="font-size: 0.75rem; font-weight: 600; color: var(--text-muted);" id="guestInvitedSub">0 guests invited</span>
+    </div>
+    <div class="stat-card peach">
+      <div class="card-header">
+        <label>Total Spent</label>
+        <i data-lucide="banknote" class="icon-peach"></i>
+      </div>
+      <div class="value" id="totalSpentValue">$0</div>
+    </div>
   </div>
 
-  <!-- Countdown Banner/Header Widget -->
-  <div id="countdownContainer" class="card no-print" style="display:none; background: linear-gradient(135deg, #be185d 0%, #da548a 100%); color: white; border: none; text-align: center; padding: 1.5rem;">
-    <div style="font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; opacity: 0.9;">WEDDING DAY COUNTDOWN</div>
-    <div id="countdownDisplay" style="font-size: 1.8rem; font-weight: 800; margin-top: 5px;"></div>
-  </div>
-
-  <div id="allocationWarning" class="warning-box no-print" style="display:none;">
-    <i data-lucide="alert-triangle"></i>
-    <span id="warningText"></span>
-  </div>
-
-  <div class="main-grid">
-    <section class="left-col">
-      <div class="card">
-        <h2>Budget Allocation</h2>
-        <div style="margin-bottom: 2rem;">
-          <label style="font-size: 0.85rem; font-weight: 600; color: var(--text-muted); display: block; margin-bottom: 8px;">TOTAL WEDDING BUDGET ($)</label>
-          <input type="number" id="totalBudget" value="30000" style="font-size: 1.5rem; font-weight: 800; color: var(--primary); padding: 15px;">
-        </div>
-        
-        <table id="categoryBudgetTable">
-          <thead>
-            <tr>
-              <th>Category</th>
-              <th>Planned Budget</th>
-              <th>Spent Progress</th>
-              <th>Remaining</th>
-            </tr>
-          </thead>
-          <tbody><!-- JS Populated --></tbody>
-        </table>
-      </div>
-
-      <div class="card">
-        <h2>Expense History & Tracking</h2>
-        <div style="display: grid; grid-template-columns: 2fr 1.2fr 1fr auto; gap: 10px; margin-bottom: 1.5rem;" class="no-print">
-          <input type="text" id="expenseDesc" placeholder="Description (e.g. Venue Deposit)">
-          <select id="expenseCat">
-            <option>Venue</option><option>Catering</option><option>Photography</option><option>Decor</option><option>Entertainment</option>
-          </select>
-          <input type="number" id="expenseAmount" placeholder="Amount ($)">
-          <button id="addExpense" style="width: 50px; padding: 10px;"><i data-lucide="plus"></i></button>
-        </div>
-        <table id="expenseTable">
-          <thead><tr><th>Description</th><th>Category</th><th>Amount</th><th></th></tr></thead>
-          <tbody><!-- JS Populated --></tbody>
-        </table>
-      </div>
-    </section>
-
-    <aside class="right-col">
-      <div class="card">
-        <h2>Financial Health</h2>
-        <div style="text-align: center; margin-bottom: 2rem;">
-          <div style="font-size: 0.85rem; font-weight: 600; color: var(--text-muted);">REMAINING BALANCE</div>
-          <div id="remainingBudget" style="font-size: 2.5rem; font-weight: 800; margin: 10px 0;">$0</div>
-          <div id="printStatusLabel" class="p-status-msg">ON TARGET</div>
-        </div>
-        <div id="categoryProgress"><!-- JS Populated --></div>
-      </div>
-
-      <div class="card">
-        <h2>Wedding Day Tracker</h2>
-        <div style="display: flex; gap: 8px; flex-direction: column; margin-bottom: 1rem;">
-          <label style="font-size:0.8rem; font-weight: 700; color: var(--text-muted);">SELECT YOUR WEDDING DATE</label>
-          <input type="date" id="weddingDateInput" style="padding: 10px;">
-          <button id="saveDate" class="secondary" style="padding: 10px; font-size:0.85rem;">Save Wedding Date</button>
-        </div>
-      </div>
-
-      <div class="card">
-        <h2>Guest Logistics</h2>
-        <div id="guestList" style="margin-bottom: 1.5rem;">
-          <div class="guestGroup">
-            <input type="text" placeholder="Group Name (e.g. Family Members)" value="Family" style="margin-bottom:8px;">
-            <input type="number" class="guestCount" value="50" placeholder="Count">
-          </div>
-        </div>
-        <button class="outline no-print" id="addGroup" style="margin-bottom: 1.5rem; font-size: 0.8rem; padding: 8px;">+ Add Guest Group</button>
-        
-        <div style="background: #f8fafc; padding: 15px; border-radius: 12px;">
-          <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
-            <span style="font-size: 0.85rem; color: var(--text-muted);">Total Guests</span>
-            <span id="totalGuests" style="font-weight: 700;">0</span>
-          </div>
-          <div style="display: flex; justify-content: space-between;">
-            <span style="font-size: 0.85rem; color: var(--text-muted);">Cost Per Guest</span>
-            <span id="actualCostPerGuest" style="font-weight: 700; color: var(--primary);">$0</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- SMART PLANNING TIPS (Side-by-side with guest Logistics) -->
-      <div class="card" style="background: #fffaf0; border: 1px solid #feebc8;">
-        <h2 style="border-left-color: #ed8936;">Smart Sourcing Tips</h2>
-        <ul style="padding-left: 1.2rem; margin: 0; color: #7b341e; font-size: 0.85rem; line-height: 1.6;">
-          <li style="margin-bottom: 8px;">Keep total guests near planned metrics to optimize catering quotes.</li>
-          <li style="margin-bottom: 8px;">Always review vendor service taxes; average rates can append up to 22% onto baseline figures.</li>
-          <li style="margin-bottom: 8px;">Negotiate bundled photography & video collections to secure significant savings.</li>
-        </ul>
-      </div>
-    </aside>
-  </div>
-
-  <!-- ADSENSE AD UNIT CONTAINER -->
-  <div class="ad-container no-print" style="margin: 2rem 0; text-align: center;">
+  <!-- ADSENSE AD UNIT -->
+  <div class="ad-container no-print">
     <ins class="adsbygoogle"
          style="display:block"
          data-ad-client="ca-pub-4504023199353060"
@@ -161,45 +124,138 @@
     </script>
   </div>
 
-  <!-- HOMEPAGE INTEGRATION: FEATURED POSTS -->
-  <section class="card no-print" style="margin-top: 2.5rem;">
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; border-bottom: 2px solid #fff5f5; padding-bottom: 8px;">
-      <h2 style="margin: 0; border: none; padding: 0; font-size: 1.4rem;">Featured Planning Resources</h2>
-      <a href="blog.html" style="color: var(--primary); text-decoration: none; font-size: 0.9rem; font-weight: 600; display: flex; align-items: center; gap: 0.25rem;">View All Articles <i data-lucide="arrow-right" style="width:16px; height:16px;"></i></a>
-    </div>
-    <div class="featured-grid">
-      <a href="blog-create-budget.html" class="blog-card">
-        <div class="blog-card-body">
-          <span class="badge badge-budget">Budget Planning</span>
-          <h3 style="font-size: 1.1rem; margin: 0.5rem 0 0.75rem 0; font-weight: 700; line-height: 1.4;">How to Create a Wedding Budget That Actually Works</h3>
-          <p style="color: var(--text-muted); font-size: 0.85rem; line-height: 1.5; margin: 0; flex-grow: 1;">A comprehensive, data-driven strategy for establishing framework baselines across vendor options.</p>
-          <div style="margin-top: 1rem; font-size: 0.75rem; color: var(--primary); font-weight: 600; display: flex; align-items: center; gap: 4px;"><i data-lucide="clock" style="width:12px; height:12px;"></i> 8 min read</div>
+  <div class="main-grid">
+    <div class="content-col">
+      <!-- Budget Allocation Widget (Upgraded progress layout) -->
+      <div class="card">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem; border-bottom: 2px solid #fff5f5; padding-bottom:8px;">
+          <h2 style="border:none; margin:0; padding:0;">Budget Allocation</h2>
+          <span style="font-size:0.85rem; font-weight:600; color:var(--text-muted);" id="allocationMeta">Planned: $44,000 / $40,000</span>
         </div>
-      </a>
-      <a href="blog-hidden-costs.html" class="blog-card">
-        <div class="blog-card-body">
-          <span class="badge badge-saving">Money Saving</span>
-          <h3 style="font-size: 1.1rem; margin: 0.5rem 0 0.75rem 0; font-weight: 700; line-height: 1.4;">Hidden Wedding Costs Nobody Tells You About</h3>
-          <p style="color: var(--text-muted); font-size: 0.85rem; line-height: 1.5; margin: 0; flex-grow: 1;">Overlooked expenditures, overtime contract traps, administration fees, and service gratuities.</p>
-          <div style="margin-top: 1rem; font-size: 0.75rem; color: #ed8936; font-weight: 600; display: flex; align-items: center; gap: 4px;"><i data-lucide="clock" style="width:12px; height:12px;"></i> 7 min read</div>
+        <div id="allocationWarning" class="warning-box" style="display:none;">
+          <i data-lucide="alert-triangle"></i> <span id="warningText"></span>
         </div>
-      </a>
-      <a href="blog-spend-vs-save.html" class="blog-card">
-        <div class="blog-card-body">
-          <span class="badge badge-data">Industry Data</span>
-          <h3 style="font-size: 1.1rem; margin: 0.5rem 0 0.75rem 0; font-weight: 700; line-height: 1.4;">Wedding Budget Breakdown: Where to Spend & Save</h3>
-          <p style="color: var(--text-muted); font-size: 0.85rem; line-height: 1.5; margin: 0; flex-grow: 1;">Empirical expense data parsed from thousands of real weddings to manage cost priorities cleanly.</p>
-          <div style="margin-top: 1rem; font-size: 0.75rem; color: #3182ce; font-weight: 600; display: flex; align-items: center; gap: 4px;"><i data-lucide="clock" style="width:12px; height:12px;"></i> 9 min read</div>
+        <div id="budgetAllocationList" class="budget-allocation-container">
+          <!-- Dynamically populated rows with status lines as per screenshot 1 -->
         </div>
-      </a>
-    </div>
-  </section>
+      </div>
 
-  <section class="card no-print" style="margin-top: 2rem; border: none; background: transparent; box-shadow: none;">
-    <h2>About Wedding Budgeting</h2>
-    <p>A well-planned wedding budget is essential for a stress-free experience. Most weddings allocate the majority of their funds to venue rental and catering services. Other important categories include photography, floral decoration, entertainment, wedding attire, and transportation.</p>
+      <div class="card no-print">
+        <h2>Add Expense</h2>
+        <div class="add-expense-row">
+          <input type="text" id="expDesc" placeholder="Expense description">
+          <select id="expCat">
+            <option>Venue</option>
+            <option>Catering</option>
+            <option>Photography</option>
+            <option>Decor</option>
+            <option>Entertainment</option>
+            <option>Attire</option>
+            <option>Transportation</option>
+          </select>
+          <input type="number" id="expAmt" placeholder="Amount">
+          <button id="addExpense">Add</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Expense History</h2>
+        <div class="table-responsive">
+          <table id="expenseTable" class="spacious-table"></table>
+        </div>
+      </div>
+    </div>
+
+    <div class="sidebar-col">
+      <!-- Spending Progress Sidebar Widget (Matches screenshot 2) -->
+      <div class="card">
+        <h2>Spending Progress</h2>
+        <div id="categoryProgress" class="progress-list"></div>
+      </div>
+
+      <!-- Wedding Day Date Tracker (Matches state switching in screenshot 4) -->
+      <div class="card no-print tracking-card" id="weddingDayCard">
+        <!-- JS Swaps this card dynamically between state set & change -->
+      </div>
+
+      <!-- Guest Count Widget (Matches rounded step actions in screenshot 5) -->
+      <div class="card no-print">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; border-bottom: 2px solid #fff5f5; padding-bottom: 8px;">
+          <h2 style="border:none; margin:0; padding:0;">Guest Count</h2>
+          <span class="badge" style="background: #fff5f5; color: var(--primary); margin: 0; font-size: 0.75rem;" id="guestTotalBadge">0 total</span>
+        </div>
+        <div class="guest-counter-list">
+          <div class="guest-counter-row">
+            <span>Family</span>
+            <div class="counter-actions">
+              <button onclick="adjustGuests('Family', -1)" class="counter-btn"><i data-lucide="minus"></i></button>
+              <span id="count-Family" class="counter-value">8</span>
+              <button onclick="adjustGuests('Family', 1)" class="counter-btn"><i data-lucide="plus"></i></button>
+            </div>
+          </div>
+          <div class="guest-counter-row">
+            <span>Friends</span>
+            <div class="counter-actions">
+              <button onclick="adjustGuests('Friends', -1)" class="counter-btn"><i data-lucide="minus"></i></button>
+              <span id="count-Friends" class="counter-value">6</span>
+              <button onclick="adjustGuests('Friends', 1)" class="counter-btn"><i data-lucide="plus"></i></button>
+            </div>
+          </div>
+          <div class="guest-counter-row">
+            <span>Colleagues</span>
+            <div class="counter-actions">
+              <button onclick="adjustGuests('Colleagues', -1)" class="counter-btn"><i data-lucide="minus"></i></button>
+              <span id="count-Colleagues" class="counter-value">7</span>
+              <button onclick="adjustGuests('Colleagues', 1)" class="counter-btn"><i data-lucide="plus"></i></button>
+            </div>
+          </div>
+          <div class="guest-counter-row">
+            <span>Others</span>
+            <div class="counter-actions">
+              <button onclick="adjustGuests('Others', -1)" class="counter-btn"><i data-lucide="minus"></i></button>
+              <span id="count-Others" class="counter-value">10</span>
+              <button onclick="adjustGuests('Others', 1)" class="counter-btn"><i data-lucide="plus"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Smart Tips Widget (Only displays when warnings/errors are triggered) -->
+      <div id="smartTipsCard" class="card" style="display: none;">
+        <h2>Smart Tips</h2>
+        <div id="smartTipsContent" style="display: flex; flex-direction: column; gap: 12px;">
+          <!-- Dynamically populated notification banners -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEO CONTENT -->
+  <section class="seo-content card">
+    <h2>Wedding Planning Financial Strategy</h2>
+    <p>
+      A successful wedding starts with a clear financial roadmap. Using our Free Wedding Budget Calculator, 
+      you can ensure that your dream day doesn't turn into a financial burden. Track your venue costs, catering expenses, 
+      decorations, photography, entertainment, and guest-related spending in one place.
+    </p>
+    <p>
+      Most couples allocate the largest portion of their wedding budget to venue rental and catering services.
+      Other important categories include photography, floral decoration, entertainment, wedding attire, and transportation.
+    </p>
     <h2>Average Wedding Costs</h2>
-    <p>Wedding costs vary depending on location, guest count, venue selection, and overall event style. Small weddings may cost only a few thousand dollars, while larger ceremonies with hundreds of guests can significantly increase catering and venue expenses.</p>
+    <p>
+      Wedding costs vary depending on location, guest count, venue selection, and overall event style.
+      Small weddings may cost only a few thousand dollars, while larger ceremonies with hundreds of guests 
+      can significantly increase catering and venue expenses.
+    </p>
+    <h2>Wedding Budget Tips</h2>
+    <ul>
+      <li>Set a realistic wedding budget before booking vendors.</li>
+      <li>Track every expense category regularly.</li>
+      <li>Monitor guest count carefully.</li>
+      <li>Reserve emergency funds for unexpected wedding expenses.</li>
+      <li>Review spending progress weekly.</li>
+    </ul>
   </section>
 
   <div class="action-bar no-print">
