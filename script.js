@@ -8,21 +8,21 @@ const catIcons = {
   Transportation: 'car'
 };
 
-// Planned reference budgets strictly optimized to stay exactly within $40,000 budget - as requested
+// Planned reference budgets initialized to 0 by default so it starts as a clean slate as requested
 let categories = { 
-  Venue: 12000, 
-  Catering: 15000, 
-  Photography: 5000, 
-  Decor: 3000, 
-  Entertainment: 2500,
-  Attire: 1500,
-  Transportation: 1000
+  Venue: 0, 
+  Catering: 0, 
+  Photography: 0, 
+  Decor: 0, 
+  Entertainment: 0,
+  Attire: 0,
+  Transportation: 0
 };
 
-// Clean state: empty of actual spent items by default on load - as requested
+// Clean state: empty of actual spent items by default on load
 let expenses = [];
 
-// Guest counts properly initialized to default 0 - as requested
+// Guest counts properly initialized to default 0
 let guestCounts = {
   Family: 0,
   Friends: 0,
@@ -30,7 +30,7 @@ let guestCounts = {
   Others: 0
 };
 
-// Start Date is clean (null) before the user sets it - as requested
+// Start Date is clean (null) before the user sets it
 let weddingDate = null;
 let weddingLocation = ""; // Clean value on load, configurable by user
 
@@ -62,7 +62,7 @@ const totalPlanned = () => Object.values(categories).reduce((a, b) => a + b, 0);
 const totalGuests = () => Object.values(guestCounts).reduce((a, b) => a + b, 0);
 
 function refresh() {
-    const budget = Number(totalBudgetInput.value) || 0;
+    const budget = Number(totalBudgetInput ? totalBudgetInput.value : 0) || 0;
     const spent = totalSpent();
     const planned = totalPlanned();
     const guests = totalGuests();
@@ -77,109 +77,138 @@ function refresh() {
     }
 
     // Allocation Warning Logic (exceed matches exact planned limit differences)
-    if (planned > budget) {
-        allocationWarning.style.display = "flex";
-        warningText.innerText = `Warning: Total planned categories ($${planned.toLocaleString()}) exceed your budget by $${(planned - budget).toLocaleString()}!`;
+    if (planned > budget && budget > 0) {
+        if (allocationWarning) {
+            allocationWarning.style.display = "flex";
+        }
+        if (warningText) {
+            warningText.innerText = `Warning: Total planned categories ($${planned.toLocaleString()}) exceed your budget by $${(planned - budget).toLocaleString()}!`;
+        }
     } else {
-        allocationWarning.style.display = "none";
+        if (allocationWarning) {
+            allocationWarning.style.display = "none";
+        }
     }
 
     // Allocation Meta Header Text
     if (allocationMeta) {
         allocationMeta.innerText = `Planned: $${planned.toLocaleString()} / $${budget.toLocaleString()}`;
-        allocationMeta.style.color = planned > budget ? "#e53e3e" : "var(--text-muted)";
+        allocationMeta.style.color = planned > budget && budget > 0 ? "#e53e3e" : "var(--text-muted)";
     }
 
     // Summary Card Displays
-    remainingBudgetText.innerText = `${remaining < 0 ? '-$' : '$'}${Math.abs(remaining).toLocaleString()}`;
-    if (remaining < 0) {
-        remainingCard.className = "stat-card red-danger";
-        remainingBudgetText.style.color = "#c53030";
-    } else {
-        remainingCard.className = "stat-card green";
-        remainingBudgetText.style.color = "#2f855a";
+    if (remainingBudgetText) {
+        remainingBudgetText.innerText = `${remaining < 0 ? '-$' : '$'}${Math.abs(remaining).toLocaleString()}`;
+    }
+    if (remainingCard) {
+        if (remaining < 0) {
+            remainingCard.className = "stat-card red-danger";
+            if (remainingBudgetText) remainingBudgetText.style.color = "#c53030";
+        } else {
+            remainingCard.className = "stat-card green";
+            if (remainingBudgetText) remainingBudgetText.style.color = "#2f855a";
+        }
     }
 
-    totalSpentValue.innerText = `$${spent.toLocaleString()}`;
-    totalGuestsText.innerText = guests;
-    actualCostText.innerText = guests > 0 ? `$${costPerGuest.toLocaleString()}` : "$0";
-    guestInvitedSub.innerText = `${guests} guests invited`;
-    guestTotalBadge.innerText = `${guests} total`;
+    if (totalSpentValue) totalSpentValue.innerText = `$${spent.toLocaleString()}`;
+    if (totalGuestsText) totalGuestsText.innerText = guests;
+    if (actualCostText) actualCostText.innerText = guests > 0 ? `$${costPerGuest.toLocaleString()}` : "$0";
+    if (guestInvitedSub) guestInvitedSub.innerText = `${guests} guests invited`;
+    if (guestTotalBadge) guestTotalBadge.innerText = `${guests} total`;
 
     // Category Allocation Table with inline Progress lines
-    budgetAllocationList.innerHTML = "";
-    Object.keys(categories).forEach(c => {
-        const cSpent = getSpent(c);
-        const limit = categories[c] || 1;
-        const p = Math.min(100, (cSpent / limit) * 100);
-        
-        const row = document.createElement("div");
-        row.className = "budget-alloc-row";
-        row.innerHTML = `
-            <div class="budget-alloc-meta">
-                <div class="budget-alloc-title">
-                    <i data-lucide="${catIcons[c]}" style="width:16px; height:16px; color: var(--primary);"></i>
-                    <span>${c}</span>
-                </div>
-                <input type="number" class="edit-planned" data-cat="${c}" value="${categories[c]}">
-            </div>
-            <div class="p-bar"><div class="p-fill ${cSpent > limit ? 'bg-danger' : 'bg-primary'}" style="width:${p}%"></div></div>
-            <div class="budget-alloc-spent">$${cSpent.toLocaleString()} spent</div>
-        `;
-        budgetAllocationList.appendChild(row);
-    });
-
-    // Clean single-header Expense History Table (Duplicate row bug resolved)
-    expenseTable.innerHTML = "";
-    if (expenses.length === 0) {
-        const row = expenseTable.insertRow();
-        row.innerHTML = `<td colspan="4" style="text-align:center; color:var(--text-muted); padding: 25px;">No expenses yet. Add your first expense above.</td>`;
-    } else {
-        expenses.forEach((e, i) => {
-            const row = expenseTable.insertRow();
+    if (budgetAllocationList) {
+        budgetAllocationList.innerHTML = "";
+        Object.keys(categories).forEach(c => {
+            const cSpent = getSpent(c);
+            const limit = categories[c] || 1;
+            const p = Math.min(100, (cSpent / limit) * 100);
+            
+            const row = document.createElement("div");
+            row.className = "budget-alloc-row";
             row.innerHTML = `
-                <td>${e.desc}</td>
-                <td><span class="status-badge" style="background:#f3f4f6; color:#4b5563;">${e.cat}</span></td>
-                <td style="font-weight:700;">$${e.amount.toLocaleString()}</td>
-                <td class="no-print" style="text-align:right;"><button onclick="deleteExp(${i})" class="remove-btn"><i data-lucide="trash-2" style="width:14px; height:14px;"></i></button></td>
+                <div class="budget-alloc-meta">
+                    <div class="budget-alloc-title">
+                        <i data-lucide="${catIcons[c]}" style="width:16px; height:16px; color: var(--primary);"></i>
+                        <span>${c}</span>
+                    </div>
+                    <input type="number" class="edit-planned" data-cat="${c}" value="${categories[c]}">
+                </div>
+                <div class="p-bar"><div class="p-fill ${cSpent > limit && limit > 1 ? 'bg-danger' : 'bg-primary'}" style="width:${p}%"></div></div>
+                <div class="budget-alloc-spent">$${cSpent.toLocaleString()} spent</div>
             `;
+            budgetAllocationList.appendChild(row);
         });
     }
 
-    // Spending Progress Sidebar Cards with badged statuses
-    categoryProgress.innerHTML = "";
-    Object.keys(categories).forEach(c => {
-        const s = getSpent(c);
-        const limit = categories[c] || 1;
-        const p = Math.min(100, (s / limit) * 100);
-        
-        let statusBadge = `<span class="badge badge-safe">SAFE</span>`;
-        let barColor = "bg-safe";
-        let subText = `Spent: $${s.toLocaleString()}`;
-
-        if (s > limit) {
-            statusBadge = `<span class="badge badge-over">OVER</span>`;
-            barColor = "bg-danger";
-            subText = `Spent: $${s.toLocaleString()} <span style="color:#e53e3e; font-weight:700; margin-left:8px;">+$${(s - limit).toLocaleString()} over</span>`;
-        } else if (p > 80) {
-            statusBadge = `<span class="badge badge-track">ON TRACK</span>`;
-            barColor = "bg-warning";
-            subText = `Spent: $${s.toLocaleString()}`;
+    // Clean single-header Expense History Table (Duplicate row bug resolved)
+    if (expenseTable) {
+        expenseTable.innerHTML = "";
+        if (expenses.length === 0) {
+            const row = expenseTable.insertRow();
+            row.innerHTML = `<td colspan="4" style="text-align:center; color:var(--text-muted); padding: 25px;">No expenses yet. Add your first expense above.</td>`;
+        } else {
+            expenses.forEach((e, i) => {
+                const row = expenseTable.insertRow();
+                row.innerHTML = `
+                    <td>${e.desc}</td>
+                    <td><span class="status-badge" style="background:#f3f4f6; color:#4b5563;">${e.cat}</span></td>
+                    <td style="font-weight:700;">$${e.amount.toLocaleString()}</td>
+                    <td class="no-print" style="text-align:right;"><button onclick="deleteExp(${i})" class="remove-btn"><i data-lucide="trash-2" style="width:14px; height:14px;"></i></button></td>
+                `;
+            });
         }
+    }
 
-        const div = document.createElement("div");
-        div.className = "progress-item-block";
-        div.style.marginBottom = "1.5rem";
-        div.innerHTML = `
-            <div class="progress-block-header" style="display:flex; justify-content:space-between; align-items:center; font-size:0.85rem; font-weight:700; margin-bottom:4px;">
-                <span class="progress-block-title" style="display:flex; align-items:center; gap:6px;">${c} ${statusBadge}</span>
-                <span class="progress-block-percent" style="color:var(--text-muted); font-size:0.8rem;">${Math.round(p)}% of $${limit.toLocaleString()}</span>
-            </div>
-            <div class="p-bar" style="height:8px; background:#edf2f7; border-radius:6px; overflow:hidden;"><div class="p-fill ${barColor}" style="width:${p}%"></div></div>
-            <div class="progress-block-spent" style="font-size:0.75rem; color:var(--text-muted); margin-top:4px;">${subText}</div>
-        `;
-        categoryProgress.appendChild(div);
-    });
+    // Spending Progress Sidebar Cards with badged statuses (hide if allocations/spent is zero to keep clean)
+    if (categoryProgress) {
+        categoryProgress.innerHTML = "";
+        let visibleProgressCount = 0;
+        
+        Object.keys(categories).forEach(c => {
+            const s = getSpent(c);
+            const limit = categories[c];
+            
+            // Only render progress cards in the sidebar if they have a non-zero planned budget or non-zero spent expenses
+            if (limit === 0 && s === 0) return;
+            visibleProgressCount++;
+
+            const divisor = limit || 1;
+            const p = Math.min(100, (s / divisor) * 100);
+            
+            let statusBadge = `<span class="badge badge-safe">SAFE</span>`;
+            let barColor = "bg-safe";
+            let subText = `Spent: $${s.toLocaleString()}`;
+
+            if (s > limit && limit > 0) {
+                statusBadge = `<span class="badge badge-over">OVER</span>`;
+                barColor = "bg-danger";
+                subText = `Spent: $${s.toLocaleString()} <span style="color:#e53e3e; font-weight:700; margin-left:8px;">+$${(s - limit).toLocaleString()} over</span>`;
+            } else if (p > 80) {
+                statusBadge = `<span class="badge badge-track">ON TRACK</span>`;
+                barColor = "bg-warning";
+                subText = `Spent: $${s.toLocaleString()}`;
+            }
+
+            const div = document.createElement("div");
+            div.className = "progress-item-block";
+            div.style.marginBottom = "1.5rem";
+            div.innerHTML = `
+                <div class="progress-block-header" style="display:flex; justify-content:space-between; align-items:center; font-size:0.85rem; font-weight:700; margin-bottom:4px;">
+                    <span class="progress-block-title" style="display:flex; align-items:center; gap:6px;">${c} ${statusBadge}</span>
+                    <span class="progress-block-percent" style="color:var(--text-muted); font-size:0.8rem;">${Math.round(p)}% of $${limit.toLocaleString()}</span>
+                </div>
+                <div class="p-bar" style="height:8px; background:#edf2f7; border-radius:6px; overflow:hidden;"><div class="p-fill ${barColor}" style="width:${p}%"></div></div>
+                <div class="progress-block-spent" style="font-size:0.75rem; color:var(--text-muted); margin-top:4px;">${subText}</div>
+            `;
+            categoryProgress.appendChild(div);
+        });
+        
+        // If there are no configured budgets yet, show a friendly empty state message
+        if (visibleProgressCount === 0) {
+            categoryProgress.innerHTML = `<div style="text-align:center; color:var(--text-muted); padding:10px 0; font-size:0.9rem;">Set a category planned amount to track progress.</div>`;
+        }
+    }
 
     // Dynamic countdown card and top hero banner sync
     renderWeddingDayTracker();
@@ -230,6 +259,8 @@ window.setGuestManual = (group, value) => {
 
 // Wedding Day tracker state render logic (Save vs Change toggle state)
 function renderWeddingDayTracker() {
+    if (!weddingDayCard) return;
+    
     if (weddingDate) {
         const target = new Date(weddingDate);
         target.setHours(0,0,0,0);
@@ -239,13 +270,15 @@ function renderWeddingDayTracker() {
         const diffTime = target.getTime() - current.getTime();
         const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
         
-        countdownBanner.style.display = "block";
-        if (diffDays > 0) {
-            countdownDaysText.innerHTML = `${diffDays} Days to go! 🌸`;
-        } else if (diffDays === 0) {
-            countdownDaysText.innerHTML = `It's Wedding Day! ❤️`;
-        } else {
-            countdownDaysText.innerHTML = `Married! ✨`;
+        if (countdownBanner) countdownBanner.style.display = "block";
+        if (countdownDaysText) {
+            if (diffDays > 0) {
+                countdownDaysText.innerHTML = `${diffDays} Days to go! 🌸`;
+            } else if (diffDays === 0) {
+                countdownDaysText.innerHTML = `It's Wedding Day! ❤️`;
+            } else {
+                countdownDaysText.innerHTML = `Married! ✨`;
+            }
         }
 
         const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
@@ -266,7 +299,7 @@ function renderWeddingDayTracker() {
             </div>
         `;
     } else {
-        countdownBanner.style.display = "none";
+        if (countdownBanner) countdownBanner.style.display = "none";
         weddingDayCard.innerHTML = `
             <div style="display:flex; align-items:center; gap:8px; margin-bottom:1rem;">
                 <div class="tracker-icon-circle" style="width: 32px; height: 32px; border-radius: 50%; background: var(--primary); display: flex; align-items: center; justify-content: center;"><i data-lucide="heart" style="width:16px; height:16px; color:#fff;"></i></div>
@@ -301,7 +334,7 @@ function updateSmartTips(planned, budget, spent, remaining, costPerGuest) {
     let tips = [];
 
     // 1. Over-allocated Warning
-    if (planned > budget) {
+    if (planned > budget && budget > 0) {
         tips.push({
             type: "danger",
             title: "Over-Allocated",
@@ -321,7 +354,7 @@ function updateSmartTips(planned, budget, spent, remaining, costPerGuest) {
     }
 
     // 3. Budget Running Low Warning
-    if (remaining < (budget * 0.15)) {
+    if (remaining < (budget * 0.15) && budget > 0) {
         tips.push({
             type: "danger",
             title: "Budget Running Low",
@@ -376,7 +409,7 @@ addExpenseBtn.onclick = () => {
     const dInput = document.getElementById("expDesc");
     const aInput = document.getElementById("expAmt");
     const cSelect = document.getElementById("expCat");
-    if (dInput.value && aInput.value) { 
+    if (dInput && aInput && cSelect && dInput.value && aInput.value) { 
         expenses.push({ desc: dInput.value, cat: cSelect.value, amount: Number(aInput.value) }); 
         dInput.value = ""; aInput.value = ""; refresh(); 
     }
