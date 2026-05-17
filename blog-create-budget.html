@@ -2,78 +2,371 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>How to Create a Wedding Budget That Actually Works</title>
+  <title>How to Create a Wedding Budget That Actually Works - Wedding Budget Planner</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="style.css">
   <script src="https://unpkg.com/lucide@latest"></script>
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4504023199353060" crossorigin="anonymous"></script>
+  <style>
+    /* Premium Article Layout */
+    .article-container {
+      max-width: 1100px;
+      margin: 2.5rem auto;
+      padding: 0 1.5rem;
+    }
+    .article-grid {
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 2.5rem;
+      align-items: start;
+    }
+    @media (max-width: 900px) {
+      .article-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    
+    /* Top Header Section */
+    .premium-article-header {
+      margin-bottom: 2rem;
+    }
+    .article-meta-row {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+    }
+    .article-meta-row .category-tag {
+      color: var(--primary);
+    }
+    .premium-article-title {
+      font-size: 2.6rem;
+      font-weight: 800;
+      color: var(--text-main);
+      line-height: 1.25;
+      margin: 0 0 15px 0;
+    }
+    
+    /* Premium Author Bar */
+    .premium-author-bar {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-top: 1px solid #f3f4f6;
+      border-bottom: 1px solid #f3f4f6;
+      padding: 1rem 0;
+      margin-bottom: 2rem;
+    }
+    .author-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: #fdf2f8;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      color: var(--primary);
+      border: 1px solid #fbcfe8;
+    }
+    .author-info {
+      display: flex;
+      flex-direction: column;
+    }
+    .author-name {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+    .author-title {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    /* Content Area Styles */
+    .editorial-content {
+      font-size: 1.1rem;
+      line-height: 1.85;
+      color: #374151;
+    }
+    .editorial-content p {
+      margin-bottom: 1.75rem;
+    }
+    .editorial-content h2 {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: var(--text-main);
+      margin: 2.5rem 0 1.25rem 0;
+      border: none;
+      padding: 0;
+    }
+    .editorial-content h3 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--text-main);
+      margin: 2rem 0 1rem 0;
+    }
+    .editorial-content ul, .editorial-content ol {
+      margin-bottom: 1.75rem;
+      padding-left: 1.5rem;
+    }
+    .editorial-content li {
+      margin-bottom: 0.5rem;
+    }
+    
+    /* Elegant Sidebar Card */
+    .sidebar-widget {
+      background: white;
+      border-radius: 16px;
+      padding: 1.75rem;
+      border: 1px solid #f3f4f6;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.01);
+      margin-bottom: 1.5rem;
+    }
+    .sidebar-widget h3 {
+      font-size: 1.15rem;
+      font-weight: 800;
+      margin: 0 0 1rem 0;
+      color: var(--text-main);
+    }
+    .sidebar-widget p {
+      font-size: 0.9rem;
+      line-height: 1.6;
+      color: var(--text-muted);
+      margin-bottom: 1.25rem;
+    }
+    .sidebar-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      padding: 12px;
+      background: var(--primary);
+      color: white;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 0.9rem;
+      transition: opacity 0.2s;
+    }
+    .sidebar-btn:hover {
+      opacity: 0.9;
+    }
+
+    /* Ad Space Container */
+    .ad-card {
+      border: 1px dashed #d1d5db;
+      background: #f9fafb;
+      border-radius: 12px;
+      padding: 1.5rem;
+      text-align: center;
+      margin: 2rem 0;
+    }
+    .ad-label {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 1rem;
+      display: block;
+    }
+
+    /* CTA Banner card at bottom of article */
+    .article-bottom-cta {
+      background: linear-gradient(135deg, #fff5f5 0%, #fdf2f8 100%);
+      border: 1px solid #fbcfe8;
+      border-radius: 16px;
+      padding: 2.2rem;
+      text-align: center;
+      margin-top: 3.5rem;
+    }
+    .article-bottom-cta h3 {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--text-main);
+      margin: 0 0 10px 0;
+    }
+    .article-bottom-cta p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      margin-bottom: 1.5rem;
+    }
+    .cta-btn-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--primary);
+      color: white;
+      padding: 12px 28px;
+      border-radius: 30px;
+      font-weight: 700;
+      text-decoration: none;
+      transition: transform 0.2s;
+    }
+    .cta-btn-pill:hover {
+      transform: scale(1.02);
+    }
+
+    /* Elegant Social Share Row */
+    .editorial-share-row {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      border-top: 1px solid #f3f4f6;
+      border-bottom: 1px solid #f3f4f6;
+      padding: 1rem 0;
+      margin-top: 2rem;
+    }
+    .share-icon-circle {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: 1px solid #e5e7eb;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .share-icon-circle:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+  </style>
 </head>
 <body>
+
 <header class="top-nav">
   <div class="logo">Wedding Budget Planner</div>
-  <nav class="nav-links"><a href="index.html">Dashboard</a><a href="blog.html">Blog</a><a href="about.html">About</a><a href="privacy.html">Privacy</a></nav>
+  <nav class="nav-links">
+    <a href="index.html">Dashboard</a>
+    <a href="blog.html" style="font-weight: 700; color: #be185d;">Blog</a>
+    <a href="about.html">About</a>
+    <a href="privacy.html">Privacy</a>
+    <a href="mailto:liubigcow@yahoo.com">Contact</a>
+  </nav>
 </header>
 
-<main class="dashboard-container">
-  <div class="blog-layout">
-    <article class="card article-body">
-      <div class="article-header">
-        <span class="badge badge-budget">Budget Planning</span>
-        <h1 style="font-size: 2rem; margin: 0.5rem 0; font-weight: 800; line-height: 1.3;">How to Create a Wedding Budget That Actually Works</h1>
-        <p style="color: var(--text-muted); font-size: 0.9rem;">By Financial Planning Editorial Team • Published May 2026 • 8 min read</p>
+<main class="article-container">
+  <div class="article-grid">
+    <!-- Left Column: Content -->
+    <article>
+      <div class="premium-article-header">
+        <div class="article-meta-row">
+          <span class="category-tag">Budget Planning</span>
+          <span>•</span>
+          <span>8 min read</span>
+          <span>•</span>
+          <span>May 2026</span>
+        </div>
+        <h1 class="premium-article-title">How to Create a Wedding Budget That Actually Works</h1>
       </div>
 
-      <p>Establishing a comprehensive budget strategy acts as the fundamental building block for modern event execution. Many couples initiate procurement conversations with service providers prior to finalizing explicit spending boundaries, resulting in accelerated capital allocation deficits. Setting up an analytical financial map ensures that allocation choices align with data-driven reality rather than emotional inflation.</p>
-
-      <div style="margin: 2rem 0; background: #fcfcfd; padding: 1rem; border: 1px dashed var(--input-border); text-align: center;">
-        <span style="display:block; font-size:0.7rem; color:var(--text-muted); margin-bottom:0.5rem; text-transform:uppercase;">Advertisement</span>
-        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-4504023199353060" data-ad-slot="7437035292" data-ad-format="auto" data-full-width-responsive="true"></ins>
-        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+      <!-- Author Card Section -->
+      <div class="premium-author-bar">
+        <div class="author-avatar">EP</div>
+        <div class="author-info">
+          <span class="author-name">Sarah Mitchell</span>
+          <span class="author-title">Wedding Planning Expert</span>
+        </div>
       </div>
 
-      <h2>The Standard Framework Allocation Framework</h2>
-      <p>Data tracking shows that across thousands of marital allocations, total budget caps settle cleanly into specific percentage distribution ranges. Adhering to these frameworks keeps your spending optimized:</p>
-      <ul>
-        <li><strong>Venue Logistics & Dining Provisions:</strong> 45% to 50% of total reserves.</li>
-        <li><strong>Photography & Video Coverage:</strong> 12% to 15% for quality media production.</li>
-        <li><strong>Attire, Tailoring & Professional Styling:</strong> 8% to 10% encompassing gowns and alterations.</li>
-        <li><strong>Live Performance & Audio Engineering:</strong> 10% for musicians, sound hardware, or DJs.</li>
-        <li><strong>Floral Infrastructure & Table Configurations:</strong> 8% tracking floral installations and rentals.</li>
-        <li><strong>Unforeseen Contingency Protection Layer:</strong> 5% strictly set aside for surprise operational costs.</li>
-      </ul>
+      <div class="editorial-content">
+        <p>Establishing a comprehensive budget strategy acts as the fundamental building block for modern event execution. Many couples initiate procurement conversations with service providers prior to finalizing explicit spending boundaries, resulting in accelerated capital allocation deficits. Setting up an analytical financial map ensures that allocation choices align with data-driven reality rather than emotional inflation.</p>
 
-      <div class="pro-tip">
-        <strong>PRO TIP: The Strategic Guest Cap</strong>
-        Every added guest drives proportional upcharges across dining costs, equipment allocations, and setup dimensions. Restricting your guest list count acts as an efficient lever to control total costs safely.
+        <!-- Inline Editorial Ad Unit -->
+        <div class="ad-card">
+          <span class="ad-label">Advertisement</span>
+          <ins class="adsbygoogle"
+               style="display:block"
+               data-ad-client="ca-pub-4504023199353060"
+               data-ad-slot="7437035292"
+               data-ad-format="auto"
+               data-full-width-responsive="true"></ins>
+          <script>
+               (adsbygoogle = window.adsbygoogle || []).push({});
+          </script>
+        </div>
+
+        <h2>The Standard Allocation Framework</h2>
+        <p>Data tracking shows that across thousands of marital allocations, total budget caps settle cleanly into specific percentage distribution ranges. Adhering to these frameworks keeps your spending optimized:</p>
+        <ul>
+          <li><strong>Venue Logistics & Dining Provisions:</strong> 45% to 50% of total reserves.</li>
+          <li><strong>Photography & Video Coverage:</strong> 12% to 15% for quality media production.</li>
+          <li><strong>Attire, Tailoring & Professional Styling:</strong> 8% to 10% encompassing gowns and alterations.</li>
+          <li><strong>Live Performance & Audio Engineering:</strong> 10% for musicians, sound hardware, or DJs.</li>
+          <li><strong>Floral Infrastructure & Table Configurations:</strong> 8% tracking floral installations and rentals.</li>
+          <li><strong>Unforeseen Contingency Protection Layer:</strong> 5% strictly set aside for surprise operational costs.</li>
+        </ul>
+
+        <div class="pro-tip">
+          <strong>PRO TIP: The Strategic Guest Cap</strong>
+          Every added guest drives proportional upcharges across dining costs, equipment allocations, and setup dimensions. Restricting your guest list count acts as an efficient lever to control total costs safely.
+        </div>
+
+        <h2>Establishing Sourcing Boundaries Cleanly</h2>
+        <p>Prior to executing vendor deposits, verify that your total calculated limits match your target figures. Utilize our primary interactive calculator interface periodically to re-examine transaction weights. If culinary services run over, instantly balance those lines by adjusting floral configurations or media packaging details.</p>
+
+        <blockquote class="article-quote" style="border-left: 4px solid var(--primary); padding-left: 1.2rem; font-style: italic; color: var(--text-muted); margin: 2rem 0; font-size: 1.15rem; line-height: 1.7;">
+          "Aligning our spending spreadsheet early kept vendor expectations transparent and removed surprise cost additions before our venue booking."
+          <span style="display: block; font-weight: 700; margin-top: 8px; font-style: normal; font-size: 0.9rem; color: var(--text-main);">– Eleanor & Thomas, Real Couple</span>
+        </blockquote>
       </div>
 
-      <h2>Establishing Sourcing Boundaries Cleanly</h2>
-      <p>Prior to executing vendor deposits, verify that your total calculated limits match your target figures. Utilize our primary interactive calculator interface periodically to re-examine transaction weights. If culinary services run over, instantly balance those lines by adjusting floral configurations or media packaging details.</p>
+      <!-- Social Media Share Tags -->
+      <div class="editorial-share-row">
+        <span style="font-size: 0.85rem; font-weight: 700; color: var(--text-muted); margin-right: 8px;">Share:</span>
+        <div class="share-icon-circle" onclick="window.print()"><i data-lucide="printer" style="width: 14px; height: 14px;"></i></div>
+        <div class="share-icon-circle" onclick="navigator.clipboard.writeText(window.location.href); alert('Link copied to clipboard!');"><i data-lucide="link-2" style="width: 14px; height: 14px;"></i></div>
+      </div>
 
-      <blockquote class="article-quote">
-        "Aligning our spending spreadsheet early kept vendor expectations transparent and removed surprise cost additions before our venue booking." <br><strong>– Eleanor & Thomas, Real Couple</strong>
-      </blockquote>
-
-      <div class="share-container">
-        <span style="font-size:0.85rem; font-weight:700; color:var(--text-muted);">Share This Guide:</span>
-        <button class="share-btn" onclick="window.print()"><i data-lucide="printer" style="width:14px; height:14px;"></i> Print PDF</button>
+      <!-- Bottom Layout CTA -->
+      <div class="article-bottom-cta">
+        <h3>Plan Smarter, Spend Less</h3>
+        <p>Our free Wedding Budget Calculator helps thousands of couples stay on track. Start building yours today.</p>
+        <a href="index.html" class="cta-btn-pill"><i data-lucide="calculator" style="width: 16px; height: 16px;"></i> Launch Budget Calculator</a>
       </div>
     </article>
 
+    <!-- Right Column: Sidebar widgets -->
     <aside class="no-print">
-      <div class="sidebar-box" style="background: linear-gradient(to bottom, #fff, #fff5f5); border: 1px solid var(--primary);">
-        <h4>Need to Calculate Now?</h4>
-        <p style="font-size:0.85rem; line-height:1.5; color:var(--text-muted); margin-bottom:1rem;">Access our premium interactive workspace dashboard tool to allocate your planning costs instantly.</p>
-        <a href="index.html" class="button" style="display:block; text-align:center; text-decoration:none; padding:0.6rem; font-size:0.9rem;">Launch Free Calculator</a>
+      <!-- Free Calculator CTA widget -->
+      <div class="sidebar-widget" style="background: linear-gradient(135deg, var(--primary) 0%, #da548a 100%); color: white; border: none;">
+        <h3 style="color: white; font-size: 1.25rem;">Free Budget Calculator</h3>
+        <p style="color: rgba(255,255,255,0.9);">Plan your wedding budget with our interactive tool. Track expenses, monitor categories, and stay on target.</p>
+        <a href="index.html" class="sidebar-btn" style="background: white; color: var(--primary); border: none;">Open Calculator <i data-lucide="arrow-right" style="width: 14px; height: 14px;"></i></a>
       </div>
-      <div class="sidebar-box">
-        <h4>Planning Insights Newsletter</h4>
-        <p style="font-size:0.85rem; line-height:1.5; color:var(--text-muted); margin-bottom:1rem;">Receive weekly analytical advice regarding market vendor contract evaluations directly to your inbox.</p>
-        <form class="newsletter-form" onsubmit="event.preventDefault(); alert('Thank you for subscribing!');"><input type="email" placeholder="Enter your email" required><button type="submit">Subscribe</button></form>
+
+      <!-- Newsletter subscription widget -->
+      <div class="sidebar-widget">
+        <h3>Wedding Budget Tips</h3>
+        <p>Get money-saving ideas and planning advice delivered directly to your inbox.</p>
+        <form onsubmit="event.preventDefault(); alert('Subscribed successfully!');" style="display:flex; flex-direction:column; gap:10px;">
+          <input type="email" placeholder="Your email address" style="width:100%; border:1px solid #edf2f7; background:#fafafa;" required>
+          <button type="submit" style="background: var(--primary); color:white; border:none; padding:10px; border-radius:8px; font-weight:700; font-size:0.9rem; cursor:pointer;">Subscribe</button>
+        </form>
       </div>
     </aside>
   </div>
 </main>
+
+<footer class="site-footer">
+  <p>&copy; 2026 Wedding Budget Planner</p>
+  <div class="footer-links">
+    <a href="about.html">About</a> <span>•</span>
+    <a href="privacy.html">Privacy Policy</a> <span>•</span>
+    <a href="terms.html">Terms & Conditions</a> <span>•</span>
+    <a href="mailto:liubigcow@yahoo.com">Contact</a>
+  </div>
+</footer>
+
 <script>lucide.createIcons();</script>
 </body>
 </html>
