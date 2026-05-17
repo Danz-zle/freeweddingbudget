@@ -8,7 +8,7 @@ const catIcons = {
   Transportation: 'car'
 };
 
-// Initial state parameters aligned directly with user screenshots
+// Fixed, hardcoded standard starting values (Image 00ee72 Reference Specs)
 let categories = { 
   Venue: 12000, 
   Catering: 15000, 
@@ -36,8 +36,7 @@ let guestCounts = {
   Others: 10
 };
 
-// Default date calculated as exactly +75 days from May 17, 2026 to July 31, 2026
-let weddingDate = "2026-07-31"; 
+let weddingDate = "2026-07-31"; // Default date matching +75 days from May 17, 2026
 
 // DOM Elements
 const totalBudgetInput = document.getElementById("totalBudget");
@@ -81,13 +80,13 @@ function refresh() {
         printStatusLabel.style.color = spent > budget ? "#e53e3e" : "#48bb78";
     }
 
-    // 2. Budget Header Allocation warning metadata
+    // 2. Budget Header Allocation Warning Metadata
     if (allocationMeta) {
         allocationMeta.innerText = `Planned: $${planned.toLocaleString()} / $${budget.toLocaleString()}`;
         allocationMeta.style.color = planned > budget ? "#e53e3e" : "var(--text-muted)";
     }
 
-    // Standard Allocation Warning Logic box
+    // Allocation Alert Banner Block
     if (planned > budget) {
         allocationWarning.style.display = "flex";
         warningText.innerText = `Your planned allocations exceed your total budget. Consider adjusting.`;
@@ -95,7 +94,7 @@ function refresh() {
         allocationWarning.style.display = "none";
     }
 
-    // 3. Header Stats Summary Cards Setup
+    // 3. Stats Summary Cards Setup
     remainingBudgetText.innerText = `${remaining < 0 ? '-$' : '$'}${Math.abs(remaining).toLocaleString()}`;
     if (remaining < 0) {
         remainingCard.className = "stat-card red-danger";
@@ -110,7 +109,7 @@ function refresh() {
     guestInvitedSub.innerText = `${guests} guests invited`;
     guestTotalBadge.innerText = `${guests} total`;
 
-    // 4. Budget Allocation Widget Rendering (Matches Screenshot 1 & Image 00ee72)
+    // 4. Budget Allocation Widget Rendering
     budgetAllocationList.innerHTML = "";
     Object.keys(categories).forEach(c => {
         const cSpent = getSpent(c);
@@ -147,7 +146,7 @@ function refresh() {
         `;
     });
 
-    // 6. Spending Progress Sidebar (Matches screenshot 2 & Image 00ee38)
+    // 6. Spending Progress Sidebar (Status checks)
     categoryProgress.innerHTML = "";
     Object.keys(categories).forEach(c => {
         const s = getSpent(c);
@@ -184,18 +183,18 @@ function refresh() {
     // 7. Dynamic Wedding Countdown State Switching Logic
     renderWeddingDayTracker();
 
-    // 8. Guest Counter value synchronization
+    // 8. Guest Counter synchronization
     Object.keys(guestCounts).forEach(g => {
-        const valSpan = document.getElementById(`count-${g}`);
-        if (valSpan) valSpan.innerText = guestCounts[g];
+        const valInput = document.getElementById(`input-${g}`);
+        if (valInput) valInput.value = guestCounts[g];
     });
 
-    // 9. Smart Tips Engine (Only displays contextual alerts if warning triggers are met)
+    // 9. Universal Smart Tips Engine
     renderSmartTips(planned, budget, spent, remaining, costPerGuest);
 
     if (window.lucide) lucide.createIcons();
     
-    // Bind change allocation events
+    // Bind change allocation event list
     document.querySelectorAll(".edit-planned").forEach(input => {
         input.oninput = (e) => {
             categories[e.target.dataset.cat] = Number(e.target.value) || 0;
@@ -204,19 +203,23 @@ function refresh() {
     });
 }
 
-// Interactive Guest actions (Plus/Minus Increment button system)
+// Interactive Guest actions (Both Buttons and Manual inputs synchronized)
 window.adjustGuests = (group, delta) => {
     guestCounts[group] = Math.max(0, guestCounts[group] + delta);
     refresh();
 };
 
-// Wedding Day Tracker Renderer with state-switching UI (Save vs Change)
+window.setGuestManual = (group, value) => {
+    guestCounts[group] = Math.max(0, parseInt(value) || 0);
+    refresh();
+};
+
+// Wedding Day Tracker Renderer
 function renderWeddingDayTracker() {
     if (weddingDate) {
-        // Calculate days cleanly to July 31, 2026
         const target = new Date(weddingDate);
         target.setHours(0,0,0,0);
-        const current = new Date("2026-05-17"); // Fixed current baseline system date
+        const current = new Date("2026-05-17"); // System baseline setup date
         current.setHours(0,0,0,0);
         
         const diffTime = target.getTime() - current.getTime();
@@ -232,7 +235,6 @@ function renderWeddingDayTracker() {
             countdownDaysText.innerHTML = `Married! ✨`;
         }
 
-        // Render card with Saved Countdown layout (Screenshot 4)
         const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
         const formattedDate = target.toLocaleDateString('en-US', dateOptions);
 
@@ -251,7 +253,6 @@ function renderWeddingDayTracker() {
             </div>
         `;
     } else {
-        // Render card with input Date form layout
         countdownBanner.style.display = "none";
         weddingDayCard.innerHTML = `
             <div style="display:flex; align-items:center; gap:8px; margin-bottom:1rem;">
@@ -259,8 +260,8 @@ function renderWeddingDayTracker() {
                 <h2 style="border:none; margin:0; padding:0;">Wedding Day</h2>
             </div>
             <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:1rem;">Set your wedding date</p>
-            <input type="date" id="weddingDateInput" style="margin-bottom:1rem;" value="2026-07-31">
-            <button id="saveDate" onclick="saveDateValue()">Save Date</button>
+            <input type="date" id="weddingDateInput" style="margin-bottom:1rem; width:100%; box-sizing:border-box;" value="2026-07-31">
+            <button id="saveDate" onclick="saveDateValue()" style="width:100%;">Save Wedding Date</button>
         `;
     }
 }
@@ -278,7 +279,7 @@ window.changeDate = () => {
     refresh();
 };
 
-// Smart Tips Engine displaying custom UI elements only on warning state triggers
+// Universal Smart Tips Engine 
 function renderSmartTips(planned, budget, spent, remaining, costPerGuest) {
     let tips = [];
 
@@ -314,19 +315,28 @@ function renderSmartTips(planned, budget, spent, remaining, costPerGuest) {
         });
     }
 
-    // 4. Catering Near Limit Warning (Check Category specific parameters)
-    const cateringSpent = getSpent("Catering");
-    const cateringLimit = categories["Catering"] || 0;
-    if (cateringSpent > (cateringLimit * 0.85)) {
-        tips.push({
-            type: "warning",
-            title: "Catering Near Limit",
-            icon: "utensils",
-            desc: "You are close to your catering budget. Check if the menu can be adjusted or if a buffet saves costs."
-        });
-    }
+    // 4. Over category budget check
+    Object.keys(categories).forEach(c => {
+        const catSpent = getSpent(c);
+        const catLimit = categories[c] || 0;
+        if (catLimit > 0 && catSpent > catLimit) {
+            tips.push({
+                type: "danger",
+                title: `${c} Over Budget`,
+                icon: "alert-triangle",
+                desc: `You are over your ${c} budget by $${(catSpent - catLimit).toLocaleString()}. Check if you can reduce costs.`
+            });
+        } else if (catLimit > 0 && catSpent > (catLimit * 0.85)) {
+            tips.push({
+                type: "warning",
+                title: `${c} Near Limit`,
+                icon: catIcons[c],
+                desc: `You are close to your ${c} budget. Check if options can be adjusted.`
+            });
+        }
+    });
 
-    // Conditional visibility: Only show card if tips array contains items
+    // Conditional visibility
     if (tips.length > 0) {
         smartTipsCard.style.display = "block";
         smartTipsContent.innerHTML = tips.map(t => `
@@ -353,7 +363,7 @@ addExpenseBtn.onclick = () => {
     }
 };
 
-// Excel Export retaining Summary, Breakdowns and itemized Expense transactions
+// Excel Export
 document.getElementById("exportExcel").onclick = () => {
     const wb = XLSX.utils.book_new();
     const summary = [
