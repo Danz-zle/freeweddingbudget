@@ -8,28 +8,30 @@ const catIcons = {
   Transportation: 'car'
 };
 
-// Hardcoded planned reference budgets (matching Image 00ee72 / image_007675)
+// Planned reference budgets strictly optimized to stay exactly within $40,000 budget - as requested
 let categories = { 
   Venue: 12000, 
   Catering: 15000, 
   Photography: 5000, 
-  Decor: 4000, 
-  Entertainment: 3500,
-  Attire: 3000,
-  Transportation: 1500
+  Decor: 3000, 
+  Entertainment: 2500,
+  Attire: 1500,
+  Transportation: 1000
 };
 
-// Clean state: empty of actual spent items by default, populates dynamically
+// Clean state: empty of actual spent items by default on load - as requested
 let expenses = [];
 
+// Guest counts properly initialized to default 0 - as requested
 let guestCounts = {
-  Family: 8,
-  Friends: 6,
-  Colleagues: 7,
-  Others: 10
+  Family: 0,
+  Friends: 0,
+  Colleagues: 0,
+  Others: 0
 };
 
-let weddingDate = "2026-10-31"; // Default date matching image 167 Days countdown (May 17, 2026 -> Oct 31, 2026)
+// Start Date is clean (null) before the user sets it - as requested
+let weddingDate = null;
 let weddingLocation = ""; // Clean value on load, configurable by user
 
 const totalBudgetInput = document.getElementById("totalBudget");
@@ -48,7 +50,6 @@ const guestInvitedSub = document.getElementById("guestInvitedSub");
 const guestTotalBadge = document.getElementById("guestTotalBadge");
 const allocationMeta = document.getElementById("allocationMeta");
 const budgetAllocationList = document.getElementById("budgetAllocationList");
-const categoryBudgetTable = document.getElementById("categoryBudgetTable");
 const countdownBanner = document.getElementById("countdownBanner");
 const countdownDaysText = document.getElementById("countdownDaysText");
 const weddingDayCard = document.getElementById("weddingDayCard");
@@ -61,18 +62,9 @@ const totalPlanned = () => Object.values(categories).reduce((a, b) => a + b, 0);
 const totalGuests = () => Object.values(guestCounts).reduce((a, b) => a + b, 0);
 
 function refresh() {
-    const budget = Number(totalBudgetInput ? totalBudgetInput.value : 0) || 0;
+    const budget = Number(totalBudgetInput.value) || 0;
     const spent = totalSpent();
     const planned = totalPlanned();
-    
-    // Sync guest counts from DOM if the old plain HTML inputs exist, otherwise use stepper values
-    const oldInputs = document.querySelectorAll(".guestGroup");
-    if (oldInputs.length > 0 && !document.getElementById("input-Family")) {
-        guestCounts.Family = Number(oldInputs[0]?.value) || 0;
-        guestCounts.Friends = Number(oldInputs[1]?.value) || 0;
-        guestCounts.Colleagues = Number(oldInputs[2]?.value) || 0;
-        guestCounts.Others = Number(oldInputs[3]?.value) || 0;
-    }
     const guests = totalGuests();
     const remaining = budget - spent;
     const costPerGuest = guests > 0 ? Math.round(spent / guests) : 0;
@@ -84,12 +76,12 @@ function refresh() {
         printStatusLabel.style.color = spent > budget ? "#e53e3e" : "#48bb78";
     }
 
-    // Allocation Warning Logic
+    // Allocation Warning Logic (exceed matches exact planned limit differences)
     if (planned > budget) {
-        if (allocationWarning) allocationWarning.style.display = "flex";
-        if (warningText) warningText.innerText = `Warning: Total planned categories ($${planned.toLocaleString()}) exceed your budget by $${(planned - budget).toLocaleString()}!`;
+        allocationWarning.style.display = "flex";
+        warningText.innerText = `Warning: Total planned categories ($${planned.toLocaleString()}) exceed your budget by $${(planned - budget).toLocaleString()}!`;
     } else {
-        if (allocationWarning) allocationWarning.style.display = "none";
+        allocationWarning.style.display = "none";
     }
 
     // Allocation Meta Header Text
@@ -99,133 +91,95 @@ function refresh() {
     }
 
     // Summary Card Displays
-    if (remainingBudgetText) {
-        remainingBudgetText.innerText = `${remaining < 0 ? '-$' : '$'}${Math.abs(remaining).toLocaleString()}`;
-    }
-    if (remainingCard) {
-        if (remaining < 0) {
-            remainingCard.className = "stat-card red-danger";
-            if (remainingBudgetText) remainingBudgetText.style.color = "#c53030";
-        } else {
-            remainingCard.className = "stat-card green";
-            if (remainingBudgetText) remainingBudgetText.style.color = "#2f855a";
-        }
-    } else if (remainingBudgetText) {
-        remainingBudgetText.style.color = (budget - spent < 0) ? "#e53e3e" : "#2d3748";
+    remainingBudgetText.innerText = `${remaining < 0 ? '-$' : '$'}${Math.abs(remaining).toLocaleString()}`;
+    if (remaining < 0) {
+        remainingCard.className = "stat-card red-danger";
+        remainingBudgetText.style.color = "#c53030";
+    } else {
+        remainingCard.className = "stat-card green";
+        remainingBudgetText.style.color = "#2f855a";
     }
 
-    if (totalSpentValue) totalSpentValue.innerText = `$${spent.toLocaleString()}`;
-    if (totalGuestsText) totalGuestsText.innerText = guests;
-    if (actualCostText) actualCostText.innerText = guests > 0 ? `$${costPerGuest.toLocaleString()}` : "$0";
-    if (guestInvitedSub) guestInvitedSub.innerText = `${guests} guests invited`;
-    if (guestTotalBadge) guestTotalBadge.innerText = `${guests} total`;
+    totalSpentValue.innerText = `$${spent.toLocaleString()}`;
+    totalGuestsText.innerText = guests;
+    actualCostText.innerText = guests > 0 ? `$${costPerGuest.toLocaleString()}` : "$0";
+    guestInvitedSub.innerText = `${guests} guests invited`;
+    guestTotalBadge.innerText = `${guests} total`;
 
-    // Dynamic rendering supporting both visual container block and spacious table list
-    if (budgetAllocationList) {
-        budgetAllocationList.innerHTML = "";
-        Object.keys(categories).forEach(c => {
-            const cSpent = getSpent(c);
-            const limit = categories[c] || 1;
-            const p = Math.min(100, (cSpent / limit) * 100);
-            
-            const row = document.createElement("div");
-            row.className = "budget-alloc-row";
-            row.innerHTML = `
-                <div class="budget-alloc-meta">
-                    <div class="budget-alloc-title">
-                        <i data-lucide="${catIcons[c] || 'package'}" style="width:16px; height:16px; color: var(--primary);"></i>
-                        <span>${c}</span>
-                    </div>
-                    <input type="number" class="edit-planned" data-cat="${c}" value="${categories[c]}">
+    // Category Allocation Table with inline Progress lines
+    budgetAllocationList.innerHTML = "";
+    Object.keys(categories).forEach(c => {
+        const cSpent = getSpent(c);
+        const limit = categories[c] || 1;
+        const p = Math.min(100, (cSpent / limit) * 100);
+        
+        const row = document.createElement("div");
+        row.className = "budget-alloc-row";
+        row.innerHTML = `
+            <div class="budget-alloc-meta">
+                <div class="budget-alloc-title">
+                    <i data-lucide="${catIcons[c]}" style="width:16px; height:16px; color: var(--primary);"></i>
+                    <span>${c}</span>
                 </div>
-                <div class="p-bar"><div class="p-fill ${cSpent > limit ? 'bg-danger' : 'bg-primary'}" style="width:${p}%"></div></div>
-                <div class="budget-alloc-spent">$${cSpent.toLocaleString()} spent</div>
-            `;
-            budgetAllocationList.appendChild(row);
-        });
-    } else if (categoryBudgetTable) {
-        categoryBudgetTable.innerHTML = `<tr><th>Category</th><th>Planned ($)</th><th>Spent Progress</th><th>Remaining</th></tr>`;
-        Object.keys(categories).forEach(c => {
-            const row = categoryBudgetTable.insertRow();
-            const cSpent = getSpent(c);
-            const limit = categories[c] || 1;
-            const pct = Math.min(100, (cSpent / limit) * 100);
-            const barColor = cSpent > limit ? "bg-danger" : "bg-primary";
-            const rem = categories[c] - cSpent;
-            const remClass = rem < 0 ? "status-danger" : "";
+                <input type="number" class="edit-planned" data-cat="${c}" value="${categories[c]}">
+            </div>
+            <div class="p-bar"><div class="p-fill ${cSpent > limit ? 'bg-danger' : 'bg-primary'}" style="width:${p}%"></div></div>
+            <div class="budget-alloc-spent">$${cSpent.toLocaleString()} spent</div>
+        `;
+        budgetAllocationList.appendChild(row);
+    });
 
-            row.innerHTML = `
-                <td style="font-weight: 600;">
-                    <div style="display:flex; align-items:center; gap:8px;">
-                        <i data-lucide="${catIcons[c] || 'package'}" style="width:14px; color: var(--primary);"></i>
-                        <span>${c}</span>
-                    </div>
-                </td>
-                <td><input type="number" class="edit-planned" data-cat="${c}" value="${categories[c]}" style="width:90px; padding:6px; border:1px solid #ddd; border-radius:6px; font-weight:700;"></td>
-                <td>
-                    <div style="font-size: 0.75rem; color: var(--text-muted); font-weight: 600; margin-bottom: 4px;">$${cSpent.toLocaleString()} spent</div>
-                    <div class="p-bar" style="height:6px; margin:0; width:120px;"><div class="p-fill ${barColor}" style="width: ${pct}%"></div></div>
-                </td>
-                <td style="font-weight:700;" class="${remClass}">$${rem.toLocaleString()}</td>
-            `;
-        });
-    }
-
-    // Clean Expense History Table (DUE & STATUS columns removed)
-    if (expenseTable) {
-        expenseTable.innerHTML = `<tr><th>Item</th><th>Category</th><th>Amount</th><th class="no-print" style="width: 50px;"></th></tr>`;
-        if (expenses.length === 0) {
+    // Clean single-header Expense History Table (Duplicate row bug resolved)
+    expenseTable.innerHTML = "";
+    if (expenses.length === 0) {
+        const row = expenseTable.insertRow();
+        row.innerHTML = `<td colspan="4" style="text-align:center; color:var(--text-muted); padding: 25px;">No expenses yet. Add your first expense above.</td>`;
+    } else {
+        expenses.forEach((e, i) => {
             const row = expenseTable.insertRow();
-            row.innerHTML = `<td colspan="4" style="text-align:center; color:var(--text-muted); padding: 25px;">No expenses yet. Add your first expense above.</td>`;
-        } else {
-            expenses.forEach((e, i) => {
-                const row = expenseTable.insertRow();
-                row.innerHTML = `
-                    <td>${e.desc}</td>
-                    <td><span class="status-badge" style="background:#f3f4f6; color:#4b5563;">${e.cat}</span></td>
-                    <td style="font-weight:700;">$${e.amount.toLocaleString()}</td>
-                    <td class="no-print" style="text-align:right;"><button onclick="deleteExp(${i})" class="remove-btn"><i data-lucide="trash-2" style="width:14px; height:14px;"></i></button></td>
-                `;
-            });
-        }
+            row.innerHTML = `
+                <td>${e.desc}</td>
+                <td><span class="status-badge" style="background:#f3f4f6; color:#4b5563;">${e.cat}</span></td>
+                <td style="font-weight:700;">$${e.amount.toLocaleString()}</td>
+                <td class="no-print" style="text-align:right;"><button onclick="deleteExp(${i})" class="remove-btn"><i data-lucide="trash-2" style="width:14px; height:14px;"></i></button></td>
+            `;
+        });
     }
 
     // Spending Progress Sidebar Cards with badged statuses
-    if (categoryProgress) {
-        categoryProgress.innerHTML = "";
-        Object.keys(categories).forEach(c => {
-            const s = getSpent(c);
-            const limit = categories[c] || 1;
-            const p = Math.min(100, (s / limit) * 100);
-            
-            let statusBadge = `<span class="badge badge-safe">SAFE</span>`;
-            let barColor = "bg-safe";
-            let subText = `Spent: $${s.toLocaleString()}`;
+    categoryProgress.innerHTML = "";
+    Object.keys(categories).forEach(c => {
+        const s = getSpent(c);
+        const limit = categories[c] || 1;
+        const p = Math.min(100, (s / limit) * 100);
+        
+        let statusBadge = `<span class="badge badge-safe">SAFE</span>`;
+        let barColor = "bg-safe";
+        let subText = `Spent: $${s.toLocaleString()}`;
 
-            if (s > limit) {
-                statusBadge = `<span class="badge badge-over">OVER</span>`;
-                barColor = "bg-danger";
-                subText = `Spent: $${s.toLocaleString()} <span style="color:#e53e3e; font-weight:700; margin-left:8px;">+$${(s - limit).toLocaleString()} over</span>`;
-            } else if (p > 80) {
-                statusBadge = `<span class="badge badge-track">ON TRACK</span>`;
-                barColor = "bg-warning";
-                subText = `Spent: $${s.toLocaleString()}`;
-            }
+        if (s > limit) {
+            statusBadge = `<span class="badge badge-over">OVER</span>`;
+            barColor = "bg-danger";
+            subText = `Spent: $${s.toLocaleString()} <span style="color:#e53e3e; font-weight:700; margin-left:8px;">+$${(s - limit).toLocaleString()} over</span>`;
+        } else if (p > 80) {
+            statusBadge = `<span class="badge badge-track">ON TRACK</span>`;
+            barColor = "bg-warning";
+            subText = `Spent: $${s.toLocaleString()}`;
+        }
 
-            const div = document.createElement("div");
-            div.className = "progress-item-block";
-            div.style.marginBottom = "1.5rem";
-            div.innerHTML = `
-                <div class="progress-block-header" style="display:flex; justify-content:space-between; align-items:center; font-size:0.85rem; font-weight:700; margin-bottom:4px;">
-                    <span class="progress-block-title" style="display:flex; align-items:center; gap:6px;">${c} ${statusBadge}</span>
-                    <span class="progress-block-percent" style="color:var(--text-muted); font-size:0.8rem;">${Math.round(p)}% of $${limit.toLocaleString()}</span>
-                </div>
-                <div class="p-bar" style="height:8px; background:#edf2f7; border-radius:6px; overflow:hidden;"><div class="p-fill ${barColor}" style="width:${p}%"></div></div>
-                <div class="progress-block-spent" style="font-size:0.75rem; color:var(--text-muted); margin-top:4px;">${subText}</div>
-            `;
-            categoryProgress.appendChild(div);
-        });
-    }
+        const div = document.createElement("div");
+        div.className = "progress-item-block";
+        div.style.marginBottom = "1.5rem";
+        div.innerHTML = `
+            <div class="progress-block-header" style="display:flex; justify-content:space-between; align-items:center; font-size:0.85rem; font-weight:700; margin-bottom:4px;">
+                <span class="progress-block-title" style="display:flex; align-items:center; gap:6px;">${c} ${statusBadge}</span>
+                <span class="progress-block-percent" style="color:var(--text-muted); font-size:0.8rem;">${Math.round(p)}% of $${limit.toLocaleString()}</span>
+            </div>
+            <div class="p-bar" style="height:8px; background:#edf2f7; border-radius:6px; overflow:hidden;"><div class="p-fill ${barColor}" style="width:${p}%"></div></div>
+            <div class="progress-block-spent" style="font-size:0.75rem; color:var(--text-muted); margin-top:4px;">${subText}</div>
+        `;
+        categoryProgress.appendChild(div);
+    });
 
     // Dynamic countdown card and top hero banner sync
     renderWeddingDayTracker();
@@ -276,8 +230,6 @@ window.setGuestManual = (group, value) => {
 
 // Wedding Day tracker state render logic (Save vs Change toggle state)
 function renderWeddingDayTracker() {
-    if (!weddingDayCard) return;
-    
     if (weddingDate) {
         const target = new Date(weddingDate);
         target.setHours(0,0,0,0);
@@ -287,15 +239,13 @@ function renderWeddingDayTracker() {
         const diffTime = target.getTime() - current.getTime();
         const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
         
-        if (countdownBanner) countdownBanner.style.display = "block";
-        if (countdownDaysText) {
-            if (diffDays > 0) {
-                countdownDaysText.innerHTML = `${diffDays} Days to go! 🌸`;
-            } else if (diffDays === 0) {
-                countdownDaysText.innerHTML = `It's Wedding Day! ❤️`;
-            } else {
-                countdownDaysText.innerHTML = `Married! ✨`;
-            }
+        countdownBanner.style.display = "block";
+        if (diffDays > 0) {
+            countdownDaysText.innerHTML = `${diffDays} Days to go! 🌸`;
+        } else if (diffDays === 0) {
+            countdownDaysText.innerHTML = `It's Wedding Day! ❤️`;
+        } else {
+            countdownDaysText.innerHTML = `Married! ✨`;
         }
 
         const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
@@ -316,7 +266,7 @@ function renderWeddingDayTracker() {
             </div>
         `;
     } else {
-        if (countdownBanner) countdownBanner.style.display = "none";
+        countdownBanner.style.display = "none";
         weddingDayCard.innerHTML = `
             <div style="display:flex; align-items:center; gap:8px; margin-bottom:1rem;">
                 <div class="tracker-icon-circle" style="width: 32px; height: 32px; border-radius: 50%; background: var(--primary); display: flex; align-items: center; justify-content: center;"><i data-lucide="heart" style="width:16px; height:16px; color:#fff;"></i></div>
@@ -422,72 +372,53 @@ function updateSmartTips(planned, budget, spent, remaining, costPerGuest) {
     }
 }
 
-// Dynmically ensure drop-down category selectors match javascript's hardcoded category structure
-const expCatSelect = document.getElementById("expCat");
-if (expCatSelect) {
-    const existingOptions = Array.from(expCatSelect.options).map(opt => opt.value);
-    Object.keys(categories).forEach(cat => {
-        if (!existingOptions.includes(cat)) {
-            const opt = document.createElement("option");
-            opt.value = cat;
-            opt.text = cat;
-            expCatSelect.add(opt);
-        }
-    });
+addExpenseBtn.onclick = () => {
+    const dInput = document.getElementById("expDesc");
+    const aInput = document.getElementById("expAmt");
+    const cSelect = document.getElementById("expCat");
+    if (dInput.value && aInput.value) { 
+        expenses.push({ desc: dInput.value, cat: cSelect.value, amount: Number(aInput.value) }); 
+        dInput.value = ""; aInput.value = ""; refresh(); 
+    }
+};
+
+// Excel Export (Wedding Date, Location and Cost Per Guest metadata integrated)
+document.getElementById("exportExcel").onclick = () => {
+    const wb = XLSX.utils.book_new();
+    const summary = [
+        ["WEDDING BUDGET REPORT", ""],
+        ["Wedding Date Target", weddingDate ? weddingDate : "Not Set"],
+        ["Location", weddingLocation ? weddingLocation : "Not Set"],
+        ["Total Budget", Number(totalBudgetInput.value)],
+        ["Total Spent", totalSpent()],
+        ["Total Remaining", Number(totalBudgetInput.value) - totalSpent()],
+        ["Financial Status", totalSpent() > Number(totalBudgetInput.value) ? "OVER BUDGET" : "ON TARGET"],
+        ["Cost Per Guest", actualCostText ? actualCostText.innerText : "$0"]
+    ];
+    Xxlsx_append(wb, summary, "Summary");
+    const breakdn = [["Category", "Planned Budget", "Actual Spent", "Remaining Balance"]];
+    Object.keys(categories).forEach(c => breakdn.push([c, categories[c], getSpent(c), categories[c] - getSpent(c)]));
+    Xxlsx_append(wb, breakdn, "Breakdown");
+    const trans = [["Description", "Category", "Amount"]];
+    expenses.forEach(e => trans.push([e.desc, e.cat, e.amount]));
+    Xxlsx_append(wb, trans, "Transactions");
+    XLSX.writeFile(wb, "Wedding_Budget_Planner.xlsx");
+};
+
+// Helper to secure excel worksheets append logic
+function Xxlsx_append(wb, data, sheetName) {
+    XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(data), sheetName);
 }
 
-if (addExpenseBtn) {
-    addExpenseBtn.onclick = () => {
-        const dInput = document.getElementById("expDesc");
-        const aInput = document.getElementById("expAmt");
-        const cSelect = document.getElementById("expCat");
-        if (dInput && aInput && cSelect && dInput.value && aInput.value) { 
-            expenses.push({ desc: dInput.value, cat: cSelect.value, amount: Number(aInput.value) }); 
-            dInput.value = ""; aInput.value = ""; refresh(); 
-        }
-    };
-}
-
-// Excel Export (Wedding Date and Location metadata integrated)
-const exportExcelBtn = document.getElementById("exportExcel");
-if (exportExcelBtn) {
-    exportExcelBtn.onclick = () => {
-        const wb = XLSX.utils.book_new();
-        const summary = [
-            ["WEDDING BUDGET REPORT", ""],
-            ["Wedding Date Target", weddingDate ? weddingDate : "Not Set"],
-            ["Location", weddingLocation ? weddingLocation : "Not Set"],
-            ["Total Budget", totalBudgetInput ? Number(totalBudgetInput.value) : 0],
-            ["Total Spent", totalSpent()],
-            ["Total Remaining", (totalBudgetInput ? Number(totalBudgetInput.value) : 0) - totalSpent()],
-            ["Financial Status", totalSpent() > (totalBudgetInput ? Number(totalBudgetInput.value) : 0) ? "OVER BUDGET" : "ON TARGET"]
-        ];
-        XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(summary), "Summary");
-        const breakdn = [["Category", "Planned Budget", "Actual Spent", "Remaining Balance"]];
-        Object.keys(categories).forEach(c => breakdn.push([c, categories[c], getSpent(c), categories[c] - getSpent(c)]));
-        XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(breakdn), "Breakdown");
-        const trans = [["Description", "Category", "Amount"]];
-        expenses.forEach(e => trans.push([e.desc, e.cat, e.amount]));
-        XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(trans), "Transactions");
-        XLSX.writeFile(wb, "Wedding_Budget_Planner.xlsx");
-    };
-}
-
-const exportCsvBtn = document.getElementById("exportCsv");
-if (exportCsvBtn) {
-    exportCsvBtn.onclick = () => {
-        let csv = `Wedding Date Target,${weddingDate ? weddingDate : "Not Set"}\nLocation,${weddingLocation ? weddingLocation : "Not Set"}\n\nDescription,Category,Amount\n`;
-        expenses.forEach(e => csv += `"${e.desc}","${e.cat}",${e.amount}\n`);
-        const blob = new Blob([csv], { type: 'text/csv' });
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url; a.download = 'wedding_expenses.csv'; a.click();
-    };
-}
+document.getElementById("exportCsv").onclick = () => {
+    let csv = `Wedding Date Target,${weddingDate ? weddingDate : "Not Set"}\nLocation,${weddingLocation ? weddingLocation : "Not Set"}\n\nDescription,Category,Amount\n`;
+    expenses.forEach(e => csv += `"${e.desc}","${e.cat}",${e.amount}\n`);
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = 'wedding_expenses.csv'; a.click();
+};
 
 window.deleteExp = (i) => { expenses.splice(i, 1); refresh(); };
-
-if (totalBudgetInput) totalBudgetInput.oninput = refresh;
-document.querySelectorAll(".guestGroup").forEach(i => i.oninput = refresh);
-
 window.onload = refresh;
+totalBudgetInput.oninput = refresh;
