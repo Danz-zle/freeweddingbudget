@@ -1,33 +1,6 @@
-const catIcons = { 
-  Venue: 'home', 
-  Catering: 'utensils', 
-  Photography: 'camera', 
-  Decor: 'flower', 
-  Entertainment: 'music',
-  Attire: 'shirt',
-  Transportation: 'car'
-};
-
-// Fixed, hardcoded standard starting values (Image 00ee72 Reference Specs)
-let categories = { 
-  Venue: 12000, 
-  Catering: 15000, 
-  Photography: 5000, 
-  Decor: 4000, 
-  Entertainment: 3500,
-  Attire: 3000,
-  Transportation: 1500
-};
-
-let expenses = [
-  { desc: "Venue Initial Booking", cat: "Venue", amount: 2222 },
-  { desc: "Catering Deposit", cat: "Catering", amount: 34343 },
-  { desc: "Professional Video Sourcing", cat: "Photography", amount: 21121 },
-  { desc: "Table Centerpieces", cat: "Decor", amount: 3111 },
-  { desc: "Cocktail Jazz Performance", cat: "Entertainment", amount: 1222 },
-  { desc: "Bridal Gown & Fitting Layout", cat: "Attire", amount: 23232 },
-  { desc: "Transportation logistics", cat: "Transportation", amount: 800 }
-];
+const catIcons = { Venue: 'home', Catering: 'utensils', Photography: 'camera', Decor: 'flower', Entertainment: 'music' };
+let categories = { Venue: 12000, Catering: 15000, Photography: 5000, Decor: 4000, Entertainment: 3500 };
+let expenses = []; // Clean state: Starts empty and only populates on user additions
 
 let guestCounts = {
   Family: 8,
@@ -36,12 +9,13 @@ let guestCounts = {
   Others: 10
 };
 
-let weddingDate = "2026-07-31"; // Default date matching +75 days from May 17, 2026
+let weddingDate = "2026-07-31"; // Default reference value (matches +75 days from May 17, 2026)
+let weddingLocation = ""; // Clean value on load, configurable by user
 
-// DOM Elements
 const totalBudgetInput = document.getElementById("totalBudget");
 const remainingBudgetText = document.getElementById("remainingBudget");
 const remainingCard = document.getElementById("remainingCard");
+const categoryBudgetTable = document.getElementById("categoryBudgetTable");
 const expenseTable = document.getElementById("expenseTable");
 const categoryProgress = document.getElementById("categoryProgress");
 const totalGuestsText = document.getElementById("totalGuests");
@@ -54,7 +28,6 @@ const totalSpentValue = document.getElementById("totalSpentValue");
 const guestInvitedSub = document.getElementById("guestInvitedSub");
 const guestTotalBadge = document.getElementById("guestTotalBadge");
 const allocationMeta = document.getElementById("allocationMeta");
-const budgetAllocationList = document.getElementById("budgetAllocationList");
 const countdownBanner = document.getElementById("countdownBanner");
 const countdownDaysText = document.getElementById("countdownDaysText");
 const weddingDayCard = document.getElementById("weddingDayCard");
@@ -74,27 +47,28 @@ function refresh() {
     const remaining = budget - spent;
     const costPerGuest = guests > 0 ? Math.round(spent / guests) : 0;
 
-    // 1. PDF Global Status
+    // PDF Global Status
+    const statusText = spent > budget ? "Over Budget" : "On Track";
     if (printStatusLabel) {
-        printStatusLabel.innerText = spent > budget ? "Over Budget" : "On Track";
+        printStatusLabel.innerText = statusText;
         printStatusLabel.style.color = spent > budget ? "#e53e3e" : "#48bb78";
     }
 
-    // 2. Budget Header Allocation Warning Metadata
+    // Allocation Warning Logic
+    if (planned > budget) {
+        allocationWarning.style.display = "flex";
+        warningText.innerText = `Warning: Total planned categories ($${planned.toLocaleString()}) exceed your budget by $${(planned - budget).toLocaleString()}!`;
+    } else {
+        allocationWarning.style.display = "none";
+    }
+
+    // Allocation Meta Header Text
     if (allocationMeta) {
         allocationMeta.innerText = `Planned: $${planned.toLocaleString()} / $${budget.toLocaleString()}`;
         allocationMeta.style.color = planned > budget ? "#e53e3e" : "var(--text-muted)";
     }
 
-    // Allocation Alert Banner Block
-    if (planned > budget) {
-        allocationWarning.style.display = "flex";
-        warningText.innerText = `Your planned allocations exceed your total budget. Consider adjusting.`;
-    } else {
-        allocationWarning.style.display = "none";
-    }
-
-    // 3. Stats Summary Cards Setup
+    // Summary Card Displays
     remainingBudgetText.innerText = `${remaining < 0 ? '-$' : '$'}${Math.abs(remaining).toLocaleString()}`;
     if (remaining < 0) {
         remainingCard.className = "stat-card red-danger";
@@ -103,50 +77,58 @@ function refresh() {
         remainingCard.className = "stat-card green";
         remainingBudgetText.style.color = "#2f855a";
     }
-    
+
     totalSpentValue.innerText = `$${spent.toLocaleString()}`;
-    actualCostText.innerText = `$${costPerGuest.toLocaleString()}`;
+    totalGuestsText.innerText = guests;
+    actualCostText.innerText = guests > 0 ? `$${costPerGuest.toLocaleString()}` : "$0";
     guestInvitedSub.innerText = `${guests} guests invited`;
     guestTotalBadge.innerText = `${guests} total`;
 
-    // 4. Budget Allocation Widget Rendering
-    budgetAllocationList.innerHTML = "";
+    // Category Allocation Table with inline Progress lines
+    categoryBudgetTable.innerHTML = `<tr><th>Category</th><th>Planned ($)</th><th>Spent Progress</th><th>Remaining</th></tr>`;
     Object.keys(categories).forEach(c => {
+        const row = categoryBudgetTable.insertRow();
         const cSpent = getSpent(c);
         const limit = categories[c] || 1;
-        const p = Math.min(100, (cSpent / limit) * 100);
-        
-        const row = document.createElement("div");
-        row.className = "budget-alloc-row";
+        const pct = Math.min(100, (cSpent / limit) * 100);
+        const barColor = cSpent > limit ? "bg-danger" : "bg-primary";
+        const rem = categories[c] - cSpent;
+        const remClass = rem < 0 ? "status-danger" : "";
+
         row.innerHTML = `
-            <div class="budget-alloc-meta">
-                <div class="budget-alloc-title">
-                    <i data-lucide="${catIcons[c]}" style="width:16px; height:16px; color: var(--primary);"></i>
+            <td style="font-weight: 600;">
+                <div style="display:flex; align-items:center; gap:8px;">
+                    <i data-lucide="${catIcons[c]}" style="width:14px; color: var(--primary);"></i>
                     <span>${c}</span>
                 </div>
-                <input type="number" class="edit-planned" data-cat="${c}" value="${categories[c]}">
-            </div>
-            <div class="p-bar"><div class="p-fill ${cSpent > limit ? 'bg-danger' : 'bg-primary'}" style="width:${p}%"></div></div>
-            <div class="budget-alloc-spent">$${cSpent.toLocaleString()} spent</div>
+            </td>
+            <td><input type="number" class="edit-planned" data-cat="${c}" value="${categories[c]}" style="width:90px; padding:6px; border:1px solid #ddd; border-radius:6px; font-weight:700;"></td>
+            <td>
+                <div style="font-size: 0.75rem; color: var(--text-muted); font-weight: 600; margin-bottom: 4px;">$${cSpent.toLocaleString()} spent</div>
+                <div class="p-bar" style="height:6px; margin:0; width:120px;"><div class="p-fill ${barColor}" style="width: ${pct}%"></div></div>
+            </td>
+            <td style="font-weight:700;" class="${remClass}">$${rem.toLocaleString()}</td>
         `;
-        budgetAllocationList.appendChild(row);
     });
 
-    // 5. Expense History Table Rendering
-    expenseTable.innerHTML = `<tr><th>Item</th><th>Category</th><th>Due</th><th>Status</th><th>Amount</th><th class="no-print"></th></tr>`;
-    expenses.forEach((e, i) => {
+    // Clean Expense History Table (DUE & STATUS columns removed)
+    expenseTable.innerHTML = `<tr><th>Item</th><th>Category</th><th>Amount</th><th class="no-print" style="width: 50px;"></th></tr>`;
+    if (expenses.length === 0) {
         const row = expenseTable.insertRow();
-        row.innerHTML = `
-            <td>${e.desc}</td>
-            <td>${e.cat}</td>
-            <td style="color:var(--text-muted); font-size:0.85rem;">—</td>
-            <td><span class="status-badge">Pending</span></td>
-            <td style="font-weight:700;">$${e.amount.toLocaleString()}</td>
-            <td class="no-print" style="text-align:right;"><button onclick="deleteExp(${i})" class="remove-btn"><i data-lucide="trash-2" style="width:14px; height:14px;"></i></button></td>
-        `;
-    });
+        row.innerHTML = `<td colspan="4" style="text-align:center; color:var(--text-muted); padding: 25px;">No expenses yet. Add your first expense above.</td>`;
+    } else {
+        expenses.forEach((e, i) => {
+            const row = expenseTable.insertRow();
+            row.innerHTML = `
+                <td>${e.desc}</td>
+                <td><span class="status-badge" style="background:#f3f4f6; color:#4b5563;">${e.cat}</span></td>
+                <td style="font-weight:700;">$${e.amount.toLocaleString()}</td>
+                <td class="no-print" style="text-align:right;"><button onclick="deleteExp(${i})" class="remove-btn"><i data-lucide="trash-2" style="width:14px; height:14px;"></i></button></td>
+            `;
+        });
+    }
 
-    // 6. Spending Progress Sidebar (Status checks)
+    // Spending Progress Sidebar Cards with badged statuses
     categoryProgress.innerHTML = "";
     Object.keys(categories).forEach(c => {
         const s = getSpent(c);
@@ -161,7 +143,7 @@ function refresh() {
             statusBadge = `<span class="badge badge-over">OVER</span>`;
             barColor = "bg-danger";
             subText = `Spent: $${s.toLocaleString()} <span style="color:#e53e3e; font-weight:700; margin-left:8px;">+$${(s - limit).toLocaleString()} over</span>`;
-        } else if (p > 75) {
+        } else if (p > 80) {
             statusBadge = `<span class="badge badge-track">ON TRACK</span>`;
             barColor = "bg-warning";
             subText = `Spent: $${s.toLocaleString()}`;
@@ -169,32 +151,46 @@ function refresh() {
 
         const div = document.createElement("div");
         div.className = "progress-item-block";
+        div.style.marginBottom = "1.5rem";
         div.innerHTML = `
-            <div class="progress-block-header">
-                <span class="progress-block-title">${c} ${statusBadge}</span>
-                <span class="progress-block-percent">${Math.round(p)}% of $${limit.toLocaleString()}</span>
+            <div class="progress-block-header" style="display:flex; justify-content:space-between; align-items:center; font-size:0.85rem; font-weight:700; margin-bottom:4px;">
+                <span class="progress-block-title" style="display:flex; align-items:center; gap:6px;">${c} ${statusBadge}</span>
+                <span class="progress-block-percent" style="color:var(--text-muted); font-size:0.8rem;">${Math.round(p)}% of $${limit.toLocaleString()}</span>
             </div>
-            <div class="p-bar"><div class="p-fill ${barColor}" style="width:${p}%"></div></div>
-            <div class="progress-block-spent">${subText}</div>
+            <div class="p-bar" style="height:8px; background:#edf2f7; border-radius:6px; overflow:hidden;"><div class="p-fill ${barColor}" style="width:${p}%"></div></div>
+            <div class="progress-block-spent" style="font-size:0.75rem; color:var(--text-muted); margin-top:4px;">${subText}</div>
         `;
         categoryProgress.appendChild(div);
     });
 
-    // 7. Dynamic Wedding Countdown State Switching Logic
+    // Dynamic countdown card and top hero banner sync
     renderWeddingDayTracker();
 
-    // 8. Guest Counter synchronization
+    // Guest counter manual field values sync
     Object.keys(guestCounts).forEach(g => {
         const valInput = document.getElementById(`input-${g}`);
         if (valInput) valInput.value = guestCounts[g];
     });
 
-    // 9. Universal Smart Tips Engine
-    renderSmartTips(planned, budget, spent, remaining, costPerGuest);
+    // Loops and evaluates all category warning triggers dynamically
+    updateSmartTips(planned, budget, spent, remaining, costPerGuest);
+
+    // Sync Print PDF Details
+    const printDateMeta = document.getElementById("printDateMeta");
+    const printWeddingDetails = document.getElementById("printWeddingDetails");
+    if (printDateMeta) {
+        printDateMeta.innerText = `Report Generated: ${new Date().toLocaleDateString()}`;
+    }
+    if (printWeddingDetails) {
+        printWeddingDetails.innerHTML = `
+            <p style="margin: 5px 0;"><strong>Wedding Date:</strong> ${weddingDate ? weddingDate : 'Not Set'}</p>
+            <p style="margin: 5px 0;"><strong>Location:</strong> ${weddingLocation ? weddingLocation : 'Not Set'}</p>
+            <p style="margin: 5px 0;"><strong>Guest Count:</strong> ${guests} guests invited</p>
+        `;
+    }
 
     if (window.lucide) lucide.createIcons();
-    
-    // Bind change allocation event list
+
     document.querySelectorAll(".edit-planned").forEach(input => {
         input.oninput = (e) => {
             categories[e.target.dataset.cat] = Number(e.target.value) || 0;
@@ -203,7 +199,7 @@ function refresh() {
     });
 }
 
-// Interactive Guest actions (Both Buttons and Manual inputs synchronized)
+// Interactive Guest actions (Buttons and inputs synchronized)
 window.adjustGuests = (group, delta) => {
     guestCounts[group] = Math.max(0, guestCounts[group] + delta);
     refresh();
@@ -214,18 +210,17 @@ window.setGuestManual = (group, value) => {
     refresh();
 };
 
-// Wedding Day Tracker Renderer
+// Wedding Day tracker state render logic (Save vs Change toggle state)
 function renderWeddingDayTracker() {
     if (weddingDate) {
         const target = new Date(weddingDate);
         target.setHours(0,0,0,0);
-        const current = new Date("2026-05-17"); // System baseline setup date
+        const current = new Date("2026-05-17"); // System default current baseline date
         current.setHours(0,0,0,0);
         
         const diffTime = target.getTime() - current.getTime();
         const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
         
-        // Update top Countdown Banner
         countdownBanner.style.display = "block";
         if (diffDays > 0) {
             countdownDaysText.innerHTML = `${diffDays} Days to go! 🌸`;
@@ -240,28 +235,31 @@ function renderWeddingDayTracker() {
 
         weddingDayCard.innerHTML = `
             <div style="display:flex; align-items:center; gap:8px; margin-bottom:1rem;">
-                <div class="tracker-icon-circle"><i data-lucide="heart" style="width:16px; height:16px; color:#fff;"></i></div>
+                <div class="tracker-icon-circle" style="width: 32px; height: 32px; border-radius: 50%; background: var(--primary); display: flex; align-items: center; justify-content: center;"><i data-lucide="heart" style="width:16px; height:16px; color:#fff;"></i></div>
                 <h2 style="border:none; margin:0; padding:0;">Wedding Day</h2>
             </div>
-            <div class="days-remaining-display">
-                <div class="big-days-num">${diffDays > 0 ? diffDays : 0}</div>
-                <div class="days-subtext">DAYS TO GO</div>
+            <div class="days-remaining-display" style="text-align:center; margin:1.5rem 0;">
+                <div class="big-days-num" style="font-size:3.8rem; font-weight:900; color:var(--text-main); line-height:1;">${diffDays > 0 ? diffDays : 0}</div>
+                <div class="days-subtext" style="font-size:0.8rem; font-weight:700; color:var(--text-muted); letter-spacing:0.15em; margin-top:5px;">DAYS TO GO</div>
             </div>
-            <div class="day-tracker-footer">
+            <div class="day-tracker-footer" style="border-top: 1px solid #edf2f7; padding-top:1rem; display:flex; justify-content:space-between; align-items:center; font-size:0.85rem; font-weight:600; color:var(--text-muted);">
                 <span>${formattedDate}</span>
-                <a href="#" onclick="changeDate(); return false;" class="change-link">Change</a>
+                <a href="#" onclick="changeDate(); return false;" class="change-link" style="color:var(--primary); text-decoration:none;">Change</a>
             </div>
         `;
     } else {
         countdownBanner.style.display = "none";
         weddingDayCard.innerHTML = `
             <div style="display:flex; align-items:center; gap:8px; margin-bottom:1rem;">
-                <div class="tracker-icon-circle"><i data-lucide="heart" style="width:16px; height:16px; color:#fff;"></i></div>
+                <div class="tracker-icon-circle" style="width: 32px; height: 32px; border-radius: 50%; background: var(--primary); display: flex; align-items: center; justify-content: center;"><i data-lucide="heart" style="width:16px; height:16px; color:#fff;"></i></div>
                 <h2 style="border:none; margin:0; padding:0;">Wedding Day</h2>
             </div>
             <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:1rem;">Set your wedding date</p>
-            <input type="date" id="weddingDateInput" style="margin-bottom:1rem; width:100%; box-sizing:border-box;" value="2026-07-31">
-            <button id="saveDate" onclick="saveDateValue()" style="width:100%;">Save Wedding Date</button>
+            <div style="display:flex; flex-direction:column; gap:8px;">
+                <input type="date" id="weddingDateInput" style="width:100%; box-sizing:border-box;" value="2026-07-31">
+                <input type="text" id="weddingLocationInput" placeholder="Location Name (e.g., Paris)" value="${weddingLocation}" oninput="weddingLocation = this.value; refresh();" style="width:100%; box-sizing:border-box; margin-bottom: 8px;">
+                <button id="saveDate" onclick="saveDateValue()" style="width:100%;">Save Wedding Date</button>
+            </div>
         `;
     }
 }
@@ -279,8 +277,9 @@ window.changeDate = () => {
     refresh();
 };
 
-// Universal Smart Tips Engine 
-function renderSmartTips(planned, budget, spent, remaining, costPerGuest) {
+// Loop evaluation of all Categories warnings
+function updateSmartTips(planned, budget, spent, remaining, costPerGuest) {
+    if (!smartTipsCard || !smartTipsContent) return;
     let tips = [];
 
     // 1. Over-allocated Warning
@@ -315,39 +314,41 @@ function renderSmartTips(planned, budget, spent, remaining, costPerGuest) {
         });
     }
 
-    // 4. Over category budget check
+    // 4. Over category limits checks
     Object.keys(categories).forEach(c => {
         const catSpent = getSpent(c);
         const catLimit = categories[c] || 0;
-        if (catLimit > 0 && catSpent > catLimit) {
-            tips.push({
-                type: "danger",
-                title: `${c} Over Budget`,
-                icon: "alert-triangle",
-                desc: `You are over your ${c} budget by $${(catSpent - catLimit).toLocaleString()}. Check if you can reduce costs.`
-            });
-        } else if (catLimit > 0 && catSpent > (catLimit * 0.85)) {
-            tips.push({
-                type: "warning",
-                title: `${c} Near Limit`,
-                icon: catIcons[c],
-                desc: `You are close to your ${c} budget. Check if options can be adjusted.`
-            });
+        if (catLimit > 0) {
+            if (catSpent > catLimit) {
+                tips.push({
+                    type: "danger",
+                    title: `${c} Over Budget`,
+                    icon: "alert-triangle",
+                    desc: `You are over your ${c} budget by $${(catSpent - catLimit).toLocaleString()}. Check if you can reduce costs.`
+                });
+            } else if (catSpent > (catLimit * 0.85)) {
+                tips.push({
+                    type: "warning",
+                    title: `${c} Near Limit`,
+                    icon: "trending-up",
+                    desc: `You are close to your ${c} budget limit ($${catLimit.toLocaleString()}). Check if there are cheaper alternatives.`
+                });
+            }
         }
     });
 
-    // Conditional visibility
     if (tips.length > 0) {
         smartTipsCard.style.display = "block";
         smartTipsContent.innerHTML = tips.map(t => `
-            <div class="tip-alert-box tip-${t.type}">
-                <div class="tip-alert-header">
-                    <i data-lucide="${t.icon}" style="width:16px; height:16px;"></i>
-                    <strong>${t.title}</strong>
+            <div class="tip-alert-box tip-${t.type}" style="border-radius:12px; padding:12px; border:1px solid; margin-bottom:10px; font-size:0.85rem; line-height:1.4;">
+                <div class="tip-alert-header" style="display:flex; align-items:center; gap:8px; font-weight:700; margin-bottom:4px;">
+                    <i data-lucide="${t.icon || 'alert-circle'}" style="width:16px; height:16px;"></i>
+                    <span>${t.title}</span>
                 </div>
-                <p>${t.desc}</p>
+                <p style="margin:0; color:inherit; font-size:0.8rem;">${t.desc}</p>
             </div>
         `).join('');
+        if (window.lucide) lucide.createIcons();
     } else {
         smartTipsCard.style.display = "none";
     }
@@ -363,12 +364,13 @@ addExpenseBtn.onclick = () => {
     }
 };
 
-// Excel Export
+// Excel Export (Wedding Date and Location metadata integrated)
 document.getElementById("exportExcel").onclick = () => {
     const wb = XLSX.utils.book_new();
     const summary = [
         ["WEDDING BUDGET REPORT", ""],
-        ["Wedding Date Target", weddingDate ? weddingDate : "Not Specified"],
+        ["Wedding Date Target", weddingDate ? weddingDate : "Not Set"],
+        ["Location", weddingLocation ? weddingLocation : "Not Set"],
         ["Total Budget", Number(totalBudgetInput.value)],
         ["Total Spent", totalSpent()],
         ["Total Remaining", Number(totalBudgetInput.value) - totalSpent()],
