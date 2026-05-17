@@ -2,69 +2,128 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Wedding Budget Breakdown: Where to Spend & Where to Save</title>
+  <title>Wedding Budget Breakdown: Where to Spend & Where to Save - Wedding Budget Planner</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="style.css">
   <script src="https://unpkg.com/lucide@latest"></script>
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4504023199353060" crossorigin="anonymous"></script>
+  <style>
+    .article-container { max-width: 1100px; margin: 2.5rem auto; padding: 0 1.5rem; }
+    .article-grid { display: grid; grid-template-columns: 1fr 340px; gap: 2.5rem; align-items: start; }
+    @media (max-width: 900px) { .article-grid { grid-template-columns: 1fr; } }
+    .premium-article-header { margin-bottom: 2rem; }
+    .article-meta-row { display: flex; gap: 12px; align-items: center; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); margin-bottom: 12px; }
+    .article-meta-row .category-tag { color: #3182ce; }
+    .premium-article-title { font-size: 2.6rem; font-weight: 800; color: var(--text-main); line-height: 1.25; margin: 0 0 15px 0; }
+    .premium-author-bar { display: flex; align-items: center; gap: 12px; border-top: 1px solid #f3f4f6; border-bottom: 1px solid #f3f4f6; padding: 1rem 0; margin-bottom: 2rem; }
+    .author-avatar { width: 44px; height: 44px; border-radius: 50%; background: #ebf8ff; display: flex; align-items: center; justify-content: center; font-weight: 800; color: #3182ce; border: 1px solid #bee3f8; }
+    .author-info { display: flex; flex-direction: column; }
+    .author-name { font-size: 0.95rem; font-weight: 700; color: var(--text-main); }
+    .author-title { font-size: 0.75rem; color: var(--text-muted); }
+    .editorial-content { font-size: 1.1rem; line-height: 1.85; color: #374151; }
+    .editorial-content p { margin-bottom: 1.75rem; }
+    .editorial-content h2 { font-size: 1.6rem; font-weight: 800; color: var(--text-main); margin: 2.5rem 0 1.25rem 0; }
+    .sidebar-widget { background: white; border-radius: 16px; padding: 1.75rem; border: 1px solid #f3f4f6; box-shadow: 0 4px 12px rgba(0,0,0,0.01); margin-bottom: 1.5rem; }
+    .sidebar-widget h3 { font-size: 1.15rem; font-weight: 800; margin: 0 0 1rem 0; color: var(--text-main); }
+    .sidebar-widget p { font-size: 0.9rem; line-height: 1.6; color: var(--text-muted); margin-bottom: 1.25rem; }
+    .sidebar-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 12px; background: var(--primary); color: white; border-radius: 8px; text-decoration: none; font-weight: 700; font-size: 0.9rem; box-sizing: border-box; }
+    .ad-card { border: 1px dashed #d1d5db; background: #f9fafb; border-radius: 12px; padding: 1.5rem; text-align: center; margin: 2rem 0; }
+    .ad-label { font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1rem; display: block; }
+    .article-bottom-cta { background: linear-gradient(135deg, #fff5f5 0%, #fdf2f8 100%); border: 1px solid #fbcfe8; border-radius: 16px; padding: 2.2rem; text-align: center; margin-top: 3.5rem; }
+    .article-bottom-cta h3 { font-size: 1.5rem; font-weight: 800; color: var(--text-main); margin: 0 0 10px 0; }
+    .article-bottom-cta p { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1.5rem; }
+    .cta-btn-pill { display: inline-flex; align-items: center; gap: 8px; background: var(--primary); color: white; padding: 12px 28px; border-radius: 30px; font-weight: 700; text-decoration: none; }
+    .editorial-share-row { display: flex; gap: 8px; align-items: center; border-top: 1px solid #f3f4f6; border-bottom: 1px solid #f3f4f6; padding: 1rem 0; margin-top: 2rem; }
+    .share-icon-circle { width: 32px; height: 32px; border-radius: 50%; border: 1px solid #e5e7eb; display: flex; align-items: center; justify-content: center; color: var(--text-muted); cursor: pointer; }
+    .helpful-links-list { list-style: none; padding: 0; margin: 0; }
+    .helpful-links-list li { margin-bottom: 10px; font-size: 0.9rem; font-weight: 600; }
+    .helpful-links-list a { color: var(--primary); text-decoration: none; }
+  </style>
 </head>
 <body>
+
 <header class="top-nav">
   <div class="logo">Wedding Budget Planner</div>
-  <nav class="nav-links"><a href="index.html">Dashboard</a><a href="blog.html">Blog</a><a href="about.html">About</a><a href="privacy.html">Privacy</a></nav>
+  <nav class="nav-links">
+    <a href="index.html">Dashboard</a>
+    <a href="blog.html" style="font-weight: 700; color: #be185d;">Blog</a>
+    <a href="about.html">About</a>
+    <a href="privacy.html">Privacy</a>
+    <a href="mailto:liubigcow@yahoo.com">Contact</a>
+  </nav>
 </header>
 
-<main class="dashboard-container">
-  <div class="blog-layout">
-    <article class="card article-body">
-      <div class="article-header">
-        <span class="badge badge-data">Industry Data</span>
-        <h1 style="font-size: 2rem; margin: 0.5rem 0; font-weight: 800; line-height: 1.3;">Wedding Budget Breakdown: Where to Spend & Where to Save</h1>
-        <p style="color: var(--text-muted); font-size: 0.9rem;">By Industry Analysis Desk • Published May 2026 • 9 min read</p>
+<main class="article-container">
+  <div class="article-grid">
+    <article>
+      <div class="premium-article-header">
+        <div class="article-meta-row">
+          <span class="category-tag">Industry Data</span>
+          <span>•</span>
+          <span>9 min read</span>
+          <span>•</span>
+          <span>May 2026</span>
+        </div>
+        <h1 class="premium-article-title">Wedding Budget Breakdown: Where to Spend & Where to Save</h1>
       </div>
 
-      <p>Data tracking from over 2,000 recent wedding transactions reveals how couples successfully balance high costs against budget constraints. Prioritizing sections that directly impact guest satisfaction while finding areas to save helps keep overall spending on target.</p>
-
-      <div style="margin: 2rem 0; background: #fcfcfd; padding: 1rem; border: 1px dashed var(--input-border); text-align: center;">
-        <span style="display:block; font-size:0.7rem; color:var(--text-muted); margin-bottom:0.5rem; text-transform:uppercase;">Advertisement</span>
-        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-4504023199353060" data-ad-slot="7437035292" data-ad-format="auto" data-full-width-responsive="true"></ins>
-        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+      <div class="premium-author-bar">
+        <div class="author-avatar">EP</div>
+        <div class="author-info">
+          <span class="author-name">Sarah Mitchell</span>
+          <span class="author-title">Wedding Planning Expert</span>
+        </div>
       </div>
 
-      <h2>Where to Spend: High-Impact Priority Zones</h2>
-      <p>Certain elements directly shape the long-term memory and immediate atmosphere of your event. Focus your resources on these key areas:</p>
-      <ul>
-        <li><strong>Professional Media Production:</strong> Low-cost photo packages often result in poor file capture quality or editing delays. Investing in an experienced media team preserves your memories reliably.</li>
-        <li><strong>Dining Experience & Hospitality:</strong> Guest feedback consistently ranks high-quality food and smooth service as top factors for an enjoyable reception.</li>
-      </ul>
+      <div class="editorial-content">
+        <p>Data tracking from over 2,000 recent wedding transactions reveals how couples successfully balance high costs against budget constraints. Prioritizing sections that directly impact guest satisfaction while finding areas to save helps keep overall spending on target.</p>
 
-      <div class="pro-tip">
-        <strong>PRO TIP: The Venue Infrastructure Trap</strong>
-        Renting a raw space or an empty lot can look like an easy way to save. However, bringing in outside tables, chairs, staging, and portable restrooms often ends up costing more than booking an all-inclusive hotel or banquet hall.
+        <div class="ad-card">
+          <span class="ad-label">Advertisement</span>
+          <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-4504023199353060" data-ad-slot="7437035292" data-ad-format="auto" data-full-width-responsive="true"></ins>
+          <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+        </div>
+
+        <h2>Where to Spend: High-Impact Priority Zones</h2>
+        <p>Certain elements directly shape the long-term memory and immediate atmosphere of your event. Focus your resources on these key areas:</p>
+        <ul>
+          <li><strong>Professional Media Production:</strong> Low-cost photo packages often result in poor file capture quality. Investing in an experienced media team preserves your memories reliably.</li>
+          <li><strong>Dining Experience & Hospitality:</strong> Guest feedback consistently ranks high-quality food as a top factor.</li>
+        </ul>
       </div>
 
-      <h2>Where to Save: Smart Cost-Cutting Zones</h2>
-      <p>Couples can reduce expenses in areas that don't compromise guest comfort or the overall experience:</p>
-      <ul>
-        <li><strong>Paper Stationery Items:</strong> High-end printed maps, details, and response cards can run up significant printing and mailing costs. Switching to simple digital options cuts these costs down sharply.</li>
-        <li><strong>Monogrammed Party Favors:</strong> Custom favors can become a costly leftover expense. Opt for simple edible treats or consider dropping them entirely to save on your final bill.</li>
-      </ul>
+      <div class="editorial-share-row">
+        <span style="font-size: 0.85rem; font-weight: 700; color: var(--text-muted); margin-right: 8px;">Share:</span>
+        <div class="share-icon-circle" onclick="window.print()"><i data-lucide="printer" style="width: 14px; height: 14px;"></i></div>
+        <div class="share-icon-circle" onclick="navigator.clipboard.writeText(window.location.href); alert('Link copied to clipboard!');"><i data-lucide="link-2" style="width: 14px; height: 14px;"></i></div>
+      </div>
 
-      <div class="share-container">
-        <span style="font-size:0.85rem; font-weight:700; color:var(--text-muted);">Share This Guide:</span>
-        <button class="share-btn" onclick="window.print()"><i data-lucide="printer" style="width:14px; height:14px;"></i> Print PDF</button>
+      <div class="article-bottom-cta">
+        <h3>Plan Smarter, Spend Less</h3>
+        <p>Our free Wedding Budget Calculator helps thousands of couples stay on track. Start building yours today.</p>
+        <a href="index.html" class="cta-btn-pill"><i data-lucide="calculator" style="width: 16px; height: 16px;"></i> Launch Budget Calculator</a>
       </div>
     </article>
 
     <aside class="no-print">
-      <div class="sidebar-box" style="background: linear-gradient(to bottom, #fff, #fff5f5); border: 1px solid var(--primary);">
-        <h4>Need to Calculate Now?</h4>
-        <p style="font-size:0.85rem; line-height:1.5; color:var(--text-muted); margin-bottom:1rem;">Access our premium interactive workspace dashboard tool to allocate your planning costs instantly.</p>
-        <a href="index.html" class="button" style="display:block; text-align:center; text-decoration:none; padding:0.6rem; font-size:0.9rem;">Launch Free Calculator</a>
+      <div class="sidebar-widget" style="background: #be185d; color: white; border: none; text-align: center;">
+        <h3 style="color: white; font-size: 1.25rem; margin-bottom: 0.5rem;">Free Budget Calculator</h3>
+        <p style="color: rgba(255,255,255,0.9); font-size: 0.9rem; margin-bottom: 1.25rem;">Plan your wedding budget with our interactive tool. Track expenses, monitor categories, and stay on target.</p>
+        <a href="index.html" class="sidebar-btn" style="background: white; color: #be185d; border: none; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; gap: 8px; width: 100%;">Open Calculator <i data-lucide="arrow-right" style="width: 14px; height: 14px;"></i></a>
+      </div>
+
+      <div class="sidebar-widget">
+        <h3>Related Resources</h3>
+        <ul class="helpful-links-list">
+          <li><a href="blog-planning-timeline.html">→ Wedding Timeline Checklist</a></li>
+          <li><a href="blog-diy-decor.html">→ Creative DIY Decor Tips</a></li>
+          <li><a href="blog-hidden-costs.html">→ 10 Hidden Fees to Avoid</a></li>
+        </ul>
       </div>
     </aside>
   </div>
 </main>
+
 <script>lucide.createIcons();</script>
 </body>
 </html>
