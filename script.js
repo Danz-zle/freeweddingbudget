@@ -8,15 +8,15 @@ const catIcons = {
   Transportation: 'car'
 };
 
-// Planned reference budgets initialized to 0 by default so it starts as a clean slate as requested
+// Planned reference budgets restored to standard default values for user reference
 let categories = { 
-  Venue: 0, 
-  Catering: 0, 
-  Photography: 0, 
-  Decor: 0, 
-  Entertainment: 0,
-  Attire: 0,
-  Transportation: 0
+  Venue: 12000, 
+  Catering: 15000, 
+  Photography: 5000, 
+  Decor: 4000, 
+  Entertainment: 3500,
+  Attire: 3000,
+  Transportation: 1500
 };
 
 // Clean state: empty of actual spent items by default on load
@@ -294,7 +294,7 @@ function renderWeddingDayTracker() {
                 <div class="days-subtext" style="font-size:0.8rem; font-weight:700; color:var(--text-muted); letter-spacing:0.15em; margin-top:5px;">DAYS TO GO</div>
             </div>
             <div class="day-tracker-footer" style="border-top: 1px solid #edf2f7; padding-top:1rem; display:flex; justify-content:space-between; align-items:center; font-size:0.85rem; font-weight:600; color:var(--text-muted);">
-                <span>${formattedDate}</span>
+                <span>${formattedDate}${weddingLocation ? ' • ' + weddingLocation : ''}</span>
                 <a href="#" onclick="changeDate(); return false;" class="change-link" style="color:var(--primary); text-decoration:none;">Change</a>
             </div>
         `;
@@ -308,7 +308,7 @@ function renderWeddingDayTracker() {
             <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:1rem;">Set your wedding date</p>
             <div style="display:flex; flex-direction:column; gap:8px;">
                 <input type="date" id="weddingDateInput" style="width:100%; box-sizing:border-box;" value="2026-10-31">
-                <input type="text" id="weddingLocationInput" placeholder="Location Name (e.g., Paris)" value="${weddingLocation}" oninput="weddingLocation = this.value; refresh();" style="width:100%; box-sizing:border-box; margin-bottom: 8px;">
+                <input type="text" id="weddingLocationInput" placeholder="Location Name (e.g., Paris)" value="${weddingLocation}" style="width:100%; box-sizing:border-box; margin-bottom: 8px;">
                 <button id="saveDate" onclick="saveDateValue()" style="width:100%;">Save Wedding Date</button>
             </div>
         `;
@@ -317,10 +317,14 @@ function renderWeddingDayTracker() {
 
 window.saveDateValue = () => {
     const picker = document.getElementById("weddingDateInput");
+    const locInput = document.getElementById("weddingLocationInput");
     if (picker && picker.value) {
         weddingDate = picker.value;
-        refresh();
     }
+    if (locInput) {
+        weddingLocation = locInput.value;
+    }
+    refresh();
 };
 
 window.changeDate = () => {
