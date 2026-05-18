@@ -58,6 +58,85 @@ body {
 .countdown-label { font-size: 0.8rem; font-weight: 700; letter-spacing: 0.15em; opacity: 0.85; text-transform: uppercase; }
 .countdown-hero h1 { font-size: 2.8rem; font-weight: 900; margin: 8px 0 0 0; }
 
+/* Premium Editorial Branded Hero Banner (image_6fcd8c.png) */
+.premium-hero-banner {
+  position: relative;
+  background: url('https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=cover&w=1600&q=80') no-repeat center center;
+  background-size: cover;
+  padding: 5.5rem 2rem;
+  text-align: center;
+  color: white;
+  overflow: hidden;
+}
+.premium-hero-overlay {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(135deg, rgba(30, 41, 59, 0.75) 0%, rgba(190, 24, 93, 0.5) 100%);
+  z-index: 1;
+}
+.premium-hero-container {
+  position: relative;
+  z-index: 2;
+  max-width: 800px;
+  margin: 0 auto;
+}
+.premium-hero-tagline {
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0.25em;
+  opacity: 0.9;
+  text-transform: uppercase;
+  color: #fff;
+  display: inline-block;
+  margin-bottom: 0.75rem;
+}
+.premium-hero-title {
+  font-size: 3.6rem;
+  font-weight: 900;
+  margin: 0 0 1rem 0;
+  color: white;
+  line-height: 1.1;
+  letter-spacing: -1px;
+}
+.premium-hero-title em {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-style: italic;
+  font-weight: 400;
+  color: #fbcfe8;
+}
+.premium-hero-subtitle {
+  font-size: 1.25rem;
+  line-height: 1.6;
+  opacity: 0.95;
+  color: #f1f5f9;
+  margin: 0 auto 2rem auto;
+  max-width: 620px;
+}
+.premium-hero-badges {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+.premium-hero-badges span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  background: rgba(255, 255, 255, 0.15);
+  padding: 8px 16px;
+  border-radius: 30px;
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: white;
+}
+.premium-hero-badges i {
+  width: 14px;
+  height: 14px;
+  color: #fbcfe8;
+}
+
 /* Summary Stat cards layout */
 .summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; margin-bottom: 2rem; }
 .stat-card { padding: 1.5rem; border-radius: 1.25rem; background: white; border-bottom: 4px solid #ddd; box-shadow: 0 4px 15px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: center; }
@@ -177,6 +256,95 @@ input[type="text"], input[type="number"], select {
 .tip-warning { background: #fffaf0; border-color: #feebc8; color: #7b341e; }
 .tip-warning i { color: #dd6b20; }
 
+/* Premium Planning Resources Grid (image_6fd50f.png) */
+.planning-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 2rem;
+  margin-bottom: 3.5rem;
+}
+.planning-card {
+  background: white;
+  border-radius: 20px;
+  overflow: hidden;
+  border: 1px solid #f1f5f9;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.02);
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.planning-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.05);
+}
+.planning-card-img-wrapper {
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+}
+.planning-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+.planning-card:hover img {
+  transform: scale(1.03);
+}
+.planning-card-content {
+  padding: 1.75rem;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+.planning-card-tag {
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 10px;
+  display: inline-block;
+}
+.tag-pink {
+  color: var(--primary);
+}
+.tag-orange {
+  color: #ed8936;
+}
+.planning-card-title {
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: #1e293b;
+  line-height: 1.4;
+  margin: 0 0 1.5rem 0;
+  flex-grow: 1;
+  transition: color 0.2s;
+}
+.planning-card:hover .planning-card-title {
+  color: var(--primary);
+}
+.planning-card-footer {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  font-weight: 600;
+  padding-top: 1rem;
+  border-top: 1px solid #f1f5f9;
+  margin-top: auto;
+}
+.tips-split-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+@media (max-width: 768px) {
+  .tips-split-layout {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+}
+
 /* Export Buttons */
 .action-bar { display: flex; gap: 1rem; margin-top: 2rem; justify-content: center; }
 .action-bar button { padding: 12px 24px; border-radius: 10px; font-weight: 700; cursor: pointer; border: none; transition: transform 0.1s; font-size: 0.95rem; }
@@ -204,4 +372,6 @@ button:hover { opacity: 0.9; }
   } 
   .add-expense-row { grid-template-columns: 1fr; } 
   .top-nav { padding: 1rem 1.5rem; } 
+  .premium-hero-title { font-size: 2.6rem; }
+  .premium-hero-subtitle { font-size: 1.1rem; }
 }
