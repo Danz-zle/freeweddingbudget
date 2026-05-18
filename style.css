@@ -81,7 +81,7 @@ body {
 /* Alert boxes */
 .warning-box { background: #fff5f5; border: 1px solid #feb2b2; color: #c53030; padding: 14px; border-radius: 10px; margin-bottom: 20px; font-size: 0.95rem; display: flex; align-items: center; gap: 10px; font-weight: 600; }
 
-/* Content grid blocks - Styled with CSS Grid Area templates to support clean source file placement */
+/* Content grid blocks - Restored to clean baseline */
 .main-grid { 
   display: grid; 
   grid-template-columns: 1.8fr 1fr; 
@@ -89,16 +89,12 @@ body {
   align-items: start;
 }
 .content-col { 
-  grid-column: 1; 
-  grid-row: 1 / span 3; 
-}
-#weddingDayCard { 
-  grid-column: 2; 
-  grid-row: 1; 
+  display: flex;
+  flex-direction: column;
 }
 .sidebar-col { 
-  grid-column: 2; 
-  grid-row: 2 / span 2; 
+  display: flex;
+  flex-direction: column;
 }
 
 .card { background: white; padding: 2rem; border-radius: 1.5rem; box-shadow: 0 4px 20px rgba(0,0,0,0.03); margin-bottom: 1.5rem; border: 1px solid rgba(0,0,0,0.01); }
@@ -206,18 +202,6 @@ button:hover { opacity: 0.9; }
     display: flex; 
     flex-direction: column; 
   } 
-  
-  /* Instantly moves the Wedding Day card to the absolute top of the screen */
-  #weddingDayCard {
-    order: -1;
-  }
-  .content-col {
-    order: 1;
-  }
-  .sidebar-col {
-    order: 2;
-  }
-  
   .add-expense-row { grid-template-columns: 1fr; } 
   .top-nav { padding: 1rem 1.5rem; } 
 }
