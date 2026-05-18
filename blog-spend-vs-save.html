@@ -20,6 +20,18 @@
     .author-info { display: flex; flex-direction: column; }
     .author-name { font-size: 0.95rem; font-weight: 700; color: var(--text-main); }
     .author-title { font-size: 0.75rem; color: var(--text-muted); }
+    
+    /* Featured Banner Image matching premium magazine layouts */
+    .editorial-featured-image {
+      width: 100%;
+      height: auto;
+      max-height: 480px;
+      object-fit: cover;
+      border-radius: 16px;
+      margin-bottom: 2.5rem;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+    }
+
     .editorial-content { font-size: 1.1rem; line-height: 1.85; color: #374151; }
     .editorial-content p { margin-bottom: 1.75rem; }
     .editorial-content h2 { font-size: 1.6rem; font-weight: 800; color: var(--text-main); margin: 2.5rem 0 1.25rem 0; }
@@ -74,6 +86,9 @@
           <span class="author-title">Wedding Planning Expert</span>
         </div>
       </div>
+
+      <!-- Synchronized Featured Banner Image -->
+      <img src="https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?auto=format&fit=cover&w=1200&q=80" alt="Wedding Table Setup" class="editorial-featured-image">
 
       <div class="editorial-content">
         <p>Data tracking from over 2,000 recent wedding transactions reveals how couples successfully balance high costs against budget constraints. Prioritizing sections that directly impact guest satisfaction while finding areas to save helps keep overall spending on target.</p>
