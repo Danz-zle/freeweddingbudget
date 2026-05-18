@@ -41,10 +41,44 @@
     .sidebar-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 12px; background: var(--primary); color: white; border-radius: 8px; text-decoration: none; font-weight: 700; font-size: 0.9rem; box-sizing: border-box; }
     .ad-card { border: 1px dashed #d1d5db; background: #f9fafb; border-radius: 12px; padding: 1.5rem; text-align: center; margin: 2rem 0; }
     .ad-label { font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1rem; display: block; }
-    .article-bottom-cta { background: linear-gradient(135deg, #fff5f5 0%, #fdf2f8 100%); border: 1px solid #fbcfe8; border-radius: 16px; padding: 2.2rem; text-align: center; margin-top: 3.5rem; }
-    .article-bottom-cta h3 { font-size: 1.5rem; font-weight: 800; color: var(--text-main); margin: 0 0 10px 0; }
-    .article-bottom-cta p { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1.5rem; }
-    .cta-btn-pill { display: inline-flex; align-items: center; gap: 8px; background: var(--primary); color: white; padding: 12px 28px; border-radius: 30px; font-weight: 700; text-decoration: none; }
+    
+    /* CTA Banner card at bottom of article */
+    .article-bottom-cta {
+      background: white;
+      border: 1px solid var(--input-border);
+      border-radius: 16px;
+      padding: 2.2rem;
+      text-align: center;
+      margin-top: 3.5rem;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.02);
+    }
+    .article-bottom-cta h3 {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--text-main);
+      margin: 0 0 10px 0;
+    }
+    .article-bottom-cta p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      margin-bottom: 1.5rem;
+    }
+    .cta-btn-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--primary);
+      color: white;
+      padding: 12px 28px;
+      border-radius: 30px;
+      font-weight: 700;
+      text-decoration: none;
+      transition: transform 0.2s;
+    }
+    .cta-btn-pill:hover {
+      transform: scale(1.02);
+    }
+
     .editorial-share-row { display: flex; gap: 8px; align-items: center; border-top: 1px solid #f3f4f6; border-bottom: 1px solid #f3f4f6; padding: 1rem 0; margin-top: 2rem; }
     .share-icon-circle { width: 32px; height: 32px; border-radius: 50%; border: 1px solid #e5e7eb; display: flex; align-items: center; justify-content: center; color: var(--text-muted); cursor: pointer; }
     .helpful-links-list { list-style: none; padding: 0; margin: 0; }
@@ -147,6 +181,16 @@
     </aside>
   </div>
 </main>
+
+<footer class="site-footer">
+  <p>&copy; 2026 Wedding Budget Planner</p>
+  <div class="footer-links">
+    <a href="about.html">About</a> <span>•</span>
+    <a href="privacy.html">Privacy Policy</a> <span>•</span>
+    <a href="terms.html">Terms & Conditions</a> <span>•</span>
+    <a href="mailto:liubigcow@yahoo.com">Contact</a>
+  </div>
+</footer>
 
 <script>lucide.createIcons();</script>
 </body>
