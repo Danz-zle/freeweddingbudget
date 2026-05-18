@@ -73,12 +73,22 @@
   </div>
 </div>
 
-<main class="dashboard-container">
-  <section class="hero no-print">
-    <h1>Wedding Budget Dashboard</h1>
-    <p>Professional financial tracking for your special day.</p>
-  </section>
+<!-- Premium Editorial Branded Hero Banner Section (image_6fcd8c.png) -->
+<section class="premium-hero-banner no-print">
+  <div class="premium-hero-overlay"></div>
+  <div class="premium-hero-container">
+    <span class="premium-hero-tagline">PLAN YOUR PERFECT DAY</span>
+    <h1 class="premium-hero-title">Wedding Budget <em>Planner</em></h1>
+    <p class="premium-hero-subtitle">Track every detail, manage payments, and stay on budget for the most beautiful day of your life.</p>
+    <div class="premium-hero-badges">
+      <span><i data-lucide="check"></i> 100% Free</span>
+      <span><i data-lucide="check"></i> No Sign Up</span>
+      <span><i data-lucide="check"></i> Export Ready</span>
+    </div>
+  </div>
+</section>
 
+<main class="dashboard-container">
   <!-- Summary Cards -->
   <div class="summary-grid">
     <div class="stat-card blush">
@@ -126,6 +136,11 @@
   </div>
 
   <div class="main-grid">
+    <!-- Wedding Day Date Tracker Widget -->
+    <div class="card no-print tracking-card" id="weddingDayCard">
+      <!-- Swapped dynamically in JavaScript -->
+    </div>
+
     <div class="content-col">
       <!-- Budget Allocation Card -->
       <div class="card">
@@ -180,11 +195,6 @@
     </div>
 
     <div class="sidebar-col">
-      <!-- Wedding Day Date Tracker Widget -->
-      <div class="card no-print tracking-card" id="weddingDayCard">
-        <!-- Swapped dynamically in JavaScript -->
-      </div>
-
       <!-- Spending Progress Sidebar Widget -->
       <div class="card">
         <h2>Spending Progress</h2>
@@ -243,57 +253,71 @@
     </div>
   </div>
 
-  <!-- Featured Planning Resources (Blog Section) -->
-  <section class="card no-print" style="margin-top: 2.5rem;">
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; border-bottom: 2px solid #fff5f5; padding-bottom: 8px;">
-      <h2 style="margin: 0; border: none; padding: 0; font-size: 1.4rem;">Featured Planning Resources</h2>
-      <a href="blog.html" style="color: var(--primary); text-decoration: none; font-size: 0.9rem; font-weight: 600; display: flex; align-items: center; gap: 0.25rem;">View All Articles <i data-lucide="arrow-right" style="width:16px; height:16px;"></i></a>
+  <!-- PLANNING GUIDES & TIPS SECTION (MATCHING SCREENSHOT image_6fd50f.png) -->
+  <section class="no-print" style="margin-top: 3.5rem; margin-bottom: 2.5rem;">
+    <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2rem;">
+      <div>
+        <span style="font-size: 0.75rem; font-weight: 800; color: var(--primary); text-transform: uppercase; letter-spacing: 1.5px; display: block; margin-bottom: 6px;">RESOURCES</span>
+        <h2 style="font-size: 2rem; font-weight: 800; color: #1e293b; margin: 0; border: none; padding: 0; line-height: 1.1;">Planning Guides & Tips</h2>
+      </div>
+      <a href="blog.html" style="color: var(--primary); text-decoration: none; font-size: 0.95rem; font-weight: 700; display: flex; align-items: center; gap: 4px; transition: color 0.2s;">
+        View All Articles <i data-lucide="arrow-right" style="width: 16px; height: 16px;"></i>
+      </a>
     </div>
-    <div class="featured-grid">
-      <a href="blog-create-budget.html" class="blog-card">
-        <div class="blog-card-body">
-          <span class="badge badge-budget">Budget Planning</span>
-          <h3 style="font-size: 1.1rem; margin: 0.5rem 0 0.75rem 0; font-weight: 700; line-height: 1.4;">How to Create a Wedding Budget That Actually Works</h3>
-          <p style="color: var(--text-muted); font-size: 0.85rem; line-height: 1.5; margin: 0; flex-grow: 1;">A comprehensive, data-driven strategy for establishing framework baselines across vendor options.</p>
-          <div style="margin-top: 1rem; font-size: 0.75rem; color: var(--primary); font-weight: 600; display: flex; align-items: center; gap: 4px;"><i data-lucide="clock" style="width:12px; height:12px;"></i> 8 min read</div>
+
+    <div class="planning-grid">
+      <!-- Card 1 -->
+      <a href="blog-create-budget.html" class="planning-card">
+        <div class="planning-card-img-wrapper">
+          <img src="https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?auto=format&fit=cover&w=800&q=80" alt="Wedding Budget Planner Notebook">
+        </div>
+        <div class="planning-card-content">
+          <span class="planning-card-tag tag-pink">Budget Planning</span>
+          <h3 class="planning-card-title">How to Create a Wedding Budget That Actually Works (2026 Guide)</h3>
+          <span class="planning-card-footer">8 min read</span>
         </div>
       </a>
-      <a href="blog-hidden-costs.html" class="blog-card">
-        <div class="blog-card-body">
-          <span class="badge badge-saving">Money Saving</span>
-          <h3 style="font-size: 1.1rem; margin: 0.5rem 0 0.75rem 0; font-weight: 700; line-height: 1.4;">Hidden Wedding Costs Nobody Tells You About</h3>
-          <p style="color: var(--text-muted); font-size: 0.85rem; line-height: 1.5; margin: 0; flex-grow: 1;">Overlooked expenditures, overtime contract traps, administration fees, and service gratuities.</p>
-          <div style="margin-top: 1rem; font-size: 0.75rem; color: #ed8936; font-weight: 600; display: flex; align-items: center; gap: 4px;"><i data-lucide="clock" style="width:12px; height:12px;"></i> 7 min read</div>
+
+      <!-- Card 2 -->
+      <a href="blog-hidden-costs.html" class="planning-card">
+        <div class="planning-card-img-wrapper">
+          <img src="https://images.unsplash.com/photo-1532712938310-34cb3982ef74?auto=format&fit=cover&w=800&q=80" alt="Wedding Contract and Expenses">
+        </div>
+        <div class="planning-card-content">
+          <span class="planning-card-tag tag-orange">Money Saving</span>
+          <h3 class="planning-card-title">Hidden Wedding Costs Nobody Tells You About (And How to Avoid Them)</h3>
+          <span class="planning-card-footer">6 min read</span>
         </div>
       </a>
-      <a href="blog-spend-vs-save.html" class="blog-card">
-        <div class="blog-card-body">
-          <span class="badge badge-data">Industry Data</span>
-          <h3 style="font-size: 1.1rem; margin: 0.5rem 0 0.75rem 0; font-weight: 700; line-height: 1.4;">Wedding Budget Breakdown: Where to Spend & Save</h3>
-          <p style="color: var(--text-muted); font-size: 0.85rem; line-height: 1.5; margin: 0; flex-grow: 1;">Empirical expense data parsed from thousands of real weddings to manage cost priorities cleanly.</p>
-          <div style="margin-top: 1rem; font-size: 0.75rem; color: #3182ce; font-weight: 600; display: flex; align-items: center; gap: 4px;"><i data-lucide="clock" style="width:12px; height:12px;"></i> 9 min read</div>
+
+      <!-- Card 3 -->
+      <a href="blog-spend-vs-save.html" class="planning-card">
+        <div class="planning-card-img-wrapper">
+          <img src="https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?auto=format&fit=cover&w=800&q=80" alt="Premium Dining Table Centerpieces">
+        </div>
+        <div class="planning-card-content">
+          <span class="planning-card-tag tag-pink">Budget Planning</span>
+          <h3 class="planning-card-title">Wedding Budget Breakdown: Exactly Where to Spend & Where to Save</h3>
+          <span class="planning-card-footer">7 min read</span>
         </div>
       </a>
     </div>
   </section>
 
-  <!-- Detailed informational text (SEO section) -->
-  <section class="seo-content card" style="margin-top: 2rem;">
-    <h2>About Wedding Budgeting</h2>
-    <p>A well-planned wedding budget is essential for a stress-free experience. Most weddings allocate the majority of their funds to venue rental and catering services. Other important categories include photography, floral decoration, entertainment, wedding attire, and transportation.</p>
-    <h2>Average Wedding Costs</h2>
-    <p>Wedding costs vary depending on location, guest count, venue selection, and overall event style. Small weddings may cost only a few thousand dollars, while larger ceremonies with hundreds of guests can significantly increase catering and venue expenses.</p>
-    <h2>Wedding Budget Tips</h2>
-    <ul>
-      <li>Set a realistic wedding budget before booking vendors.</li>
-      <li>Track every expense category regularly.</li>
-      <li>Monitor guest count carefully.</li>
-      <li>Reserve emergency funds for unexpected wedding expenses.</li>
-      <li>Review spending progress weekly.</li>
-    </ul>
+  <!-- WEDDING BUDGET PLANNING TIPS BANNER CARD -->
+  <section class="card" style="padding: 2.5rem; border-radius: 20px; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.02); border: 1px solid #f1f5f9; margin-bottom: 2.5rem;">
+    <h2 style="font-size: 1.5rem; font-weight: 800; color: #1e293b; margin-top: 0; margin-bottom: 1.5rem; border-bottom: none; padding-bottom: 0;">Wedding Budget Planning Tips</h2>
+    <div class="tips-split-layout">
+      <div style="font-size: 1.05rem; line-height: 1.75; color: #4b5563;">
+        <p style="margin: 0;">Planning a wedding is one of the most exciting yet financially complex events in life. A well-structured <strong>wedding budget calculator</strong> helps couples track every expense from venue deposits to floral arrangements, ensuring no detail is overlooked. Start by setting your total budget, then allocate funds to major categories like catering, photography, and entertainment.</p>
+      </div>
+      <div style="font-size: 1.05rem; line-height: 1.75; color: #4b5563;">
+        <p style="margin: 0;">Many couples underestimate hidden costs such as gratuities, alterations, and transportation. Using a dedicated wedding budget planner allows you to log each payment, set due dates, and monitor your remaining balance in real time. Stay organized, reduce stress, and make your dream wedding a reality without financial surprises.</p>
+      </div>
+    </div>
   </section>
 
-  <!-- Action Bar Export Panel -->
+  <!-- Action Bar Export Panel (Repositioned Cleanly Below Layout Content) -->
   <div class="action-bar no-print">
     <button id="exportCsv" class="outline">Export Raw CSV</button>
     <button id="exportExcel" class="secondary">Export Professional Excel</button>
