@@ -20,6 +20,18 @@
     .author-info { display: flex; flex-direction: column; }
     .author-name { font-size: 0.95rem; font-weight: 700; color: var(--text-main); }
     .author-title { font-size: 0.75rem; color: var(--text-muted); }
+    
+    /* Featured Banner Image matching premium magazine layouts */
+    .editorial-featured-image {
+      width: 100%;
+      height: auto;
+      max-height: 480px;
+      object-fit: cover;
+      border-radius: 16px;
+      margin-bottom: 2.5rem;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+    }
+
     .editorial-content { font-size: 1.1rem; line-height: 1.85; color: #374151; }
     .editorial-content p { margin-bottom: 1.75rem; }
     .editorial-content h2 { font-size: 1.6rem; font-weight: 800; color: var(--text-main); margin: 2.5rem 0 1.25rem 0; }
@@ -28,6 +40,7 @@
     .sidebar-widget p { font-size: 0.9rem; line-height: 1.6; color: var(--text-muted); margin-bottom: 1.25rem; }
     .sidebar-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 12px; background: var(--primary); color: white; border-radius: 8px; text-decoration: none; font-weight: 700; font-size: 0.9rem; box-sizing: border-box; }
     .ad-card { border: 1px dashed #d1d5db; background: #f9fafb; border-radius: 12px; padding: 1.5rem; text-align: center; margin: 2rem 0; }
+    .ad-card ins { margin: 0 auto; }
     .ad-label { font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1rem; display: block; }
     .article-bottom-cta { background: linear-gradient(135deg, #fff5f5 0%, #fdf2f8 100%); border: 1px solid #fbcfe8; border-radius: 16px; padding: 2.2rem; text-align: center; margin-top: 3.5rem; }
     .article-bottom-cta h3 { font-size: 1.5rem; font-weight: 800; color: var(--text-main); margin: 0 0 10px 0; }
@@ -75,8 +88,11 @@
         </div>
       </div>
 
+      <!-- Synchronized Featured Banner Image -->
+      <img src="https://images.unsplash.com/photo-1469371670807-013ccf25f16a?auto=format&fit=cover&w=1200&q=80" alt="Wedding planners notebook and details" class="editorial-featured-image">
+
       <div class="editorial-content">
-        <p>Managing vendor deadlines and scheduling milestones keeps your planning organized. Spacing out tasks across structured calendar blocks reduces stress and avoids premium, last-minute rush fees.</p>
+        <p>A well-planned timeline ensures you make progress consistently without feeling overwhelmed. Spacing out tasks chronologically helps you stay ahead of important deadlines, avoid premium booking fees, and keep your overall stress to a minimum.</p>
 
         <div class="ad-card">
           <span class="ad-label">Advertisement</span>
