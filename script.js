@@ -61,6 +61,31 @@ const totalSpent = () => expenses.reduce((s, e) => s + e.amount, 0);
 const totalPlanned = () => Object.values(categories).reduce((a, b) => a + b, 0);
 const totalGuests = () => Object.values(guestCounts).reduce((a, b) => a + b, 0);
 
+// Professional Layout Repositioning Helper
+function handleResponsiveLayout() {
+    const card = document.getElementById("weddingDayCard");
+    if (!card) return;
+    
+    const isMobile = window.innerWidth <= 850;
+    const container = document.querySelector(".dashboard-container");
+    const sidebar = document.querySelector(".sidebar-col");
+    
+    if (isMobile) {
+        // Move card to absolute top of content container (above the total budget cards)
+        if (container && card.parentElement !== container) {
+            container.insertBefore(card, container.firstChild);
+        }
+    } else {
+        // Return cleanly to top of sidebar on desktop
+        if (sidebar && card.parentElement !== sidebar) {
+            sidebar.insertBefore(card, sidebar.firstChild);
+        }
+    }
+}
+
+// Bind resize and load handlers
+window.addEventListener("resize", handleResponsiveLayout);
+
 function refresh() {
     const budget = Number(totalBudgetInput ? totalBudgetInput.value : 0) || 0;
     const spent = totalSpent();
@@ -264,6 +289,9 @@ function refresh() {
         `;
     }
 
+    // Ensure DOM swap logic is run
+    handleResponsiveLayout();
+
     if (window.lucide) lucide.createIcons();
 }
 
@@ -314,7 +342,7 @@ function renderWeddingDayTracker() {
                 <div class="big-days-num" style="font-size:3.8rem; font-weight:900; color:var(--text-main); line-height:1;">${diffDays > 0 ? diffDays : 0}</div>
                 <div class="days-subtext" style="font-size:0.8rem; font-weight:700; color:var(--text-muted); letter-spacing:0.15em; margin-top:5px;">DAYS TO GO</div>
             </div>
-            <div class="day-tracker-footer" style="border-top: 1px solid #edf2f7; padding-top:1rem; display:flex; justify-content:space-between; align-items:center; font-size:0.85rem; font-weight:600; color:var(--text-muted);">
+            <div class="day-tracker-footer" style="border-top: 1px solid #edf2f7; padding-top:1rem; display:flex; justify-content:space-between; align-items:center; font-size:0.85rem; font-weight: 600; color:var(--text-muted);">
                 <span>${formattedDate}${weddingLocation ? ' • ' + weddingLocation : ''}</span>
                 <a href="#" onclick="changeDate(); return false;" class="change-link" style="color:var(--primary); text-decoration:none;">Change</a>
             </div>
