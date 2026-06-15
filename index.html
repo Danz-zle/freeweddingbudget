@@ -5,26 +5,29 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <!-- SEO & ADSENSE VERIFICATION -->
-  <title>Free Wedding Budget Calculator | Plan and Track Wedding Costs</title>
-  <meta name="description" content="Free wedding budget calculator to plan expenses by category, track actual costs, calculate cost per guest, and export budgets to Excel or PDF.">
-  <meta name="keywords" content="wedding budget calculator, wedding planner, wedding expenses, wedding cost calculator, budget wedding planning">
+  <title>Wedding Budget Planner – Free Calculator and Planning Guides</title>
+  <meta name="description" content="Use a free wedding budget calculator to plan categories, track expenses, estimate guest costs, and read practical guides about wedding costs and budgeting.">
+  <meta name="keywords" content="wedding budget calculator, wedding budget planner, wedding cost tracker, wedding expenses, wedding planning budget">
   <meta name="google-adsense-account" content="ca-pub-4504023199353060">
-  
+
   <!-- GOOGLE ADSENSE LIBRARY SCRIPT -->
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4504023199353060" crossorigin="anonymous"></script>
 
   <link rel="canonical" href="https://freeweddingbudget.com/">
-  
+  <link rel="sitemap" type="application/xml" href="/sitemap.xml">
+  <link rel="alternate" type="text/plain" title="Ads.txt" href="/ads.txt">
+
   <!-- Open Graph -->
-  <meta property="og:title" content="Free Wedding Budget Calculator">
-  <meta property="og:description" content="Plan and track wedding expenses, guest costs, and category budgets online for free.">
+  <meta property="og:title" content="Wedding Budget Planner">
+  <meta property="og:description" content="Plan and track wedding expenses, guest costs, category budgets, and vendor payments with a free browser-based calculator.">
   <meta property="og:url" content="https://freeweddingbudget.com/">
   <meta property="og:type" content="website">
+  <meta property="og:image" content="https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?auto=format&fit=cover&w=1200&q=80">
 
   <!-- Favicon -->
   <link rel="icon" href="/favicon.ico">
 
-  <!-- Structured Data (JSON-LD) -->
+  <!-- Structured Data (JSON-LD): SoftwareApplication -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -37,7 +40,28 @@
       "price": "0",
       "priceCurrency": "USD"
     },
-    "description": "An online tool for planning and managing wedding budgets, tracking expenses, and calculating costs per guest."
+    "description": "A browser-based tool for planning wedding budgets, tracking expenses, and estimating costs per guest.",
+    "url": "https://freeweddingbudget.com/",
+    "publisher": {
+      "@type": "Organization",
+      "name": "Wedding Budget Planner"
+    }
+  }
+  </script>
+
+  <!-- Structured Data (JSON-LD): Organization -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Wedding Budget Planner",
+    "url": "https://freeweddingbudget.com/",
+    "logo": "https://freeweddingbudget.com/favicon.ico",
+    "contactPoint": [{
+      "@type": "ContactPoint",
+      "contactType": "support",
+      "email": "liubigcow@yahoo.com"
+    }]
   }
   </script>
 
@@ -90,11 +114,11 @@
 
 <main class="dashboard-container">
   
-  <!-- CRITICAL INTRODUCTORY CONTENT FOR ADSENSE REVIEW (Overcoming Low Value Content) -->
+  <!-- CRITICAL INTRODUCTORY CONTENT FOR ADSENSE REVIEW -->
   <section class="card no-print" style="margin-bottom: 2rem; border-left: 5px solid var(--primary);">
     <h2 style="border: none; margin: 0 0 10px 0; padding: 0; font-size: 1.4rem;">Smart Wedding Budgeting Made Simple</h2>
     <p style="margin: 0; line-height: 1.7; color: var(--text-muted); font-size: 0.98rem;">
-      Welcome to your all-in-one interactive wedding planning portal. Before committing to vendor agreements, it is crucial to understand how your wedding funds are distributed. Our suite helps you estimate potential costs, track active transaction payments, and monitor category allocation balances in real-time. Use the dashboard below to model your financial strategy, allocate maximum spending limits, and review helpful, data-driven planning guides written by industry specialists.
+      Welcome to a free browser-based wedding budget workspace. Before signing vendor agreements, it helps to understand how your money is divided across venue, food, photography, decor, attire, and other categories. Use the dashboard below to set a total budget, track payments, estimate cost per guest, and read practical planning guides written for couples who want clear numbers before making big decisions.
     </p>
   </section>
 
@@ -146,13 +170,9 @@
   </div>
 
   <div class="main-grid">
-    <!-- Wedding Day Date Tracker Widget -->
-    <div class="card no-print tracking-card" id="weddingDayCard">
-      <!-- Swapped dynamically in JavaScript -->
-    </div>
+    <div class="card no-print tracking-card" id="weddingDayCard"></div>
 
     <div class="content-col">
-      <!-- Budget Allocation Card -->
       <div class="card">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem; border-bottom: 2px solid #fff5f5; padding-bottom:8px;">
           <h2 style="border:none; margin:0; padding:0;">Budget Allocation</h2>
@@ -161,9 +181,7 @@
         <div id="allocationWarning" class="warning-box" style="display:none;">
           <i data-lucide="alert-triangle"></i> <span id="warningText"></span>
         </div>
-        <div id="budgetAllocationList" class="budget-allocation-container">
-          <!-- Dynamically populated rows with spent progress lines -->
-        </div>
+        <div id="budgetAllocationList" class="budget-allocation-container"></div>
       </div>
 
       <div class="card no-print">
@@ -196,138 +214,62 @@
                 <th class="no-print" style="width: 50px;"></th>
               </tr>
             </thead>
-            <tbody id="expenseTable">
-              <!-- Empty by default, populated dynamically by user -->
-            </tbody>
+            <tbody id="expenseTable"></tbody>
           </table>
         </div>
       </div>
     </div>
 
     <div class="sidebar-col">
-      <!-- Spending Progress Sidebar Widget -->
       <div class="card">
         <h2>Spending Progress</h2>
         <div id="categoryProgress" class="progress-list"></div>
       </div>
 
-      <!-- Guest Count Widget (Dual Manual + Stepper controls initialized to 0) -->
       <div class="card no-print">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; border-bottom: 2px solid #fff5f5; padding-bottom: 8px;">
           <h2 style="border:none; margin:0; padding:0;">Guest Count</h2>
           <span class="badge" style="background: #fff5f5; color: var(--primary); margin: 0; font-size: 0.75rem;" id="guestTotalBadge">0 total</span>
         </div>
         <div class="guest-counter-list">
-          <div class="guest-counter-row">
-            <span>Family</span>
-            <div class="counter-ctrl">
-              <button onclick="adjustGuests('Family', -1)" class="btn-circle">-</button>
-              <input type="number" id="input-Family" class="guest-num-input" value="0" onchange="setGuestManual('Family', this.value)">
-              <button onclick="adjustGuests('Family', 1)" class="btn-circle">+</button>
-            </div>
-          </div>
-          <div class="guest-counter-row">
-            <span>Friends</span>
-            <div class="counter-ctrl">
-              <button onclick="adjustGuests('Friends', -1)" class="btn-circle">-</button>
-              <input type="number" id="input-Friends" class="guest-num-input" value="0" onchange="setGuestManual('Friends', this.value)">
-              <button onclick="adjustGuests('Friends', 1)" class="btn-circle">+</button>
-            </div>
-          </div>
-          <div class="guest-counter-row">
-            <span>Colleagues</span>
-            <div class="counter-ctrl">
-              <button onclick="adjustGuests('Colleagues', -1)" class="btn-circle">-</button>
-              <input type="number" id="input-Colleagues" class="guest-num-input" value="0" onchange="setGuestManual('Colleagues', this.value)">
-              <button onclick="adjustGuests('Colleagues', 1)" class="btn-circle">+</button>
-            </div>
-          </div>
-          <div class="guest-counter-row">
-            <span>Others</span>
-            <div class="counter-ctrl">
-              <button onclick="adjustGuests('Others', -1)" class="btn-circle">-</button>
-              <input type="number" id="input-Others" class="guest-num-input" value="0" onchange="setGuestManual('Others', this.value)">
-              <button onclick="adjustGuests('Others', 1)" class="btn-circle">+</button>
-            </div>
-          </div>
+          <div class="guest-counter-row"><span>Family</span><div class="counter-ctrl"><button onclick="adjustGuests('Family', -1)" class="btn-circle">-</button><input type="number" id="input-Family" class="guest-num-input" value="0" onchange="setGuestManual('Family', this.value)"><button onclick="adjustGuests('Family', 1)" class="btn-circle">+</button></div></div>
+          <div class="guest-counter-row"><span>Friends</span><div class="counter-ctrl"><button onclick="adjustGuests('Friends', -1)" class="btn-circle">-</button><input type="number" id="input-Friends" class="guest-num-input" value="0" onchange="setGuestManual('Friends', this.value)"><button onclick="adjustGuests('Friends', 1)" class="btn-circle">+</button></div></div>
+          <div class="guest-counter-row"><span>Colleagues</span><div class="counter-ctrl"><button onclick="adjustGuests('Colleagues', -1)" class="btn-circle">-</button><input type="number" id="input-Colleagues" class="guest-num-input" value="0" onchange="setGuestManual('Colleagues', this.value)"><button onclick="adjustGuests('Colleagues', 1)" class="btn-circle">+</button></div></div>
+          <div class="guest-counter-row"><span>Others</span><div class="counter-ctrl"><button onclick="adjustGuests('Others', -1)" class="btn-circle">-</button><input type="number" id="input-Others" class="guest-num-input" value="0" onchange="setGuestManual('Others', this.value)"><button onclick="adjustGuests('Others', 1)" class="btn-circle">+</button></div></div>
         </div>
       </div>
 
-      <!-- Smart Tips Widget (Appears dynamically on warning triggers) -->
       <div id="smartTipsCard" class="card" style="display: none;">
         <h2>Smart Tips</h2>
-        <div id="smartTipsContent" style="display: flex; flex-direction: column; gap: 12px;">
-          <!-- Dynamically populated notifications -->
-        </div>
+        <div id="smartTipsContent" style="display: flex; flex-direction: column; gap: 12px;"></div>
       </div>
     </div>
   </div>
 
-  <!-- PLANNING GUIDES & TIPS SECTION -->
   <section class="no-print" style="margin-top: 3.5rem; margin-bottom: 2.5rem;">
     <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2rem;">
       <div>
         <span style="font-size: 0.75rem; font-weight: 800; color: var(--primary); text-transform: uppercase; letter-spacing: 1.5px; display: block; margin-bottom: 6px;">RESOURCES</span>
         <h2 style="font-size: 2rem; font-weight: 800; color: #1e293b; margin: 0; border: none; padding: 0; line-height: 1.1;">Planning Guides & Tips</h2>
       </div>
-      <a href="blog.html" style="color: var(--primary); text-decoration: none; font-size: 0.95rem; font-weight: 700; display: flex; align-items: center; gap: 4px; transition: color 0.2s;">
-        View All Articles <i data-lucide="arrow-right" style="width: 16px; height: 16px;"></i>
-      </a>
+      <a href="blog.html" style="color: var(--primary); text-decoration: none; font-size: 0.95rem; font-weight: 700; display: flex; align-items: center; gap: 4px; transition: color 0.2s;">View All Articles <i data-lucide="arrow-right" style="width: 16px; height: 16px;"></i></a>
     </div>
 
     <div class="planning-grid">
-      <!-- Card 1 -->
-      <a href="blog-create-budget.html" class="planning-card">
-        <div class="planning-card-img-wrapper">
-          <img src="https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?auto=format&fit=cover&w=800&q=80" alt="Wedding Budget Planner Notebook">
-        </div>
-        <div class="planning-card-content">
-          <span class="planning-card-tag tag-pink">Budget Planning</span>
-          <h3 class="planning-card-title">How to Create a Wedding Budget That Actually Works (2026 Guide)</h3>
-          <span class="planning-card-footer">8 min read</span>
-        </div>
-      </a>
-
-      <!-- Card 2 -->
-      <a href="blog-hidden-costs.html" class="planning-card">
-        <div class="planning-card-img-wrapper">
-          <img src="https://images.unsplash.com/photo-1532712938310-34cb3982ef74?auto=format&fit=cover&w=800&q=80" alt="Wedding Contract and Expenses">
-        </div>
-        <div class="planning-card-content">
-          <span class="planning-card-tag tag-orange">Money Saving</span>
-          <h3 class="planning-card-title">Hidden Wedding Costs Nobody Tells You About (And How to Avoid Them)</h3>
-          <span class="planning-card-footer">6 min read</span>
-        </div>
-      </a>
-
-      <!-- Card 3 -->
-      <a href="blog-spend-vs-save.html" class="planning-card">
-        <div class="planning-card-img-wrapper">
-          <img src="https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?auto=format&fit=cover&w=800&q=80" alt="Premium Dining Table Centerpieces">
-        </div>
-        <div class="planning-card-content">
-          <span class="planning-card-tag tag-pink">Budget Planning</span>
-          <h3 class="planning-card-title">Wedding Budget Breakdown: Exactly Where to Spend & Where to Save</h3>
-          <span class="planning-card-footer">7 min read</span>
-        </div>
-      </a>
+      <a href="blog-create-budget.html" class="planning-card"><div class="planning-card-img-wrapper"><img src="https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?auto=format&fit=cover&w=800&q=80" alt="Wedding budget planner notebook"></div><div class="planning-card-content"><span class="planning-card-tag tag-pink">Budget Planning</span><h3 class="planning-card-title">How to Create a Wedding Budget That Actually Works</h3><span class="planning-card-footer">8 min read</span></div></a>
+      <a href="blog-hidden-costs.html" class="planning-card"><div class="planning-card-img-wrapper"><img src="https://images.unsplash.com/photo-1532712938310-34cb3982ef74?auto=format&fit=cover&w=800&q=80" alt="Wedding contract and expenses"></div><div class="planning-card-content"><span class="planning-card-tag tag-orange">Money Saving</span><h3 class="planning-card-title">Hidden Wedding Costs Nobody Tells You About</h3><span class="planning-card-footer">7 min read</span></div></a>
+      <a href="blog-spend-vs-save.html" class="planning-card"><div class="planning-card-img-wrapper"><img src="https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?auto=format&fit=cover&w=800&q=80" alt="Wedding reception table centerpieces"></div><div class="planning-card-content"><span class="planning-card-tag tag-pink">Budget Planning</span><h3 class="planning-card-title">Wedding Budget Breakdown: Where to Spend and Save</h3><span class="planning-card-footer">9 min read</span></div></a>
     </div>
   </section>
 
-  <!-- WEDDING BUDGET PLANNING TIPS BANNER CARD -->
   <section class="card" style="padding: 2.5rem; border-radius: 20px; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.02); border: 1px solid #f1f5f9; margin-bottom: 2.5rem;">
     <h2 style="font-size: 1.5rem; font-weight: 800; color: #1e293b; margin-top: 0; margin-bottom: 1.5rem; border-bottom: none; padding-bottom: 0;">Wedding Budget Planning Tips</h2>
     <div class="tips-split-layout">
-      <div style="font-size: 1.05rem; line-height: 1.75; color: #4b5563;">
-        <p style="margin: 0;">Planning a wedding is one of the most exciting yet financially complex events in life. A well-structured <strong>wedding budget calculator</strong> helps couples track every expense from venue deposits to floral arrangements, ensuring no detail is overlooked. Start by setting your total budget, then allocate funds to major categories like catering, photography, and entertainment.</p>
-      </div>
-      <div style="font-size: 1.05rem; line-height: 1.75; color: #4b5563;">
-        <p style="margin: 0;">Many couples underestimate hidden costs such as gratuities, alterations, and transportation. Using a dedicated wedding budget planner allows you to log each payment, set due dates, and monitor your remaining balance in real time. Stay organized, reduce stress, and make your dream wedding a reality without financial surprises.</p>
-      </div>
+      <div style="font-size: 1.05rem; line-height: 1.75; color: #4b5563;"><p style="margin: 0;">A useful <strong>wedding budget calculator</strong> helps couples track every expense from venue deposits to floral arrangements. Start by setting your total budget, then divide funds into major categories such as catering, photography, decor, attire, and entertainment.</p></div>
+      <div style="font-size: 1.05rem; line-height: 1.75; color: #4b5563;"><p style="margin: 0;">Many couples underestimate hidden costs such as service charges, gratuities, alterations, delivery, vendor meals, and transportation. Tracking payments in one place can reduce stress and make trade-offs easier before final invoices arrive.</p></div>
     </div>
   </section>
 
-  <!-- Action Bar Export Panel (Repositioned Cleanly Below Layout Content) -->
   <div class="action-bar no-print">
     <button id="exportCsv" class="outline">Export Raw CSV</button>
     <button id="exportExcel" class="secondary">Export Professional Excel</button>
@@ -336,13 +278,15 @@
 </main>
 
 <footer class="site-footer no-print">
-  <p>&copy; 2026 Wedding Budget Planner</p>
+  <p>&copy; 2026 Wedding Budget Planner. All rights reserved.</p>
   <div class="footer-links">
     <a href="about.html">About</a> <span>•</span>
+    <a href="blog.html">Blog</a> <span>•</span>
     <a href="privacy.html">Privacy Policy</a> <span>•</span>
-    <a href="terms.html">Terms & Conditions</a> <span>•</span>
+    <a href="terms.html">Terms &amp; Conditions</a> <span>•</span>
     <a href="mailto:liubigcow@yahoo.com">Contact</a>
   </div>
+  <p><small>Disclaimer: This site provides general wedding budgeting information only and does not provide personal financial or professional planning advice.</small></p>
 </footer>
 
 <script src="script.js"></script>
