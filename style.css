@@ -36,7 +36,7 @@ img, table, iframe { max-width: 100%; }
 .dashboard-container { max-width: 1200px; width: 100%; margin: 0 auto; padding: 2rem 1.5rem; }
 .card { background: white; padding: 2rem; border-radius: 1.5rem; box-shadow: 0 4px 20px rgba(0,0,0,0.03); margin-bottom: 1.5rem; border: 1px solid rgba(0,0,0,0.02); }
 .card h2 { font-size: 1.25rem; margin-bottom: 1.5rem; color: var(--text-main); font-weight: 700; border-left: 4px solid var(--primary); padding-left: 12px; }
-.card h1, article.card h1 { color: #1e293b; overflow-wrap: anywhere; }
+.card h1, article.card h1 { color: #1e293b; overflow-wrap: anywhere; font-weight: 900; line-height: 1.18; margin-top: 0.5rem; margin-bottom: 1.5rem; }
 
 .premium-hero-banner { position: relative; background: url('https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=cover&w=1600&q=80') no-repeat center center; background-size: cover; padding: 5.5rem 2rem; text-align: center; color: white; overflow: hidden; }
 .premium-hero-overlay { position: absolute; inset: 0; background: linear-gradient(135deg, rgba(30,41,59,0.75) 0%, rgba(190,24,93,0.5) 100%); z-index: 1; }
@@ -84,7 +84,8 @@ input[type="text"], input[type="number"], input[type="date"], select { border: 1
 .guest-counter-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #f7fafc; font-weight: 600; gap: 1rem; }
 .counter-ctrl { display: flex; align-items: center; gap: 12px; }
 .btn-circle { width: 32px; height: 32px; border-radius: 50%; border: 1.5px solid var(--input-border); background: white; color: var(--text-muted); display: flex; align-items: center; justify-content: center; padding: 0; cursor: pointer; font-size: 1.1rem; font-weight: 700; }
-.guest-num-input { width: 55px !important; text-align: center; font-weight: 800; color: var(--text-main); font-size: 1.1rem; padding: 4px; }
+.guest-num-input { width: 60px !important; height: 44px !important; line-height: 1.2 !important; text-align: center; font-weight: 800; color: var(--text-main); font-size: 1.1rem; padding: 0 !important; border-radius: 10px; -moz-appearance: textfield; appearance: textfield; }
+.guest-num-input::-webkit-outer-spin-button, .guest-num-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
 
 .table-responsive { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
 .spacious-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
