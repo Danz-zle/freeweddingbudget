@@ -44,6 +44,9 @@ const countdownDaysText = document.getElementById("countdownDaysText");
 const weddingDayCard = document.getElementById("weddingDayCard");
 const smartTipsCard = document.getElementById("smartTipsCard");
 const smartTipsContent = document.getElementById("smartTipsContent");
+const exportCsvBtn = document.getElementById("exportCsv");
+
+if (exportCsvBtn) exportCsvBtn.textContent = "Export Expense CSV";
 
 const money = value => `$${Number(value || 0).toLocaleString()}`;
 const todayLabel = () => new Date().toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" });
@@ -52,6 +55,7 @@ const totalSpent = () => expenses.reduce((sum, e) => sum + e.amount, 0);
 const totalPlanned = () => Object.values(categories).reduce((sum, value) => sum + value, 0);
 const totalGuests = () => Object.values(guestCounts).reduce((sum, value) => sum + value, 0);
 const escapeHtml = value => String(value ?? "").replace(/[&<>"']/g, char => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;" }[char]));
+const csvCell = value => `"${String(value ?? "").replace(/"/g, '""')}"`;
 
 function overallStatus() {
   const budget = Number(totalBudgetInput ? totalBudgetInput.value : 0) || 0;
@@ -83,6 +87,8 @@ function handleResponsiveLayout() {
 window.addEventListener("resize", handleResponsiveLayout);
 
 function refresh() {
+  if (exportCsvBtn) exportCsvBtn.textContent = "Export Expense CSV";
+
   const budget = Number(totalBudgetInput ? totalBudgetInput.value : 0) || 0;
   const spent = totalSpent();
   const planned = totalPlanned();
@@ -448,17 +454,30 @@ document.getElementById("exportExcel").onclick = () => {
   XLSX.writeFile(wb, "Wedding_Budget_Planner.xlsx");
 };
 
-document.getElementById("exportCsv").onclick = () => {
-  let csv = `Wedding Date,${weddingDate || "Not Set"}\nLocation,${weddingLocation || "Not Set"}\n\nDescription,Category,Amount\n`;
-  expenses.forEach(e => csv += `"${String(e.desc).replace(/"/g, '""')}","${e.cat}",${e.amount}\n`);
-  const blob = new Blob([csv], { type: "text/csv" });
-  const url = window.URL.createObjectURL(blob);
-  const link = document.createElement("a");
-  link.href = url;
-  link.download = "wedding_expenses.csv";
-  link.click();
-  window.URL.revokeObjectURL(url);
-};
+if (exportCsvBtn) {
+  exportCsvBtn.onclick = () => {
+    const exportedAt = new Date().toISOString().slice(0, 10);
+    const rows = [
+      ["Exported At", "Wedding Date", "Wedding Location", "Item", "Category", "Amount"],
+      ...expenses.map(item => [
+        exportedAt,
+        weddingDate || "",
+        weddingLocation || "",
+        item.desc,
+        item.cat,
+        item.amount
+      ])
+    ];
+    const csv = rows.map(row => row.map(csvCell).join(",")).join("\n") + "\n";
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "wedding_expense_ledger.csv";
+    link.click();
+    window.URL.revokeObjectURL(url);
+  };
+}
 
 if (addExpenseBtn) {
   addExpenseBtn.onclick = () => {
