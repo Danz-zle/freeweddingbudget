@@ -166,4 +166,48 @@ input[type="text"], input[type="number"], input[type="date"], select { border: 1
   .table-responsive { width: 100% !important; max-width: 100% !important; overflow-x: auto !important; }
   .spacious-table { min-width: 420px; }
   .spacious-table th, .spacious-table td { padding: 12px 8px; font-size: 0.85rem; }
+
+  article.card > div[style*="border-bottom:1px solid #f1f5f9"] {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    align-items: flex-start !important;
+    gap: 0.75rem !important;
+  }
+
+  article.card > div[style*="border-bottom:1px solid #f1f5f9"] > div:first-child {
+    flex: 0 0 44px !important;
+    width: 44px !important;
+    min-width: 44px !important;
+    height: 44px !important;
+    min-height: 44px !important;
+    border-radius: 50% !important;
+  }
+
+  article.card > div[style*="border-bottom:1px solid #f1f5f9"] > div:last-child {
+    flex: 1 1 220px !important;
+    min-width: 0 !important;
+    max-width: calc(100% - 56px) !important;
+    overflow-wrap: anywhere !important;
+  }
+
+  article.card table,
+  article.card .spacious-table {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  article.card table th,
+  article.card table td {
+    white-space: nowrap;
+    min-width: 130px;
+  }
+
+  article.card table th:last-child,
+  article.card table td:last-child {
+    min-width: 180px;
+  }
 }
