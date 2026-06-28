@@ -151,6 +151,96 @@ https://freeweddingbudget.com/blog.html
 
 ---
 
+## Hosting and traffic flow
+
+This project currently uses **GitHub as the source repository** and **Cloudflare Worker as the live origin/serving layer**. Cloudflare sits in front of the domain and handles DNS, HTTPS, redirects, cache, and security.
+
+### Simple map chart
+
+```mermaid
+flowchart TD
+    A[Visitor / Googlebot / AdSense crawler] --> B[Cloudflare DNS]
+    B --> C[Cloudflare Edge]
+
+    C --> D{Routing and redirect rules}
+    D -->|HTTP to HTTPS| E[HTTPS request]
+    D -->|www to root domain| F[freeweddingbudget.com]
+    D -->|.html to clean URL| G[Extensionless public URL]
+
+    E --> H[Cloudflare Worker route]
+    F --> H
+    G --> H
+
+    H --> I[Worker: freeweddingbudget]
+    I --> J[Website HTML / CSS / JS / assets]
+    J --> K[Clean canonical page returned to visitor or crawler]
+
+    L[GitHub repo: Danz-zle/freeweddingbudget] --> M[Source files maintained here]
+    M --> N[Deploy / sync to Cloudflare Worker setup]
+    N --> I
+
+    O[Google Search Console / AdSense / GA] --> A
+```
+
+### Current Cloudflare DNS records
+
+Based on the current Cloudflare DNS setup:
+
+| Hostname | Type | Target / content | Proxy status | Purpose |
+|---|---|---|---|---|
+| `freeweddingbudget.com` | TXT | `google-site-verification=...` | DNS only | Google site verification |
+| `freeweddingbudget.com` | Worker | `freeweddingbudget` | Proxied | Apex/root site served by Worker |
+| `www.freeweddingbudget.com` | Worker | `freeweddingbudget` | Proxied | www hostname routed to same Worker before redirecting to root |
+
+Cloudflare shows the Worker as the origin for these hostnames. That means the live site is not using a traditional origin server in the normal DNS sense.
+
+### Intended request flow
+
+1. A visitor, Googlebot, or AdSense crawler requests the site.
+2. Cloudflare DNS receives the request for `freeweddingbudget.com` or `www.freeweddingbudget.com`.
+3. Cloudflare routes the request to the Worker named `freeweddingbudget`.
+4. Redirect behavior normalizes the URL:
+   - HTTP becomes HTTPS.
+   - `www` becomes root domain.
+   - `.html` URLs become clean extensionless URLs.
+5. The Worker/site returns the correct HTML, CSS, JavaScript, images, `ads.txt`, `robots.txt`, or `sitemap.xml`.
+6. The final public page should have a clean canonical URL.
+
+### Final public URL format
+
+Use this format publicly:
+
+```txt
+https://freeweddingbudget.com/page-name
+```
+
+Avoid using these as final public URLs:
+
+```txt
+http://freeweddingbudget.com/page-name
+https://www.freeweddingbudget.com/page-name
+https://freeweddingbudget.com/page-name.html
+```
+
+Those variants should redirect to the clean HTTPS root-domain version.
+
+### Troubleshooting order
+
+If something breaks, check in this order:
+
+1. GitHub source files
+2. Cloudflare Worker deployment / route
+3. Cloudflare DNS records
+4. Cloudflare redirect rules
+5. Live public URL response
+6. Canonical tag
+7. `sitemap.xml`
+8. `robots.txt`
+9. `ads.txt`
+10. GSC / AdSense / GA status
+
+---
+
 ## Google Search Console notes
 
 Current expected healthy signals:
