@@ -162,6 +162,7 @@ input[type="text"], input[type="number"], input[type="date"], select { border: 1
   .dashboard-container > section.no-print > div[style*="justify-content:space-between"] h2 { font-size: 1.75rem !important; line-height: 1.15 !important; margin: 0 !important; max-width: 100% !important; }
   .dashboard-container > section.no-print > div[style*="justify-content:space-between"] > a[href="blog.html"] { width: auto !important; max-width: 100% !important; justify-content: flex-start !important; align-self: flex-start !important; font-size: 0.9rem !important; }
   .article-bottom-cta { padding: 1.4rem; }
+  .main-grid > aside > .card[style*="linear-gradient(135deg,#831843,#be185d)"] { display: none !important; }
   .tips-split-layout { grid-template-columns: 1fr; }
   .table-responsive { width: 100% !important; max-width: 100% !important; overflow-x: auto !important; }
   .spacious-table { min-width: 420px; }
