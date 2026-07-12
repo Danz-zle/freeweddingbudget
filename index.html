@@ -349,6 +349,68 @@
   </footer>
 
   <script src="script.js"></script>
+  <script>
+    function renderWeddingDayTracker() {
+      if (!weddingDayCard) return;
+      const emptyState = () => {
+        if (countdownBanner) countdownBanner.style.display = "none";
+        weddingDayCard.innerHTML = `
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:1rem;">
+            <div style="width:32px;height:32px;border-radius:50%;background:var(--primary);display:flex;align-items:center;justify-content:center;"><i data-lucide="heart" style="width:16px;height:16px;color:#fff;"></i></div>
+            <h2 style="border:none;margin:0;padding:0;">Wedding Day</h2>
+          </div>
+          <p style="font-size:0.85rem;color:var(--text-muted);margin-bottom:1rem;">Optional details for your report</p>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <input type="date" id="weddingDateInput" style="width:100%;box-sizing:border-box;" value="">
+            <input type="text" id="weddingLocationInput" placeholder="Wedding location (e.g., Taipei, Paris)" value="${escapeHtml(weddingLocation)}" style="width:100%;box-sizing:border-box;margin-bottom:8px;">
+            <button id="saveDate" onclick="saveDateValue()" style="width:100%;">Save Wedding Details</button>
+          </div>`;
+      };
+
+      if (!weddingDate) {
+        emptyState();
+        return;
+      }
+
+      const target = new Date(weddingDate);
+      const current = new Date();
+      target.setHours(0, 0, 0, 0);
+      current.setHours(0, 0, 0, 0);
+      const diffDays = Math.ceil((target.getTime() - current.getTime()) / (1000 * 60 * 60 * 24));
+      const formattedDate = target.toLocaleDateString("en-US", { weekday: "long", year: "numeric", month: "long", day: "numeric" });
+
+      if (diffDays < 0) {
+        if (countdownBanner) countdownBanner.style.display = "none";
+        weddingDayCard.innerHTML = `
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:1rem;">
+            <div style="width:32px;height:32px;border-radius:50%;background:var(--primary);display:flex;align-items:center;justify-content:center;"><i data-lucide="heart" style="width:16px;height:16px;color:#fff;"></i></div>
+            <h2 style="border:none;margin:0;padding:0;">Wedding Day</h2>
+          </div>
+          <p style="font-size:0.85rem;color:var(--text-muted);line-height:1.5;margin-bottom:1rem;">A past wedding date is saved in this browser. Update it if you are planning a new event.</p>
+          <div style="border-top:1px solid #edf2f7;padding-top:1rem;display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:0.85rem;font-weight:600;color:var(--text-muted);">
+            <span>${formattedDate}${weddingLocation ? " • " + escapeHtml(weddingLocation) : ""}</span>
+            <a href="#" onclick="changeDate();return false;" style="color:var(--primary);text-decoration:none;">Update</a>
+          </div>`;
+        return;
+      }
+
+      if (countdownBanner) countdownBanner.style.display = "block";
+      if (countdownDaysText) countdownDaysText.innerHTML = diffDays > 0 ? `${diffDays} Days to go! 🌸` : "It's Wedding Day! ❤️";
+      weddingDayCard.innerHTML = `
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:1rem;">
+          <div style="width:32px;height:32px;border-radius:50%;background:var(--primary);display:flex;align-items:center;justify-content:center;"><i data-lucide="heart" style="width:16px;height:16px;color:#fff;"></i></div>
+          <h2 style="border:none;margin:0;padding:0;">Wedding Day</h2>
+        </div>
+        <div style="text-align:center;margin:1.5rem 0;">
+          <div style="font-size:3.8rem;font-weight:900;color:var(--text-main);line-height:1;">${diffDays}</div>
+          <div style="font-size:0.8rem;font-weight:700;color:var(--text-muted);letter-spacing:0.15em;margin-top:5px;">DAYS TO GO</div>
+        </div>
+        <div style="border-top:1px solid #edf2f7;padding-top:1rem;display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:0.85rem;font-weight:600;color:var(--text-muted);">
+          <span>${formattedDate}${weddingLocation ? " • " + escapeHtml(weddingLocation) : ""}</span>
+          <a href="#" onclick="changeDate();return false;" style="color:var(--primary);text-decoration:none;">Change</a>
+        </div>`;
+    }
+  </script>
   <script>lucide.createIcons();</script>
 </body>
 </html>
