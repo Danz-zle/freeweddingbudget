@@ -163,6 +163,31 @@ input[type="text"], input[type="number"], input[type="date"], select { border: 1
   .dashboard-container > section.no-print > div[style*="justify-content:space-between"] > a[href="blog.html"] { width: auto !important; max-width: 100% !important; justify-content: flex-start !important; align-self: flex-start !important; font-size: 0.9rem !important; }
   .article-bottom-cta { padding: 1.4rem; }
   .main-grid > aside > .card[style*="linear-gradient(135deg,#831843,#be185d)"] { display: none !important; }
+
+  html:has(link[rel="canonical"][href$="/blog-create-budget"]) article.card > section:first-of-type::after {
+    content: "Before you book vendors\A✓ Set a safe total budget\A✓ Estimate guest count\A✓ Split category limits\A✓ Track full quotes, not deposits only\A✓ Keep a budget buffer";
+  }
+
+  html:has(link[rel="canonical"][href$="/blog-catering-budget-guide"]) article.card > section:first-of-type::after {
+    content: "Before you sign a catering quote\A✓ Confirm guest count\A✓ Check service charge, tax, and gratuity\A✓ Track rentals, linens, and vendor meals\A✓ Compare the full invoice, not only per-guest price";
+  }
+
+  html:has(link[rel="canonical"][href$="/blog-create-budget"]) article.card > section:first-of-type::after,
+  html:has(link[rel="canonical"][href$="/blog-catering-budget-guide"]) article.card > section:first-of-type::after {
+    display: block;
+    white-space: pre-line;
+    margin-top: 1rem;
+    padding: 1rem;
+    border-radius: 12px;
+    background: white;
+    border: 1px solid #f3d4e2;
+    border-left: 4px solid var(--primary);
+    color: var(--text-main);
+    font-size: .95rem;
+    font-weight: 600;
+    line-height: 1.7;
+  }
+
   .tips-split-layout { grid-template-columns: 1fr; }
   .table-responsive { width: 100% !important; max-width: 100% !important; overflow-x: auto !important; }
   .spacious-table { min-width: 420px; }
