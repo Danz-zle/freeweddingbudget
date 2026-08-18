@@ -28,17 +28,14 @@ body.planner2-active > .site-footer { display: none !important; }
 .planner2-utility-nav svg { width:16px; height:16px; flex:0 0 auto; }
 .planner2-utility-nav + .planner2-exit { margin-top:12px; }
 @media (min-width:901px) and (max-height:720px) {
-  .planner2-sidebar { padding-top:16px; padding-bottom:16px; }
-  .planner2-brand { padding-bottom:14px; }
-  .planner2-sidebar-trust { padding-bottom:10px; gap:3px; }
-  .planner2-sidebar-trust span { padding:5px 8px; font-size:.64rem; }
-  .planner2-nav { gap:2px; }
-  .planner2-nav button { padding:8px 12px; }
-  .planner2-utility-nav { padding-top:10px; }
-  .planner2-utility-nav a { padding:6px 10px; }
-  .planner2-exit { padding:6px 10px; font-size:.75rem; }
-}
-@media (min-width:901px) and (max-height:560px) {
+  .planner2-sidebar { padding:12px 14px; }
+  .planner2-brand { padding-bottom:10px; }
+  .planner2-sidebar-trust { padding-bottom:8px; gap:3px; }
+  .planner2-sidebar-trust span { padding:4px 7px; font-size:.64rem; }
+  .planner2-nav { gap:2px; padding-top:8px; }
+  .planner2-nav button { padding:6px 10px; }
+  .planner2-utility-nav { padding-top:8px; gap:1px; }
+  .planner2-utility-nav a { padding:5px 8px; font-size:.78rem; }
   .planner2-exit { display:none; }
 }
 .planner2-main { min-width: 0; padding: 0 42px 56px; }
