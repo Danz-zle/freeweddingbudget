@@ -19,7 +19,7 @@
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Free Wedding Budget Calculator","operatingSystem":"Web","applicationCategory":"FinanceApplication","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"A browser-based tool for planning wedding budgets, tracking expenses, and estimating costs per guest.","url":"https://freeweddingbudget.com/","publisher":{"@type":"Organization","name":"Wedding Budget Planner"}}</script>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"Wedding Budget Planner","url":"https://freeweddingbudget.com/","logo":"https://freeweddingbudget.com/favicon.ico","contactPoint":[{"@type":"ContactPoint","contactType":"support","email":"liubigcow@yahoo.com"}]}</script>
   <link rel="stylesheet" href="style.css?v=2.0.0">
-  <link rel="stylesheet" href="planner2.css?v=2.0.1">
+  <link rel="stylesheet" href="planner2.css?v=2.0.4">
   <script src="https://unpkg.com/lucide@latest"></script>
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 </head>
@@ -33,7 +33,7 @@
   <header class="top-nav no-print">
     <div class="logo">Wedding Budget Planner</div>
     <nav class="nav-links">
-      <a href="/" class="active">Dashboard</a>
+      <a href="/" class="active">Open Planner</a>
       <a href="/blog">Blog</a>
       <a href="/about">About</a>
       <a href="/privacy">Privacy</a>
@@ -44,6 +44,11 @@
   <div id="planner2Workspace" class="planner2-shell no-print" hidden>
     <aside class="planner2-sidebar" aria-label="Planner workspace">
       <div class="planner2-brand"><span>Wedding Budget</span><strong>Planner 2.0</strong></div>
+      <div class="planner2-trust planner2-sidebar-trust" aria-label="Planner benefits">
+        <span><i data-lucide="badge-check"></i>Free</span>
+        <span><i data-lucide="user-round-check"></i>No account needed</span>
+        <span><i data-lucide="shield-check"></i>Saved in this browser</span>
+      </div>
       <nav class="planner2-nav">
         <button class="active" aria-label="Overview" data-workspace-view="overview"><i data-lucide="layout-dashboard"></i><span>Overview</span></button>
         <button aria-label="Budget" data-workspace-view="budget"><i data-lucide="wallet-cards"></i><span>Budget</span></button>
@@ -64,7 +69,16 @@
 
     <div class="planner2-main">
       <header class="planner2-topbar">
-        <div><span class="planner2-eyebrow">Private browser workspace</span><h1 id="planner2Title">Overview</h1></div>
+        <div class="planner2-topbar-identity">
+          <span class="planner2-eyebrow planner2-desktop-eyebrow">Private browser workspace</span>
+          <span class="planner2-mobile-brand">Wedding Budget Planner 2.0</span>
+          <div class="planner2-trust planner2-mobile-trust" aria-label="Planner benefits">
+            <span><i data-lucide="badge-check"></i>Free</span>
+            <span><i data-lucide="user-round-check"></i>No account needed</span>
+            <span><i data-lucide="shield-check"></i>Saved in this browser</span>
+          </div>
+          <h1 id="planner2Title">Overview</h1>
+        </div>
         <span class="planner2-save-state"><i data-lucide="cloud-check"></i> Saved on this device</span>
       </header>
 
