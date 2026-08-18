@@ -373,8 +373,8 @@ window.preparePrintReport = () => {
         .print-card { border:1px solid #f3e3eb; background:#fff; border-radius:14px; padding:11px 12px; }
         .print-card span { display:block; color:#64748b; font-size:10px; font-weight:800; letter-spacing:.06em; text-transform:uppercase; margin-bottom:5px; }
         .print-card strong { color:#1e293b; font-size:14px; line-height:1.3; }
-        .print-section { margin-top:18px; page-break-inside:avoid; }
-        .print-section h2 { font-size:17px; color:#831843; margin:0 0 10px; padding-bottom:6px; border-bottom:2px solid #fce7f3; }
+        .print-section { margin-top:18px; page-break-inside:auto; break-inside:auto; }
+        .print-section h2 { font-size:17px; color:#831843; margin:0 0 10px; padding-bottom:6px; border-bottom:2px solid #fce7f3; page-break-after:avoid; break-after:avoid; }
         .print-budget-row { border:1px solid #eef2f7; border-radius:13px; padding:10px 12px; margin-bottom:8px; page-break-inside:avoid; }
         .print-budget-top, .print-budget-numbers { display:flex; justify-content:space-between; gap:10px; align-items:center; }
         .print-budget-numbers { color:#64748b; font-size:11px; margin:7px 0; flex-wrap:wrap; }
@@ -390,7 +390,7 @@ window.preparePrintReport = () => {
         .print-tips { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
         .print-tip { border:1px solid #e5e7eb; border-left:5px solid #be185d; border-radius:12px; padding:10px; page-break-inside:avoid; }
         .print-tip p { margin:4px 0 0; font-size:11px; color:#475569; line-height:1.45; }
-        .print-footer { margin-top:22px; padding-top:10px; border-top:1px solid #e5e7eb; color:#64748b; font-size:10px; display:flex; justify-content:space-between; gap:12px; }
+        .print-footer { margin-top:22px; padding-top:10px; border-top:1px solid #e5e7eb; color:#64748b; font-size:10px; display:flex; justify-content:space-between; gap:12px; page-break-inside:avoid; break-inside:avoid; }
       }
     </style>
     <header class="print-cover">
@@ -498,6 +498,8 @@ window.deleteExp = index => {
   refresh();
 };
 
-window.addEventListener("beforeprint", () => preparePrintReport());
+window.addEventListener("beforeprint", () => {
+  if (!document.body.classList.contains("planner2-active")) preparePrintReport();
+});
 window.onload = refresh;
 if (totalBudgetInput) totalBudgetInput.oninput = refresh;

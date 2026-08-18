@@ -18,7 +18,8 @@
   <link rel="icon" href="/favicon.ico">
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Free Wedding Budget Calculator","operatingSystem":"Web","applicationCategory":"FinanceApplication","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"A browser-based tool for planning wedding budgets, tracking expenses, and estimating costs per guest.","url":"https://freeweddingbudget.com/","publisher":{"@type":"Organization","name":"Wedding Budget Planner"}}</script>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"Wedding Budget Planner","url":"https://freeweddingbudget.com/","logo":"https://freeweddingbudget.com/favicon.ico","contactPoint":[{"@type":"ContactPoint","contactType":"support","email":"liubigcow@yahoo.com"}]}</script>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css?v=2.0.0">
+  <link rel="stylesheet" href="planner2.css?v=2.0.1">
   <script src="https://unpkg.com/lucide@latest"></script>
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 </head>
@@ -36,9 +37,156 @@
       <a href="/blog">Blog</a>
       <a href="/about">About</a>
       <a href="/privacy">Privacy</a>
-      <a href="mailto:liubigcow@yahoo.com">Contact</a>
+      <a href="/contact">Contact</a>
     </nav>
   </header>
+
+  <div id="planner2Workspace" class="planner2-shell no-print" hidden>
+    <aside class="planner2-sidebar" aria-label="Planner workspace">
+      <div class="planner2-brand"><span>Wedding Budget</span><strong>Planner 2.0</strong></div>
+      <nav class="planner2-nav">
+        <button class="active" aria-label="Overview" data-workspace-view="overview"><i data-lucide="layout-dashboard"></i><span>Overview</span></button>
+        <button aria-label="Budget" data-workspace-view="budget"><i data-lucide="wallet-cards"></i><span>Budget</span></button>
+        <button aria-label="Vendors" data-workspace-view="vendors"><i data-lucide="store"></i><span>Vendors</span></button>
+        <button aria-label="Payments" data-workspace-view="payments"><i data-lucide="calendar-clock"></i><span>Payments</span></button>
+        <button aria-label="Guests" data-workspace-view="guests"><i data-lucide="users"></i><span>Guests</span></button>
+        <button aria-label="Reports" data-workspace-view="reports"><i data-lucide="file-chart-column"></i><span>Reports</span></button>
+      </nav>
+      <nav class="planner2-utility-nav" aria-label="Website information">
+        <a href="/blog"><i data-lucide="book-open"></i><span>Guides</span></a>
+        <a href="/about"><i data-lucide="circle-user-round"></i><span>About</span></a>
+        <a href="/privacy"><i data-lucide="shield-check"></i><span>Privacy</span></a>
+        <a href="/terms"><i data-lucide="scroll-text"></i><span>Terms</span></a>
+        <a href="/contact"><i data-lucide="mail"></i><span>Contact</span></a>
+      </nav>
+      <span class="planner2-exit">Your plan stays on this device</span>
+    </aside>
+
+    <div class="planner2-main">
+      <header class="planner2-topbar">
+        <div><span class="planner2-eyebrow">Private browser workspace</span><h1 id="planner2Title">Overview</h1></div>
+        <span class="planner2-save-state"><i data-lucide="cloud-check"></i> Saved on this device</span>
+      </header>
+
+      <section class="planner2-view active" data-workspace-panel="overview">
+        <div class="planner2-intro"><div><span class="planner2-eyebrow">Planning snapshot</span><h2>Know what is committed before it becomes due.</h2><p>Compare complete vendor costs, track commitments, and keep payment dates visible without counting the same cost twice.</p></div><button data-go-view="vendors">Compare a vendor</button></div>
+        <div class="planner2-stats">
+          <article id="p2TotalBudgetCard"><span>Total budget</span><strong id="p2TotalBudget">$0</strong><small>Planner 2.0 working ceiling</small></article>
+          <article id="p2CommittedCard"><span>Vendor commitments</span><strong id="p2Committed">$0</strong><small id="p2CommittedMeta">Selected true-cost quotes</small></article>
+          <article id="p2PaidCard"><span>Paid</span><strong id="p2Paid">$0</strong><small id="p2PaidMeta">Completed payments</small></article>
+          <article id="p2ActualSpentCard"><span>Actual expenses</span><strong id="p2ActualSpent">$0</strong><small id="p2ActualSpentMeta">Expense ledger</small></article>
+          <article id="p2UncommittedCard"><span>Uncommitted</span><strong id="p2Uncommitted">$0</strong><small id="p2UncommittedMeta">After commitments and other expenses</small></article>
+          <article id="p2NextDueCard"><span>Next due</span><strong id="p2NextDue">Not set</strong><small id="p2NextDueMeta">Add a payment date</small></article>
+        </div>
+        <div id="p2OverviewAlerts" class="planner2-alert-stack" aria-live="polite"></div>
+        <div class="planner2-grid-2">
+          <article class="planner2-card"><div class="planner2-card-heading"><div><span class="planner2-eyebrow">Vendor decision</span><h2>Lowest true cost</h2></div><button class="planner2-text-button" data-go-view="vendors">View comparison</button></div><div id="p2BestVendor" class="planner2-empty">Add quotes to compare package price with required fees, travel, rentals, overtime, and tax.</div></article>
+          <article class="planner2-card"><div class="planner2-card-heading"><div><span class="planner2-eyebrow">Cash flow</span><h2>Payment status</h2></div><button class="planner2-text-button" data-go-view="payments">Open tracker</button></div><div id="p2PaymentSummary" class="planner2-empty">No payments scheduled yet.</div></article>
+        </div>
+        <aside class="planner2-guides" aria-labelledby="p2OverviewGuides"><div class="planner2-guides-heading"><span class="planner2-eyebrow">Planning guidance</span><h2 id="p2OverviewGuides">Build a reliable starting plan</h2></div><div class="planner2-guide-grid"><a href="/blog-create-budget"><strong>Create a wedding budget</strong><span>Set priorities and category limits before comparing quotes.</span></a><a href="/blog-planning-timeline"><strong>Budget planning timeline</strong><span>Connect decisions and payment dates to each planning stage.</span></a><a href="/blog-50-vs-100-guests"><strong>50 guests vs 100 guests</strong><span>See how guest count changes the shape of the budget.</span></a></div></aside>
+      </section>
+
+      <section class="planner2-view" data-workspace-panel="budget">
+        <div class="planner2-section-heading"><div><span class="planner2-eyebrow">Budget workspace</span><h2>Budget control center</h2><p>Keep planned amounts, selected commitments, payments, and actual expenses separate.</p></div></div>
+        <div class="planner2-budget-banner" id="p2BudgetSource"><strong>Planner budget</strong><span>Saved privately in this browser.</span></div>
+        <form id="p2BudgetForm" class="planner2-card planner2-budget-form">
+          <label>Total wedding budget<input id="p2BudgetInput" type="number" min="0" step="100"></label>
+          <div><span>Committed and spent</span><strong id="p2BudgetUsed">$0</strong></div>
+          <div><span>Still uncommitted</span><strong id="p2BudgetRemaining">$0</strong></div>
+          <div><span>Payment progress</span><strong id="p2PaymentProgress">$0 of $0</strong></div>
+        </form>
+        <div class="planner2-card"><div class="planner2-table-wrap"><table class="planner2-table"><thead><tr><th>Category</th><th>Planned</th><th>Committed</th><th>Other expenses</th><th>Available</th><th>Status</th></tr></thead><tbody id="p2BudgetRows"></tbody></table></div></div>
+        <div class="planner2-section-heading planner2-subsection-heading"><div><span class="planner2-eyebrow">Permanent expense ledger</span><h2>Actual expenses</h2><p>Record costs that are not already represented by a selected vendor commitment or payment.</p></div></div>
+        <form id="p2ExpenseForm" class="planner2-card planner2-form planner2-expense-form">
+          <label>Description<input name="description" required placeholder="e.g. Marriage licence"></label>
+          <label>Category<select name="category"><option>Venue</option><option>Catering</option><option>Photography</option><option>Decor</option><option>Entertainment</option><option>Attire</option><option>Transportation</option><option>Other</option></select></label>
+          <label>Amount<input name="amount" type="number" min="0" step="0.01" required></label>
+          <div class="planner2-form-actions"><button id="p2ExpenseSubmit" type="submit">Add expense</button><button id="p2ExpenseCancel" class="planner2-secondary-button" type="button" hidden>Cancel edit</button></div>
+        </form>
+        <div class="planner2-card"><div class="planner2-table-wrap"><table class="planner2-table"><thead><tr><th>Expense</th><th>Category</th><th>Amount</th><th>Source</th><th></th></tr></thead><tbody id="p2ExpenseRows"></tbody></table></div></div>
+        <div class="planner2-note"><strong>How totals work:</strong> selected vendor true cost is a commitment. Payments reduce the amount still payable but do not increase contract cost. Imported expenses that are not already represented by selected vendors reduce available budget separately.</div>
+        <aside class="planner2-guides" aria-labelledby="p2BudgetGuides"><div class="planner2-guides-heading"><span class="planner2-eyebrow">Budget guides</span><h2 id="p2BudgetGuides">Plan with fewer surprises</h2></div><div class="planner2-guide-grid"><a href="/blog-create-budget"><strong>Create your category plan</strong><span>Turn the total budget into realistic working limits.</span></a><a href="/blog-hidden-costs"><strong>Check hidden wedding costs</strong><span>Allow for fees and charges that are easy to overlook.</span></a><a href="/blog-spend-vs-save"><strong>Choose where to spend or save</strong><span>Protect the priorities that matter most to you.</span></a></div></aside>
+      </section>
+
+      <section class="planner2-view" data-workspace-panel="vendors">
+        <div class="planner2-section-heading"><div><span class="planner2-eyebrow">Priority workflow</span><h2>Vendor true-cost comparator</h2><p>Normalize every required charge so a low package price cannot hide a higher final cost.</p></div></div>
+        <form id="p2VendorForm" class="planner2-card planner2-form">
+          <label>Vendor name<input name="name" required placeholder="e.g. Silverline Photography"></label>
+          <label>Category<select name="category"><option>Venue</option><option>Catering</option><option>Photography</option><option>Decor</option><option>Entertainment</option><option>Attire</option><option>Transportation</option><option>Other</option></select></label>
+          <label>Package price<input name="packagePrice" type="number" min="0" step="0.01" value="0"></label>
+          <label>Required fees<input name="fees" type="number" min="0" step="0.01" value="0"></label>
+          <label>Travel / delivery<input name="travel" type="number" min="0" step="0.01" value="0"></label>
+          <label>Rentals / add-ons<input name="rentals" type="number" min="0" step="0.01" value="0"></label>
+          <label>Likely overtime<input name="overtime" type="number" min="0" step="0.01" value="0"></label>
+          <label>Tax rate (%)<input name="taxRate" type="number" min="0" step="0.01" value="0"></label>
+          <button type="submit">Add quote</button>
+        </form>
+        <div class="planner2-card"><div class="planner2-table-wrap"><table class="planner2-table"><thead><tr><th>Vendor</th><th>Package</th><th>Extras</th><th>Tax</th><th>True cost</th><th>Status</th><th></th></tr></thead><tbody id="p2VendorRows"></tbody></table></div></div>
+        <aside class="planner2-guides" aria-labelledby="p2VendorGuides"><div class="planner2-guides-heading"><span class="planner2-eyebrow">Vendor guides</span><h2 id="p2VendorGuides">Compare the whole offer</h2></div><div class="planner2-guide-grid"><a href="/blog-vendor-quotes"><strong>Compare vendor quotes</strong><span>Use consistent questions and identify missing charges.</span></a><a href="/blog-venue-cost-checklist"><strong>Venue cost checklist</strong><span>Review service, rental, timing, and venue-specific costs.</span></a><a href="/blog-catering-budget-guide"><strong>Catering budget guide</strong><span>Connect menu choices and service fees to guest count.</span></a></div></aside>
+      </section>
+
+      <section class="planner2-view" data-workspace-panel="payments">
+        <div class="planner2-section-heading"><div><span class="planner2-eyebrow">Priority workflow</span><h2>Payment tracker</h2><p>Track deposits, installments, and final balances without counting a deposit as the full contract cost.</p></div></div>
+        <form id="p2PaymentForm" class="planner2-card planner2-form planner2-payment-form">
+          <label>Payment name<input name="name" required placeholder="e.g. Venue deposit"></label>
+          <label>Vendor<input name="vendor" list="p2SelectedVendorOptions" placeholder="Choose a selected vendor or type another"><datalist id="p2SelectedVendorOptions"></datalist></label>
+          <label>Amount<input name="amount" type="number" min="0" step="0.01" required></label>
+          <label>Due date<input name="dueDate" type="date" required></label>
+          <button type="submit">Add payment</button>
+        </form>
+        <div id="p2VendorPaymentBalances" class="planner2-payment-balances" aria-live="polite"></div>
+        <div class="planner2-card"><div class="planner2-table-wrap"><table class="planner2-table"><thead><tr><th>Payment</th><th>Vendor</th><th>Due</th><th>Amount</th><th>Status</th><th></th></tr></thead><tbody id="p2PaymentRows"></tbody></table></div></div>
+        <aside class="planner2-guides" aria-labelledby="p2PaymentGuides"><div class="planner2-guides-heading"><span class="planner2-eyebrow">Payment guides</span><h2 id="p2PaymentGuides">Prepare for every due date</h2></div><div class="planner2-guide-grid"><a href="/blog-planning-timeline"><strong>Follow the planning timeline</strong><span>Anticipate when major wedding decisions usually become due.</span></a><a href="/blog-vendor-quotes"><strong>Review quote terms</strong><span>Check deposits, installments, cancellation terms, and balances.</span></a><a href="/blog-hidden-costs"><strong>Allow for extra charges</strong><span>Keep a reserve for costs outside the advertised package.</span></a></div></aside>
+      </section>
+
+      <section class="planner2-view" data-workspace-panel="guests">
+        <div class="planner2-section-heading"><div><span class="planner2-eyebrow">Guest scenarios</span><h2>Guest count planner</h2><p>Compare guest lists before catering and venue-capacity decisions become commitments.</p></div></div>
+        <div class="planner2-stats planner2-guest-stats">
+          <article><span>Current guests</span><strong id="p2GuestTotal">0</strong><small>Active guest plan</small></article>
+          <article><span>Tracked cost / guest</span><strong id="p2GuestCost">$0</strong><small>Commitments plus other expenses</small></article>
+          <article><span>Catering estimate</span><strong id="p2GuestCatering">$0</strong><small id="p2GuestCateringMeta">Using $0 per guest</small></article>
+          <article><span>Projected headroom</span><strong id="p2GuestHeadroom">$0</strong><small>After replacing catering with estimate</small></article>
+        </div>
+        <form id="p2GuestPlanForm" class="planner2-card planner2-guest-form">
+          <label>Family<input name="Family" type="number" min="0" step="1"></label>
+          <label>Friends<input name="Friends" type="number" min="0" step="1"></label>
+          <label>Colleagues<input name="Colleagues" type="number" min="0" step="1"></label>
+          <label>Others<input name="Others" type="number" min="0" step="1"></label>
+          <label>Estimated catering / guest<input id="p2CateringRate" type="number" min="0" step="1"></label>
+        </form>
+        <form id="p2ScenarioForm" class="planner2-card planner2-form planner2-scenario-form">
+          <label>Scenario name<input name="name" required placeholder="e.g. Intimate 60"></label>
+          <label>Family<input name="Family" type="number" min="0" step="1" value="0"></label>
+          <label>Friends<input name="Friends" type="number" min="0" step="1" value="0"></label>
+          <label>Colleagues<input name="Colleagues" type="number" min="0" step="1" value="0"></label>
+          <label>Others<input name="Others" type="number" min="0" step="1" value="0"></label>
+          <button type="submit">Save scenario</button>
+        </form>
+        <div class="planner2-card"><div class="planner2-table-wrap"><table class="planner2-table"><thead><tr><th>Scenario</th><th>Guests</th><th>Catering estimate</th><th>Tracked cost / guest</th><th>Projected total</th><th>Headroom</th><th></th></tr></thead><tbody id="p2ScenarioRows"></tbody></table></div></div>
+        <div class="planner2-note"><strong>Scenario method:</strong> projected total keeps non-catering commitments and expenses fixed, then replaces tracked catering with guest count × your catering estimate. It is a planning comparison, not a vendor quote.</div>
+        <aside class="planner2-guides" aria-labelledby="p2GuestGuides"><div class="planner2-guides-heading"><span class="planner2-eyebrow">Guest guides</span><h2 id="p2GuestGuides">Test the cost of your guest list</h2></div><div class="planner2-guide-grid planner2-guide-grid-2"><a href="/blog-50-vs-100-guests"><strong>Compare 50 and 100 guests</strong><span>Understand which costs rise with each additional guest.</span></a><a href="/blog-catering-budget-guide"><strong>Estimate catering per guest</strong><span>Build a more useful food and service assumption.</span></a></div></aside>
+      </section>
+      <section class="planner2-view" data-workspace-panel="reports">
+        <div class="planner2-section-heading"><div><span class="planner2-eyebrow">Planning records</span><h2>Reports and exports</h2><p>Take a complete planning snapshot or download focused ledgers for vendor and payment work.</p></div></div>
+        <div class="planner2-stats planner2-report-stats">
+          <article><span>Budget</span><strong id="p2ReportBudget">$0</strong><small>Working ceiling</small></article>
+          <article><span>Selected vendors</span><strong id="p2ReportVendors">0</strong><small>Included in commitments</small></article>
+          <article><span>Payments</span><strong id="p2ReportPayments">0</strong><small id="p2ReportPaymentMeta">0 completed</small></article>
+          <article><span>Guest scenarios</span><strong id="p2ReportScenarios">0</strong><small>Saved comparisons</small></article>
+        </div>
+        <div class="planner2-report-grid">
+          <article class="planner2-card planner2-export-card"><i data-lucide="file-spreadsheet"></i><div><h2>Complete Excel workbook</h2><p>Summary, budget, expenses, vendors, payments, guest plan, and guest scenarios.</p></div><button id="p2ExportExcel">Export Excel</button></article>
+          <article class="planner2-card planner2-export-card"><i data-lucide="file-text"></i><div><h2>Planning PDF</h2><p>Print-ready overview with financial, vendor, payment, and guest sections.</p></div><button id="p2PrintReport">Print PDF</button></article>
+          <article class="planner2-card planner2-export-card"><i data-lucide="table-2"></i><div><h2>Vendor comparison CSV</h2><p>Raw quote components, true cost, and selection status.</p></div><button id="p2ExportVendorCsv">Export Vendor CSV</button></article>
+          <article class="planner2-card planner2-export-card"><i data-lucide="calendar-days"></i><div><h2>Payment schedule CSV</h2><p>Payment names, vendors, dates, amounts, and current status.</p></div><button id="p2ExportPaymentCsv">Export Payment CSV</button></article>
+          <article class="planner2-card planner2-export-card"><i data-lucide="receipt-text"></i><div><h2>Actual expense CSV</h2><p>Descriptions, categories, amounts, and imported or Planner 2.0 source.</p></div><button id="p2ExportExpenseCsv">Export Expense CSV</button></article>
+        </div>
+        <p id="p2ExportStatus" class="planner2-export-status" role="status" aria-live="polite"></p>
+        <div class="planner2-note"><strong>Export rule:</strong> payments are reported as cash flow and are not added on top of selected vendor true cost. This keeps the exported totals consistent with the workspace.</div>
+        <aside class="planner2-guides" aria-labelledby="p2ReportGuides"><div class="planner2-guides-heading"><span class="planner2-eyebrow">Before you share</span><h2 id="p2ReportGuides">Review the assumptions behind the report</h2></div><div class="planner2-guide-grid planner2-guide-grid-2"><a href="/blog-create-budget"><strong>Recheck the budget foundation</strong><span>Confirm priorities and category limits before using the report.</span></a><a href="/blog-vendor-quotes"><strong>Verify selected quotes</strong><span>Confirm that each true cost includes the same required items.</span></a></div></aside>
+      </section>
+    </div>
+  </div>
 
   <div id="countdownBanner" class="countdown-hero no-print" style="display:none;">
     <div class="countdown-hero-content">
@@ -344,11 +492,12 @@
 
   <footer class="site-footer no-print">
     <p>&copy; 2026 Wedding Budget Planner. All rights reserved.</p>
-    <div class="footer-links"><a href="/about">About</a> <span>•</span><a href="/blog">Blog</a> <span>•</span><a href="/privacy">Privacy Policy</a> <span>•</span><a href="/terms">Terms &amp; Conditions</a> <span>•</span><a href="mailto:liubigcow@yahoo.com">Contact</a></div>
+    <div class="footer-links"><a href="/about">About</a> <span>•</span><a href="/blog">Blog</a> <span>•</span><a href="/privacy">Privacy Policy</a> <span>•</span><a href="/terms">Terms &amp; Conditions</a> <span>•</span><a href="/contact">Contact</a></div>
     <p><small>Disclaimer: This site provides general wedding budgeting information only and does not provide personal financial or professional planning advice.</small></p>
   </footer>
 
-  <script src="script.js"></script>
+  <script src="script.js?v=2.0.0"></script>
+  <script src="planner2.js?v=2.0.1"></script>
   <script>
     function renderWeddingDayTracker() {
       if (!weddingDayCard) return;
