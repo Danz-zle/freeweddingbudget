@@ -44,16 +44,34 @@
   const confirmDialog = document.getElementById("p2ConfirmDialog");
   const confirmTitle = document.getElementById("p2ConfirmTitle");
   const confirmMessage = document.getElementById("p2ConfirmMessage");
+  const confirmDetails = document.getElementById("p2ConfirmDetails");
   const confirmAccept = document.getElementById("p2ConfirmAccept");
   const confirmCancel = document.getElementById("p2ConfirmCancel");
   let pendingConfirm = null;
   const closeConfirmation = () => {
     confirmDialog.hidden = true;
+    confirmDetails.hidden = true;
+    confirmDetails.replaceChildren();
     pendingConfirm = null;
   };
-  const openConfirmation = ({ title, message, confirmLabel = "Confirm change", onConfirm }) => {
+  const openConfirmation = ({ title, message, details = [], compatibility = "", confirmLabel = "Confirm change", onConfirm }) => {
     confirmTitle.textContent = title;
     confirmMessage.textContent = message;
+    confirmDetails.replaceChildren();
+    if (compatibility) {
+      const compatible = document.createElement("dd");
+      compatible.className = "planner2-dialog-compatibility";
+      compatible.textContent = compatibility;
+      confirmDetails.append(compatible);
+    }
+    details.forEach(([label, value]) => {
+      const term = document.createElement("dt");
+      const description = document.createElement("dd");
+      term.textContent = label;
+      description.textContent = value;
+      confirmDetails.append(term, description);
+    });
+    confirmDetails.hidden = !compatibility && !details.length;
     confirmAccept.textContent = confirmLabel;
     pendingConfirm = onConfirm;
     confirmDialog.hidden = false;
@@ -338,15 +356,43 @@
   document.getElementById("p2PrintReport").addEventListener("click", () => { markExported("Print dialog opened. Choose Save as PDF to download the report."); preparePlanner2PrintReport(); window.print(); });
   window.addEventListener("beforeprint", preparePlanner2PrintReport);
   const BACKUP_FORMAT = "wedding-budget-planner-2-backup";
+  const BACKUP_VERSION = 1;
+  const timestampForFilename = date => {
+    const pad = value => String(value).padStart(2, "0");
+    return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}_${pad(date.getHours())}-${pad(date.getMinutes())}-${pad(date.getSeconds())}`;
+  };
+  const checklistProgressFor = plan => [
+    plan.progress.budgetReviewed || Boolean(plan.budget.importedAt),
+    plan.vendors.length > 0,
+    plan.vendors.some(vendor => vendor.selected),
+    plan.payments.length > 0,
+    guestTotalFor(plan.guests.current) > 0 || plan.guests.scenarios.length > 0,
+    plan.progress.exported
+  ].filter(Boolean).length;
+  const backupPreviewDetails = (plan, exportedAt) => {
+    const selectedVendors = plan.vendors.filter(vendor => vendor.selected).length;
+    const paidPayments = plan.payments.filter(payment => payment.paid).length;
+    const created = new Date(exportedAt);
+    return [
+      ["Created", Number.isNaN(created.getTime()) ? "Date unavailable" : created.toLocaleString()],
+      ["Total budget", money2(plan.budget.total)],
+      ["Expenses", plan.budget.expenses.length.toLocaleString()],
+      ["Vendor quotes", `${plan.vendors.length.toLocaleString()} · ${selectedVendors.toLocaleString()} selected`],
+      ["Payments", `${plan.payments.length.toLocaleString()} · ${paidPayments.toLocaleString()} paid`],
+      ["Current guests", guestTotalFor(plan.guests.current).toLocaleString()],
+      ["Guest scenarios", plan.guests.scenarios.length.toLocaleString()],
+      ["Checklist", `${checklistProgressFor(plan)} of 6 complete`]
+    ];
+  };
   const renderLastBackup = () => {
     const lastBackup = localStorage.getItem(BACKUP_META_KEY);
     document.getElementById("p2LastBackup").textContent = lastBackup ? `Last backup: ${new Date(lastBackup).toLocaleString()}` : "No backup downloaded from this browser yet";
   };
   renderLastBackup();
   const exportPlannerBackup = () => {
-    const backup = { format: BACKUP_FORMAT, version: 1, exportedAt: new Date().toISOString(), state };
-    const datePart = new Date().toISOString().slice(0, 10);
-    downloadText(`Wedding_Planner_2_Backup_${datePart}.json`, JSON.stringify(backup, null, 2), "application/json;charset=utf-8");
+    const createdAt = new Date();
+    const backup = { format: BACKUP_FORMAT, version: BACKUP_VERSION, exportedAt: createdAt.toISOString(), state };
+    downloadText(`Wedding_Planner_2_Backup_${timestampForFilename(createdAt)}.json`, JSON.stringify(backup, null, 2), "application/json;charset=utf-8");
     localStorage.setItem(BACKUP_META_KEY, backup.exportedAt);
     renderLastBackup();
     document.getElementById("p2DataStatus").textContent = "Planner backup downloaded. Keep it somewhere you can find after changing browsers or clearing browser data.";
@@ -361,10 +407,25 @@
     try {
       if (file.size > 2 * 1024 * 1024) throw new Error("This backup is larger than 2 MB and cannot be imported.");
       const backup = JSON.parse(await file.text());
-      if (backup?.format !== BACKUP_FORMAT || backup?.version !== 1 || !backup?.state) throw new Error("Choose a valid Planner 2.0 backup file.");
+      if (backup?.format !== BACKUP_FORMAT || !backup?.state) throw new Error("Choose a valid Planner 2.0 backup file.");
+      if (backup.version !== BACKUP_VERSION) throw new Error(`This backup uses version ${backup.version ?? "unknown"}. Planner 2.0 currently supports backup version ${BACKUP_VERSION}.`);
       const restoredState = normalizeState(backup.state);
       if (!restoredState) throw new Error("The backup does not contain a readable planner.");
-      openConfirmation({ title: "Replace this browser’s planner?", message: "Restoring this backup will replace the Planner 2.0 data currently saved in this browser. Download a backup of the current plan first if you may need it later.", confirmLabel: "Restore backup", onConfirm: () => { state = restoredState; save(); render(); dataStatus.textContent = `Backup restored${backup.exportedAt ? ` from ${new Date(backup.exportedAt).toLocaleDateString()}` : ""}.`; } });
+      const previewDetails = backupPreviewDetails(restoredState, backup.exportedAt);
+      openConfirmation({
+        title: "Restore this backup?",
+        message: "Review the backup contents before replacing the Planner 2.0 data currently saved in this browser.",
+        compatibility: `Planner 2.0 backup · Version ${backup.version} · Compatible`,
+        details: previewDetails,
+        confirmLabel: "Restore this backup",
+        onConfirm: () => {
+          state = restoredState;
+          save();
+          render();
+          const selectedVendors = state.vendors.filter(vendor => vendor.selected).length;
+          dataStatus.textContent = `Backup restored successfully: ${state.vendors.length} vendor quote${state.vendors.length === 1 ? "" : "s"} (${selectedVendors} selected), ${state.payments.length} payment${state.payments.length === 1 ? "" : "s"}, ${guestTotalFor(state.guests.current)} guests, and ${state.guests.scenarios.length} scenario${state.guests.scenarios.length === 1 ? "" : "s"} restored.`;
+        }
+      });
     } catch (error) {
       dataStatus.textContent = error.message || "The backup could not be read.";
     } finally {
