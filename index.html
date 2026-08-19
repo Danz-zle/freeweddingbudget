@@ -84,6 +84,14 @@
 
       <section class="planner2-view active" data-workspace-panel="overview">
         <div class="planner2-intro"><div><span class="planner2-eyebrow">Planning snapshot</span><h2>Know what is committed before it becomes due.</h2><p>Compare complete vendor costs, track commitments, and keep payment dates visible without counting the same cost twice.</p></div><button data-go-view="vendors">Compare a vendor</button></div>
+        <details class="planner2-privacy-note">
+          <summary><i data-lucide="shield-check"></i> Free, private planning — how browser saving works</summary>
+          <p>Your wedding plan is stored in this browser and is not attached to a personal profile. Analytics may count general site use according to your consent choice, but your saved budget, vendor, payment, and guest records are not sent as analytics details.</p>
+        </details>
+        <section class="planner2-card planner2-start-card" aria-labelledby="p2StartTitle">
+          <div class="planner2-card-heading"><div><span class="planner2-eyebrow">Start here</span><h2 id="p2StartTitle">Build your plan in six steps</h2><p>Follow this order once, then return to any section whenever your plans change.</p></div><strong id="p2StartProgress" class="planner2-progress-count">0 of 6 complete</strong></div>
+          <div id="p2StartSteps" class="planner2-start-steps"></div>
+        </section>
         <div class="planner2-stats">
           <article id="p2TotalBudgetCard"><span>Total budget</span><strong id="p2TotalBudget">$0</strong><small>Planner 2.0 working ceiling</small></article>
           <article id="p2CommittedCard"><span>Vendor commitments</span><strong id="p2Committed">$0</strong><small id="p2CommittedMeta">Selected true-cost quotes</small></article>
@@ -124,6 +132,7 @@
 
       <section class="planner2-view" data-workspace-panel="vendors">
         <div class="planner2-section-heading"><div><span class="planner2-eyebrow">Priority workflow</span><h2>Vendor true-cost comparator</h2><p>Normalize every required charge so a low package price cannot hide a higher final cost.</p></div></div>
+        <div class="planner2-note planner2-selection-note"><strong>What “Selected” means:</strong> selecting a quote adds its true cost to your commitments and makes that vendor available in the payment tracker. Unselected quotes stay here for comparison.</div>
         <form id="p2VendorForm" class="planner2-card planner2-form">
           <label>Vendor name<input name="name" required placeholder="e.g. Silverline Photography"></label>
           <label>Category<select name="category"><option>Venue</option><option>Catering</option><option>Photography</option><option>Decor</option><option>Entertainment</option><option>Attire</option><option>Transportation</option><option>Other</option></select></label>
@@ -136,7 +145,7 @@
           <button type="submit">Add quote</button>
         </form>
         <div class="planner2-card"><div class="planner2-table-wrap"><table class="planner2-table"><thead><tr><th>Vendor</th><th>Package</th><th>Extras</th><th>Tax</th><th>True cost</th><th>Status</th><th></th></tr></thead><tbody id="p2VendorRows"></tbody></table></div></div>
-        <aside class="planner2-guides" aria-labelledby="p2VendorGuides"><div class="planner2-guides-heading"><span class="planner2-eyebrow">Vendor guides</span><h2 id="p2VendorGuides">Compare the whole offer</h2></div><div class="planner2-guide-grid"><a href="/blog-vendor-quotes"><strong>Compare vendor quotes</strong><span>Use consistent questions and identify missing charges.</span></a><a href="/blog-venue-cost-checklist"><strong>Venue cost checklist</strong><span>Review service, rental, timing, and venue-specific costs.</span></a><a href="/blog-catering-budget-guide"><strong>Catering budget guide</strong><span>Connect menu choices and service fees to guest count.</span></a></div></aside>
+        <aside class="planner2-guides" aria-labelledby="p2VendorGuides"><div class="planner2-guides-heading"><span class="planner2-eyebrow">Help with this step</span><h2 id="p2VendorGuides">Which charges belong in true cost?</h2></div><div class="planner2-guide-grid"><a href="/blog-vendor-quotes"><strong>Which quote questions reveal missing fees?</strong><span>Compare scope, deposits, overtime, cancellation terms, and excluded charges.</span></a><a href="/blog-venue-cost-checklist"><strong>What should a venue quote include?</strong><span>Review service, rental, timing, access, and venue-specific costs.</span></a><a href="/blog-catering-budget-guide"><strong>How do I estimate catering per guest?</strong><span>Connect menu choices, staffing, service fees, tax, and guest count.</span></a></div></aside>
       </section>
 
       <section class="planner2-view" data-workspace-panel="payments">
@@ -150,7 +159,7 @@
         </form>
         <div id="p2VendorPaymentBalances" class="planner2-payment-balances" aria-live="polite"></div>
         <div class="planner2-card"><div class="planner2-table-wrap"><table class="planner2-table"><thead><tr><th>Payment</th><th>Vendor</th><th>Due</th><th>Amount</th><th>Status</th><th></th></tr></thead><tbody id="p2PaymentRows"></tbody></table></div></div>
-        <aside class="planner2-guides" aria-labelledby="p2PaymentGuides"><div class="planner2-guides-heading"><span class="planner2-eyebrow">Payment guides</span><h2 id="p2PaymentGuides">Prepare for every due date</h2></div><div class="planner2-guide-grid"><a href="/blog-planning-timeline"><strong>Follow the planning timeline</strong><span>Anticipate when major wedding decisions usually become due.</span></a><a href="/blog-vendor-quotes"><strong>Review quote terms</strong><span>Check deposits, installments, cancellation terms, and balances.</span></a><a href="/blog-hidden-costs"><strong>Allow for extra charges</strong><span>Keep a reserve for costs outside the advertised package.</span></a></div></aside>
+        <aside class="planner2-guides" aria-labelledby="p2PaymentGuides"><div class="planner2-guides-heading"><span class="planner2-eyebrow">Help with this step</span><h2 id="p2PaymentGuides">How should deposits and balances be tracked?</h2></div><div class="planner2-guide-grid"><a href="/blog-planning-timeline"><strong>When do major payments usually become due?</strong><span>Connect vendor decisions, deposits, installments, and final balances to your timeline.</span></a><a href="/blog-vendor-quotes"><strong>Which payment terms should I check?</strong><span>Review deposits, installments, cancellation terms, and remaining balances.</span></a><a href="/blog-hidden-costs"><strong>How much reserve should I protect?</strong><span>Keep room for charges outside the advertised package.</span></a></div></aside>
       </section>
 
       <section class="planner2-view" data-workspace-panel="guests">
@@ -178,7 +187,7 @@
         </form>
         <div class="planner2-card"><div class="planner2-table-wrap"><table class="planner2-table"><thead><tr><th>Scenario</th><th>Guests</th><th>Catering estimate</th><th>Tracked cost / guest</th><th>Projected total</th><th>Headroom</th><th></th></tr></thead><tbody id="p2ScenarioRows"></tbody></table></div></div>
         <div class="planner2-note"><strong>Scenario method:</strong> projected total keeps non-catering commitments and expenses fixed, then replaces tracked catering with guest count × your catering estimate. It is a planning comparison, not a vendor quote.</div>
-        <aside class="planner2-guides" aria-labelledby="p2GuestGuides"><div class="planner2-guides-heading"><span class="planner2-eyebrow">Guest guides</span><h2 id="p2GuestGuides">Test the cost of your guest list</h2></div><div class="planner2-guide-grid planner2-guide-grid-2"><a href="/blog-50-vs-100-guests"><strong>Compare 50 and 100 guests</strong><span>Understand which costs rise with each additional guest.</span></a><a href="/blog-catering-budget-guide"><strong>Estimate catering per guest</strong><span>Build a more useful food and service assumption.</span></a></div></aside>
+        <aside class="planner2-guides" aria-labelledby="p2GuestGuides"><div class="planner2-guides-heading"><span class="planner2-eyebrow">Help with this step</span><h2 id="p2GuestGuides">How does guest count change the budget?</h2></div><div class="planner2-guide-grid planner2-guide-grid-2"><a href="/blog-50-vs-100-guests"><strong>What changes between 50 and 100 guests?</strong><span>See which costs rise per person and which may stay fixed.</span></a><a href="/blog-catering-budget-guide"><strong>What belongs in a per-guest catering estimate?</strong><span>Build a more useful food, drink, staffing, fee, and tax assumption.</span></a></div></aside>
       </section>
       <section class="planner2-view" data-workspace-panel="reports">
         <div class="planner2-section-heading"><div><span class="planner2-eyebrow">Planning records</span><h2>Reports and exports</h2><p>Take a complete planning snapshot or download focused ledgers for vendor and payment work.</p></div></div>
@@ -197,7 +206,7 @@
         </div>
         <p id="p2ExportStatus" class="planner2-export-status" role="status" aria-live="polite"></p>
         <div class="planner2-note"><strong>Export rule:</strong> payments are reported as cash flow and are not added on top of selected vendor true cost. This keeps the exported totals consistent with the workspace.</div>
-        <aside class="planner2-guides" aria-labelledby="p2ReportGuides"><div class="planner2-guides-heading"><span class="planner2-eyebrow">Before you share</span><h2 id="p2ReportGuides">Review the assumptions behind the report</h2></div><div class="planner2-guide-grid planner2-guide-grid-2"><a href="/blog-create-budget"><strong>Recheck the budget foundation</strong><span>Confirm priorities and category limits before using the report.</span></a><a href="/blog-vendor-quotes"><strong>Verify selected quotes</strong><span>Confirm that each true cost includes the same required items.</span></a></div></aside>
+        <aside class="planner2-guides" aria-labelledby="p2ReportGuides"><div class="planner2-guides-heading"><span class="planner2-eyebrow">Before you share</span><h2 id="p2ReportGuides">What should I verify before exporting?</h2></div><div class="planner2-guide-grid planner2-guide-grid-2"><a href="/blog-create-budget"><strong>Are the budget limits still realistic?</strong><span>Confirm priorities and category limits before relying on the report.</span></a><a href="/blog-vendor-quotes"><strong>Do selected quotes use complete true costs?</strong><span>Confirm that each selected commitment includes the same required items.</span></a></div></aside>
       </section>
     </div>
   </div>

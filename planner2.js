@@ -6,7 +6,8 @@
   const defaultBudget = () => ({ total: 40000, categories: { ...defaultCategories }, expenses: [], importedAt: null });
   const defaultGuestCounts = () => ({ Family: 0, Friends: 0, Colleagues: 0, Others: 0 });
   const defaultGuests = () => ({ current: defaultGuestCounts(), cateringRate: 130, scenarios: [] });
-  const emptyState = () => ({ vendors: [], payments: [], budget: defaultBudget(), guests: defaultGuests() });
+  const defaultProgress = () => ({ budgetReviewed: false, exported: false });
+  const emptyState = () => ({ vendors: [], payments: [], budget: defaultBudget(), guests: defaultGuests(), progress: defaultProgress() });
   const parseState = () => {
     try {
       const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
@@ -24,7 +25,8 @@
               current: { ...defaultGuestCounts(), ...(saved.guests?.current || {}) },
               cateringRate: numberValue(saved.guests?.cateringRate ?? 130),
               scenarios: Array.isArray(saved.guests?.scenarios) ? saved.guests.scenarios : []
-            }
+            },
+            progress: { ...defaultProgress(), ...(saved.progress || {}) }
           }
         : emptyState();
     } catch (_) {
@@ -80,6 +82,11 @@
     URL.revokeObjectURL(url);
   };
   const csvRows = rows => rows.map(row => row.map(csvCell).join(",")).join("\n") + "\n";
+  const markExported = () => {
+    state.progress.exported = true;
+    save();
+    render();
+  };
   const importLegacySnapshot = transfer => {
     const source = transfer && typeof transfer === "object" ? transfer : {};
     const liveCategories = typeof categories !== "undefined" ? categories : defaultCategories;
@@ -113,7 +120,6 @@
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
   workspace.querySelectorAll("[data-workspace-view]").forEach(button => button.addEventListener("click", () => showView(button.dataset.workspaceView, true)));
-  workspace.querySelectorAll("[data-go-view]").forEach(button => button.addEventListener("click", () => showView(button.dataset.goView, true)));
   const requestedView = window.location.hash.slice(1);
   if (["overview", "budget", "vendors", "payments", "guests", "reports"].includes(requestedView)) showView(requestedView);
   window.addEventListener("hashchange", () => {
@@ -122,20 +128,31 @@
   });
 
   const render = () => {
+    const selected = state.vendors.filter(v => v.selected);
+    const startSteps = [
+      { label: "Review your total and category limits", detail: "Set a working ceiling before comparing quotes.", view: "budget", done: state.progress.budgetReviewed || Boolean(state.budget.importedAt) },
+      { label: "Add a vendor quote", detail: "Include required fees, delivery, rentals, overtime, and tax.", view: "vendors", done: state.vendors.length > 0 },
+      { label: "Select a vendor commitment", detail: "Selected true cost becomes part of your committed budget.", view: "vendors", done: selected.length > 0 },
+      { label: "Schedule a payment", detail: "Record a deposit, installment, or final balance with its due date.", view: "payments", done: state.payments.length > 0 },
+      { label: "Test your guest count", detail: "See how catering assumptions change projected headroom.", view: "guests", done: guestTotalFor(state.guests.current) > 0 || state.guests.scenarios.length > 0 },
+      { label: "Export a planning snapshot", detail: "Download a report when the current plan is ready to review.", view: "reports", done: state.progress.exported }
+    ];
+    const completedSteps = startSteps.filter(step => step.done).length;
+    document.getElementById("p2StartProgress").textContent = `${completedSteps} of ${startSteps.length} complete`;
+    document.getElementById("p2StartSteps").innerHTML = startSteps.map((step, index) => `<button class="planner2-start-step ${step.done ? "is-complete" : ""}" data-go-view="${step.view}"><span class="planner2-step-marker">${step.done ? "✓" : index + 1}</span><span><strong>${step.label}</strong><small>${step.detail}</small></span><span class="planner2-step-action">${step.done ? "Review" : "Start"}</span></button>`).join("");
     const vendorRows = document.getElementById("p2VendorRows");
     vendorRows.innerHTML = state.vendors.length ? state.vendors.map(vendor => {
       const extras = numberValue(vendor.fees) + numberValue(vendor.travel) + numberValue(vendor.rentals) + numberValue(vendor.overtime);
       const tax = vendorTotal(vendor) - numberValue(vendor.packagePrice) - extras;
       return `<tr><td><strong>${safe(vendor.name)}</strong><br><small>${safe(vendor.category)}</small></td><td>${money2(vendor.packagePrice)}</td><td>${money2(extras)}</td><td>${money2(tax)}</td><td><strong>${money2(vendorTotal(vendor))}</strong></td><td><span class="planner2-badge ${vendor.selected ? "selected" : ""}">${vendor.selected ? "Selected" : "Comparing"}</span></td><td><button data-select-vendor="${vendor.id}">${vendor.selected ? "Unselect" : "Select"}</button> <button data-delete-vendor="${vendor.id}">Remove</button></td></tr>`;
-    }).join("") : `<tr><td colspan="7" class="planner2-empty">No vendor quotes yet.</td></tr>`;
+    }).join("") : `<tr><td colspan="7" class="planner2-empty"><strong>No quotes to compare yet.</strong><br>Add a vendor name and the complete costs above. Your first quote becomes the baseline for comparison.</td></tr>`;
 
     const paymentRows = document.getElementById("p2PaymentRows");
     paymentRows.innerHTML = state.payments.length ? [...state.payments].sort((a, b) => a.dueDate.localeCompare(b.dueDate)).map(payment => {
       const status = paymentStatus(payment);
       return `<tr><td><strong>${safe(payment.name)}</strong></td><td>${safe(payment.vendor || "—")}</td><td>${safe(payment.dueDate)}</td><td><strong>${money2(payment.amount)}</strong></td><td><span class="planner2-badge ${status}">${status.replace("-", " ")}</span></td><td><button data-toggle-payment="${payment.id}">${payment.paid ? "Mark unpaid" : "Mark paid"}</button> <button data-delete-payment="${payment.id}">Remove</button></td></tr>`;
-    }).join("") : `<tr><td colspan="6" class="planner2-empty">No payments scheduled yet.</td></tr>`;
+    }).join("") : `<tr><td colspan="6" class="planner2-empty"><strong>No payment dates yet.</strong><br>Select a vendor first, then add its deposit or next balance above.</td></tr>`;
 
-    const selected = state.vendors.filter(v => v.selected);
     const committed = selected.reduce((sum, vendor) => sum + vendorTotal(vendor), 0);
     document.getElementById("p2SelectedVendorOptions").innerHTML = selected.map(vendor => `<option value="${safe(vendor.name)}">${safe(vendor.category)} · ${money2(vendorTotal(vendor))}</option>`).join("");
     document.getElementById("p2VendorPaymentBalances").innerHTML = selected.length ? selected.map(vendor => {
@@ -211,7 +228,7 @@
     document.getElementById("p2ScenarioRows").innerHTML = state.guests.scenarios.length ? state.guests.scenarios.map(scenario => {
       const projection = scenarioProjection(scenario.counts);
       return `<tr><td><strong>${safe(scenario.name)}</strong></td><td>${projection.total.toLocaleString()}</td><td>${money2(projection.catering)}</td><td>${money2(projection.costPerGuest)}</td><td>${money2(projection.projectedTotal)}</td><td><strong>${projection.headroom < 0 ? "-" : ""}${money2(Math.abs(projection.headroom))}</strong></td><td><button data-use-scenario="${scenario.id}">Use plan</button> <button data-delete-scenario="${scenario.id}">Remove</button></td></tr>`;
-    }).join("") : `<tr><td colspan="7" class="planner2-empty">No saved guest scenarios yet.</td></tr>`;
+    }).join("") : `<tr><td colspan="7" class="planner2-empty"><strong>No comparison saved yet.</strong><br>Enter a scenario name and guest groups above to compare a smaller or larger list.</td></tr>`;
     document.getElementById("p2ReportBudget").textContent = money2(state.budget.total);
     document.getElementById("p2ReportVendors").textContent = selected.length.toLocaleString();
     document.getElementById("p2ReportPayments").textContent = state.payments.length.toLocaleString();
@@ -220,18 +237,27 @@
     if (window.lucide) lucide.createIcons();
   };
 
-  const exportVendorCsv = () => downloadText("wedding_vendor_comparison.csv", csvRows([
-    ["Vendor", "Category", "Package Price", "Required Fees", "Travel / Delivery", "Rentals / Add-ons", "Likely Overtime", "Tax Rate %", "True Cost", "Selected"],
-    ...state.vendors.map(vendor => [vendor.name, vendor.category, vendor.packagePrice, vendor.fees, vendor.travel, vendor.rentals, vendor.overtime, vendor.taxRate, vendorTotal(vendor), vendor.selected ? "Yes" : "No"])
-  ]));
-  const exportPaymentCsv = () => downloadText("wedding_payment_schedule.csv", csvRows([
-    ["Payment", "Vendor", "Due Date", "Amount", "Status"],
-    ...[...state.payments].sort((a, b) => a.dueDate.localeCompare(b.dueDate)).map(payment => [payment.name, payment.vendor, payment.dueDate, payment.amount, paymentStatus(payment).replace("-", " ").toUpperCase()])
-  ]));
-  const exportExpenseCsv = () => downloadText("wedding_actual_expenses.csv", csvRows([
-    ["Expense", "Category", "Amount", "Source"],
-    ...state.budget.expenses.map(expense => [expense.desc, expense.cat, expense.amount, expense.source || "Planner 2.0"])
-  ]));
+  const exportVendorCsv = () => {
+    downloadText("wedding_vendor_comparison.csv", csvRows([
+      ["Vendor", "Category", "Package Price", "Required Fees", "Travel / Delivery", "Rentals / Add-ons", "Likely Overtime", "Tax Rate %", "True Cost", "Selected"],
+      ...state.vendors.map(vendor => [vendor.name, vendor.category, vendor.packagePrice, vendor.fees, vendor.travel, vendor.rentals, vendor.overtime, vendor.taxRate, vendorTotal(vendor), vendor.selected ? "Yes" : "No"])
+    ]));
+    markExported();
+  };
+  const exportPaymentCsv = () => {
+    downloadText("wedding_payment_schedule.csv", csvRows([
+      ["Payment", "Vendor", "Due Date", "Amount", "Status"],
+      ...[...state.payments].sort((a, b) => a.dueDate.localeCompare(b.dueDate)).map(payment => [payment.name, payment.vendor, payment.dueDate, payment.amount, paymentStatus(payment).replace("-", " ").toUpperCase()])
+    ]));
+    markExported();
+  };
+  const exportExpenseCsv = () => {
+    downloadText("wedding_actual_expenses.csv", csvRows([
+      ["Expense", "Category", "Amount", "Source"],
+      ...state.budget.expenses.map(expense => [expense.desc, expense.cat, expense.amount, expense.source || "Planner 2.0"])
+    ]));
+    markExported();
+  };
   const exportPlanner2Excel = () => {
     if (!window.XLSX) {
       document.getElementById("p2ExportStatus").textContent = "Excel export is temporarily unavailable because the spreadsheet library did not load. CSV and PDF remain available.";
@@ -254,6 +280,7 @@
     appendSheet(wb, [["Scenario", "Family", "Friends", "Colleagues", "Others", "Total Guests", "Catering Estimate", "Tracked Cost / Guest", "Projected Total", "Headroom"], ...state.guests.scenarios.map(scenario => { const projection = scenarioProjection(scenario.counts); return [scenario.name, scenario.counts.Family, scenario.counts.Friends, scenario.counts.Colleagues, scenario.counts.Others, projection.total, projection.catering, projection.costPerGuest, projection.projectedTotal, projection.headroom]; })], "Guest Scenarios", [24, 11, 11, 13, 11, 13, 17, 19, 16, 14], [6, 7, 8, 9]);
     XLSX.writeFile(wb, "Wedding_Planner_2_Report.xlsx");
     document.getElementById("p2ExportStatus").textContent = "Excel workbook prepared.";
+    markExported();
   };
   const preparePlanner2PrintReport = () => {
     const report = document.querySelector(".print-only.report-header");
@@ -275,15 +302,15 @@
   document.getElementById("p2ExportPaymentCsv").addEventListener("click", exportPaymentCsv);
   document.getElementById("p2ExportExpenseCsv").addEventListener("click", exportExpenseCsv);
   document.getElementById("p2ExportExcel").addEventListener("click", exportPlanner2Excel);
-  document.getElementById("p2PrintReport").addEventListener("click", () => { preparePlanner2PrintReport(); window.print(); });
+  document.getElementById("p2PrintReport").addEventListener("click", () => { markExported(); preparePlanner2PrintReport(); window.print(); });
   window.addEventListener("beforeprint", preparePlanner2PrintReport);
 
   document.getElementById("p2BudgetInput").addEventListener("input", event => {
-    state.budget.total = numberValue(event.target.value); save(); render();
+    state.budget.total = numberValue(event.target.value); state.progress.budgetReviewed = true; save(); render();
   });
   document.getElementById("p2BudgetRows").addEventListener("input", event => {
     if (!event.target.dataset.budgetCategory) return;
-    state.budget.categories[event.target.dataset.budgetCategory] = numberValue(event.target.value); save(); render();
+    state.budget.categories[event.target.dataset.budgetCategory] = numberValue(event.target.value); state.progress.budgetReviewed = true; save(); render();
   });
   const resetExpenseForm = () => {
     editingExpenseId = null;
@@ -337,6 +364,7 @@
   workspace.addEventListener("click", event => {
     const target = event.target.closest("button");
     if (!target) return;
+    if (target.dataset.goView) { showView(target.dataset.goView, true); return; }
     if (target.dataset.selectVendor) state.vendors = state.vendors.map(v => v.id === target.dataset.selectVendor ? { ...v, selected: !v.selected } : v);
     else if (target.dataset.deleteVendor) state.vendors = state.vendors.filter(v => v.id !== target.dataset.deleteVendor);
     else if (target.dataset.togglePayment) state.payments = state.payments.map(p => p.id === target.dataset.togglePayment ? { ...p, paid: !p.paid } : p);

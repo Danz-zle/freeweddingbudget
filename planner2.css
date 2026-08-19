@@ -51,6 +51,23 @@ body.planner2-active > .site-footer { display: none !important; }
 .planner2-intro p { margin: 0; max-width: 700px; color: #dfe7df; line-height: 1.6; }
 .planner2-intro .planner2-eyebrow { color: #cbd9cd; }
 .planner2-intro button { white-space: nowrap; background: #f1d8a8; color: #31352e; }
+.planner2-privacy-note { margin:14px 0 20px; padding:13px 16px; border:1px solid #d8e1d5; border-radius:12px; color:#4f6151; background:#f1f6ef; font-size:.8rem; }
+.planner2-privacy-note summary { display:flex; align-items:center; gap:8px; cursor:pointer; font-weight:800; }
+.planner2-privacy-note summary::-webkit-details-marker { display:none; }
+.planner2-privacy-note summary svg { width:16px; height:16px; color:#59715d; }
+.planner2-privacy-note p { margin:11px 0 1px; max-width:850px; color:#657166; line-height:1.55; }
+.planner2-start-card { margin:0 0 20px; }
+.planner2-start-card .planner2-card-heading p { margin:5px 0 0; color:#777469; font-size:.82rem; }
+.planner2-progress-count { flex:0 0 auto; padding:7px 10px; border-radius:99px; color:#52664e; background:#e8f0e5; font-size:.75rem; }
+.planner2-start-steps { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px; margin-top:18px; }
+.planner2-start-step { min-width:0; padding:14px; display:grid; grid-template-columns:auto 1fr auto; align-items:center; gap:11px; border:1px solid #dfdbd2; border-radius:12px; color:#31322e; background:#fbfaf8; text-align:left; }
+.planner2-start-step:hover { border-color:#8d9a87; background:#fff; }
+.planner2-step-marker { width:28px; height:28px; display:grid; place-items:center; border-radius:50%; color:#fff; background:#76786f; font-size:.75rem; font-weight:900; }
+.planner2-start-step.is-complete .planner2-step-marker { background:#5f7b60; }
+.planner2-start-step strong, .planner2-start-step small { display:block; }
+.planner2-start-step strong { font-size:.8rem; }
+.planner2-start-step small { margin-top:3px; color:#807d74; font-size:.69rem; line-height:1.35; }
+.planner2-step-action { color:#647360; font-size:.69rem; font-weight:900; text-transform:uppercase; }
 .planner2-stats { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 16px; margin: 20px 0; }
 .planner2-stats article, .planner2-card { background: #fff; border: 1px solid #e5e1d9; border-radius: 16px; box-shadow: 0 8px 24px rgba(55, 51, 43, .04); }
 .planner2-stats article { padding: 20px; display: flex; flex-direction: column; gap: 7px; }
@@ -88,6 +105,7 @@ body.planner2-active > .site-footer { display: none !important; }
 .planner2-budget-form strong { font:700 1.25rem Georgia,serif; }
 .planner2-category-input { width:120px !important; padding:8px 10px !important; text-align:right; }
 .planner2-note { padding:16px 18px; border:1px solid #dcd7cd; border-radius:12px; color:#6a675e; font-size:.82rem; line-height:1.55; background:#faf8f4; }
+.planner2-selection-note { margin:-4px 0 20px; border-color:#d8e1d5; background:#f3f7f1; color:#536454; }
 .planner2-subsection-heading { margin-top:28px; }
 .planner2-expense-form { grid-template-columns:2fr 1.2fr 1fr auto; }
 .planner2-form-actions { display:flex; gap:8px; align-items:center; }
@@ -159,6 +177,7 @@ body.planner2-active > .site-footer { display: none !important; }
   .planner2-mobile-trust svg { color:#f1d8a8; }
   .planner2-save-state { display: none; }
   .planner2-intro { padding: 24px; align-items: start; flex-direction: column; }
+  .planner2-start-steps { grid-template-columns:1fr 1fr; }
   .planner2-stats { grid-template-columns: 1fr 1fr; }
   .planner2-grid-2 { grid-template-columns: 1fr; }
   .planner2-form, .planner2-payment-form { grid-template-columns: 1fr 1fr; }
@@ -172,4 +191,6 @@ body.planner2-active > .site-footer { display: none !important; }
   .planner2-nav button span { display:inline; font-size:.55rem; }
   .planner2-stats, .planner2-form, .planner2-payment-form, .planner2-budget-form, .planner2-guest-form, .planner2-scenario-form { grid-template-columns: 1fr; }
   .planner2-export-card { grid-template-columns:1fr; }
+  .planner2-start-card .planner2-card-heading { flex-direction:column; }
+  .planner2-start-steps { grid-template-columns:1fr; }
 }
