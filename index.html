@@ -141,9 +141,10 @@
           <label>Travel / delivery<input name="travel" type="number" min="0" step="0.01" value="0"></label>
           <label>Rentals / add-ons<input name="rentals" type="number" min="0" step="0.01" value="0"></label>
           <label>Likely overtime<input name="overtime" type="number" min="0" step="0.01" value="0"></label>
-          <label>Tax rate (%)<input name="taxRate" type="number" min="0" step="0.01" value="0"></label>
+          <label>Tax rate (%)<input name="taxRate" type="number" min="0" max="100" step="0.01" value="0"></label>
           <button type="submit">Add quote</button>
         </form>
+        <p id="p2VendorStatus" class="planner2-form-status" role="status" aria-live="polite"></p>
         <div class="planner2-card"><div class="planner2-table-wrap"><table class="planner2-table"><thead><tr><th>Vendor</th><th>Package</th><th>Extras</th><th>Tax</th><th>True cost</th><th>Status</th><th></th></tr></thead><tbody id="p2VendorRows"></tbody></table></div></div>
         <aside class="planner2-guides" aria-labelledby="p2VendorGuides"><div class="planner2-guides-heading"><span class="planner2-eyebrow">Help with this step</span><h2 id="p2VendorGuides">Which charges belong in true cost?</h2></div><div class="planner2-guide-grid"><a href="/blog-vendor-quotes"><strong>Which quote questions reveal missing fees?</strong><span>Compare scope, deposits, overtime, cancellation terms, and excluded charges.</span></a><a href="/blog-venue-cost-checklist"><strong>What should a venue quote include?</strong><span>Review service, rental, timing, access, and venue-specific costs.</span></a><a href="/blog-catering-budget-guide"><strong>How do I estimate catering per guest?</strong><span>Connect menu choices, staffing, service fees, tax, and guest count.</span></a></div></aside>
       </section>
@@ -152,11 +153,12 @@
         <div class="planner2-section-heading"><div><span class="planner2-eyebrow">Priority workflow</span><h2>Payment tracker</h2><p>Track deposits, installments, and final balances without counting a deposit as the full contract cost.</p></div></div>
         <form id="p2PaymentForm" class="planner2-card planner2-form planner2-payment-form">
           <label>Payment name<input name="name" required placeholder="e.g. Venue deposit"></label>
-          <label>Vendor<input name="vendor" list="p2SelectedVendorOptions" placeholder="Choose a selected vendor or type another"><datalist id="p2SelectedVendorOptions"></datalist></label>
+          <label>Vendor<input name="vendor" list="p2SelectedVendorOptions" required placeholder="Choose a selected vendor"><datalist id="p2SelectedVendorOptions"></datalist></label>
           <label>Amount<input name="amount" type="number" min="0" step="0.01" required></label>
           <label>Due date<input name="dueDate" type="date" required></label>
           <button type="submit">Add payment</button>
         </form>
+        <p id="p2PaymentStatus" class="planner2-form-status" role="status" aria-live="polite"></p>
         <div id="p2VendorPaymentBalances" class="planner2-payment-balances" aria-live="polite"></div>
         <div class="planner2-card"><div class="planner2-table-wrap"><table class="planner2-table"><thead><tr><th>Payment</th><th>Vendor</th><th>Due</th><th>Amount</th><th>Status</th><th></th></tr></thead><tbody id="p2PaymentRows"></tbody></table></div></div>
         <aside class="planner2-guides" aria-labelledby="p2PaymentGuides"><div class="planner2-guides-heading"><span class="planner2-eyebrow">Help with this step</span><h2 id="p2PaymentGuides">How should deposits and balances be tracked?</h2></div><div class="planner2-guide-grid"><a href="/blog-planning-timeline"><strong>When do major payments usually become due?</strong><span>Connect vendor decisions, deposits, installments, and final balances to your timeline.</span></a><a href="/blog-vendor-quotes"><strong>Which payment terms should I check?</strong><span>Review deposits, installments, cancellation terms, and remaining balances.</span></a><a href="/blog-hidden-costs"><strong>How much reserve should I protect?</strong><span>Keep room for charges outside the advertised package.</span></a></div></aside>
@@ -207,6 +209,14 @@
         <p id="p2ExportStatus" class="planner2-export-status" role="status" aria-live="polite"></p>
         <div class="planner2-note"><strong>Export rule:</strong> payments are reported as cash flow and are not added on top of selected vendor true cost. This keeps the exported totals consistent with the workspace.</div>
         <aside class="planner2-guides" aria-labelledby="p2ReportGuides"><div class="planner2-guides-heading"><span class="planner2-eyebrow">Before you share</span><h2 id="p2ReportGuides">What should I verify before exporting?</h2></div><div class="planner2-guide-grid planner2-guide-grid-2"><a href="/blog-create-budget"><strong>Are the budget limits still realistic?</strong><span>Confirm priorities and category limits before relying on the report.</span></a><a href="/blog-vendor-quotes"><strong>Do selected quotes use complete true costs?</strong><span>Confirm that each selected commitment includes the same required items.</span></a></div></aside>
+      </section>
+    </div>
+    <div id="p2ConfirmDialog" class="planner2-dialog-backdrop" hidden>
+      <section class="planner2-dialog" role="dialog" aria-modal="true" aria-labelledby="p2ConfirmTitle" aria-describedby="p2ConfirmMessage">
+        <span class="planner2-eyebrow">Please confirm</span>
+        <h2 id="p2ConfirmTitle">Review this change</h2>
+        <p id="p2ConfirmMessage"></p>
+        <div class="planner2-dialog-actions"><button id="p2ConfirmCancel" class="planner2-secondary-button" type="button">Keep current plan</button><button id="p2ConfirmAccept" type="button">Confirm change</button></div>
       </section>
     </div>
   </div>
