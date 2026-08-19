@@ -39,6 +39,10 @@
   let editingExpenseId = null;
   const workspace = document.getElementById("planner2Workspace");
   if (!workspace) return;
+  const trackPlannerAction = (eventName, properties = {}) => {
+    if (typeof window.zaraz?.track !== "function") return;
+    Promise.resolve(window.zaraz.track(eventName, { planner_version: "2.0", ...properties })).catch(() => {});
+  };
   document.body.classList.add("planner2-active");
   workspace.hidden = false;
   const confirmDialog = document.getElementById("p2ConfirmDialog");
@@ -295,6 +299,7 @@
       ...state.vendors.map(vendor => [vendor.name, vendor.category, vendor.packagePrice, vendor.fees, vendor.travel, vendor.rentals, vendor.overtime, vendor.taxRate, vendorTotal(vendor), vendor.selected ? "Yes" : "No"])
     ]));
     markExported("Vendor comparison CSV downloaded.");
+    trackPlannerAction("planner_report_exported", { report_type: "vendor_csv" });
   };
   const exportPaymentCsv = () => {
     downloadText("wedding_payment_schedule.csv", csvRows([
@@ -302,6 +307,7 @@
       ...[...state.payments].sort((a, b) => a.dueDate.localeCompare(b.dueDate)).map(payment => [payment.name, payment.vendor, payment.dueDate, payment.amount, paymentStatus(payment).replace("-", " ").toUpperCase()])
     ]));
     markExported("Payment schedule CSV downloaded.");
+    trackPlannerAction("planner_report_exported", { report_type: "payment_csv" });
   };
   const exportExpenseCsv = () => {
     downloadText("wedding_actual_expenses.csv", csvRows([
@@ -309,6 +315,7 @@
       ...state.budget.expenses.map(expense => [expense.desc, expense.cat, expense.amount, expense.source || "Planner 2.0"])
     ]));
     markExported("Actual expense CSV downloaded.");
+    trackPlannerAction("planner_report_exported", { report_type: "expense_csv" });
   };
   const exportPlanner2Excel = () => {
     if (!window.XLSX) {
@@ -332,6 +339,7 @@
     appendSheet(wb, [["Scenario", "Family", "Friends", "Colleagues", "Others", "Total Guests", "Catering Estimate", "Tracked Cost / Guest", "Projected Total", "Headroom"], ...state.guests.scenarios.map(scenario => { const projection = scenarioProjection(scenario.counts); return [scenario.name, scenario.counts.Family, scenario.counts.Friends, scenario.counts.Colleagues, scenario.counts.Others, projection.total, projection.catering, projection.costPerGuest, projection.projectedTotal, projection.headroom]; })], "Guest Scenarios", [24, 11, 11, 13, 11, 13, 17, 19, 16, 14], [6, 7, 8, 9]);
     XLSX.writeFile(wb, "Wedding_Planner_2_Report.xlsx");
     markExported("Excel workbook downloaded.");
+    trackPlannerAction("planner_report_exported", { report_type: "excel" });
   };
   const preparePlanner2PrintReport = () => {
     const report = document.querySelector(".print-only.report-header");
@@ -353,7 +361,7 @@
   document.getElementById("p2ExportPaymentCsv").addEventListener("click", exportPaymentCsv);
   document.getElementById("p2ExportExpenseCsv").addEventListener("click", exportExpenseCsv);
   document.getElementById("p2ExportExcel").addEventListener("click", exportPlanner2Excel);
-  document.getElementById("p2PrintReport").addEventListener("click", () => { markExported("Print dialog opened. Choose Save as PDF to download the report."); preparePlanner2PrintReport(); window.print(); });
+  document.getElementById("p2PrintReport").addEventListener("click", () => { markExported("Print dialog opened. Choose Save as PDF to download the report."); trackPlannerAction("planner_report_exported", { report_type: "pdf_print" }); preparePlanner2PrintReport(); window.print(); });
   window.addEventListener("beforeprint", preparePlanner2PrintReport);
   const BACKUP_FORMAT = "wedding-budget-planner-2-backup";
   const BACKUP_VERSION = 1;
@@ -396,6 +404,7 @@
     localStorage.setItem(BACKUP_META_KEY, backup.exportedAt);
     renderLastBackup();
     document.getElementById("p2DataStatus").textContent = "Planner backup downloaded. Keep it somewhere you can find after changing browsers or clearing browser data.";
+    trackPlannerAction("planner_backup_downloaded");
   };
   document.getElementById("p2ExportBackup").addEventListener("click", exportPlannerBackup);
   const backupInput = document.getElementById("p2ImportBackup");
@@ -424,6 +433,7 @@
           render();
           const selectedVendors = state.vendors.filter(vendor => vendor.selected).length;
           dataStatus.textContent = `Backup restored successfully: ${state.vendors.length} vendor quote${state.vendors.length === 1 ? "" : "s"} (${selectedVendors} selected), ${state.payments.length} payment${state.payments.length === 1 ? "" : "s"}, ${guestTotalFor(state.guests.current)} guests, and ${state.guests.scenarios.length} scenario${state.guests.scenarios.length === 1 ? "" : "s"} restored.`;
+          trackPlannerAction("planner_backup_restored");
         }
       });
     } catch (error) {
@@ -460,6 +470,7 @@
     const expense = { id: editingExpenseId || id("expense"), desc: data.description.trim(), cat: data.category, amount: numberValue(data.amount), source: previousSource === "Imported" ? "Imported (edited)" : previousSource };
     if (editingExpenseId) state.budget.expenses = state.budget.expenses.map(item => item.id === editingExpenseId ? expense : item);
     else state.budget.expenses.push(expense);
+    trackPlannerAction(editingExpenseId ? "planner_expense_updated" : "planner_expense_added");
     resetExpenseForm(); save(); render();
   });
   document.getElementById("p2ExpenseCancel").addEventListener("click", resetExpenseForm);
@@ -474,6 +485,7 @@
     const scenarioTotal = Object.keys(defaultGuestCounts()).reduce((sum, group) => sum + Math.max(0, Math.floor(Number(data[group]) || 0)), 0);
     if (!scenarioTotal) { event.currentTarget.elements.Family.setCustomValidity("Enter at least one guest before saving a scenario."); event.currentTarget.reportValidity(); event.currentTarget.elements.Family.setCustomValidity(""); return; }
     state.guests.scenarios.push({ id: id("scenario"), name: data.name.trim(), counts: Object.fromEntries(Object.keys(defaultGuestCounts()).map(group => [group, Math.max(0, Math.floor(Number(data[group]) || 0))])) });
+    trackPlannerAction("planner_guest_scenario_saved");
     event.currentTarget.reset(); save(); render();
   });
   document.getElementById("p2VendorForm").addEventListener("submit", event => {
@@ -486,6 +498,7 @@
     const duplicateName = state.vendors.some(vendor => vendor.category === data.category && vendor.name.trim().toLowerCase() === data.name.trim().toLowerCase());
     if (duplicateName) { event.currentTarget.elements.name.setCustomValidity("A quote with this vendor name already exists in the selected category."); event.currentTarget.reportValidity(); event.currentTarget.elements.name.setCustomValidity(""); return; }
     state.vendors.push({ id: id("vendor"), name: data.name.trim(), category: data.category, packagePrice: numberValue(data.packagePrice), fees: numberValue(data.fees), travel: numberValue(data.travel), rentals: numberValue(data.rentals), overtime: numberValue(data.overtime), taxRate: numberValue(data.taxRate), selected: false });
+    trackPlannerAction("planner_vendor_quote_added");
     event.currentTarget.reset(); save(); render();
     document.getElementById("p2VendorStatus").textContent = `${data.name.trim()} was added for comparison.`;
   });
@@ -505,6 +518,7 @@
       const status = document.getElementById("p2PaymentStatus");
       status.classList.toggle("is-warning", isPastDue);
       status.textContent = isPastDue ? `${payment.name} was added as overdue. Mark it paid if it has already been settled.` : `${payment.name} was added to the payment schedule.`;
+      trackPlannerAction("planner_payment_added");
     };
     const scheduledTotal = state.payments.filter(item => item.vendorId === linkedVendor.id).reduce((sum, item) => sum + numberValue(item.amount), 0) + payment.amount;
     const excess = scheduledTotal - vendorTotal(linkedVendor);
@@ -519,6 +533,7 @@
       if (replacedCategory && vendor.category === replacedCategory && vendor.id !== vendorId) return { ...vendor, selected: false };
       return vendor.id === vendorId ? { ...vendor, selected: selectedValue } : vendor;
     });
+    trackPlannerAction(selectedValue ? "planner_vendor_selected" : "planner_vendor_unselected");
     save(); render();
   };
   const requestVendorSelection = vendorId => {
@@ -563,7 +578,11 @@
     if (target.dataset.goView) { showView(target.dataset.goView, true); return; }
     if (target.dataset.selectVendor) { requestVendorSelection(target.dataset.selectVendor); return; }
     else if (target.dataset.deleteVendor) { requestVendorRemoval(target.dataset.deleteVendor); return; }
-    else if (target.dataset.togglePayment) state.payments = state.payments.map(p => p.id === target.dataset.togglePayment ? { ...p, paid: !p.paid } : p);
+    else if (target.dataset.togglePayment) {
+      const payment = state.payments.find(p => p.id === target.dataset.togglePayment);
+      state.payments = state.payments.map(p => p.id === target.dataset.togglePayment ? { ...p, paid: !p.paid } : p);
+      trackPlannerAction(payment?.paid ? "planner_payment_marked_unpaid" : "planner_payment_marked_paid");
+    }
     else if (target.dataset.deletePayment) state.payments = state.payments.filter(p => p.id !== target.dataset.deletePayment);
     else if (target.dataset.editExpense) {
       const expense = state.budget.expenses.find(item => item.id === target.dataset.editExpense);
