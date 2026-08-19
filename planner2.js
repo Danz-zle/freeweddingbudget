@@ -1,5 +1,6 @@
 (() => {
   const STORAGE_KEY = "weddingBudgetPlanner2.v1";
+  const BACKUP_META_KEY = "weddingBudgetPlanner2.lastBackupAt.v1";
   const hadSavedPlanner2State = Boolean(localStorage.getItem(STORAGE_KEY));
   const numberValue = value => Math.max(0, Number(value) || 0);
   const defaultCategories = { Venue: 11000, Catering: 13000, Photography: 4000, Decor: 4000, Entertainment: 3500, Attire: 3000, Transportation: 1500 };
@@ -8,27 +9,28 @@
   const defaultGuests = () => ({ current: defaultGuestCounts(), cateringRate: 130, scenarios: [] });
   const defaultProgress = () => ({ budgetReviewed: false, exported: false });
   const emptyState = () => ({ vendors: [], payments: [], budget: defaultBudget(), guests: defaultGuests(), progress: defaultProgress() });
+  const normalizeState = saved => saved && typeof saved === "object"
+    ? {
+        vendors: Array.isArray(saved.vendors) ? saved.vendors : [],
+        payments: Array.isArray(saved.payments) ? saved.payments : [],
+        budget: {
+          total: numberValue(saved.budget?.total ?? 40000),
+          categories: { ...defaultCategories, ...(saved.budget?.categories || {}) },
+          expenses: Array.isArray(saved.budget?.expenses) ? saved.budget.expenses.map((item, index) => ({ id: item.id || `expense-saved-${Date.now()}-${index}`, desc: String(item.desc || item.description || ""), cat: String(item.cat || item.category || "Other"), amount: numberValue(item.amount), source: item.source || (saved.budget?.importedAt ? "Imported" : "Planner 2.0") })) : [],
+          importedAt: saved.budget?.importedAt || null
+        },
+        guests: {
+          current: { ...defaultGuestCounts(), ...(saved.guests?.current || {}) },
+          cateringRate: numberValue(saved.guests?.cateringRate ?? 130),
+          scenarios: Array.isArray(saved.guests?.scenarios) ? saved.guests.scenarios : []
+        },
+        progress: { ...defaultProgress(), ...(saved.progress || {}) }
+      }
+    : null;
   const parseState = () => {
     try {
       const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
-      return saved && typeof saved === "object"
-        ? {
-            vendors: Array.isArray(saved.vendors) ? saved.vendors : [],
-            payments: Array.isArray(saved.payments) ? saved.payments : [],
-            budget: {
-              total: numberValue(saved.budget?.total ?? 40000),
-              categories: { ...defaultCategories, ...(saved.budget?.categories || {}) },
-              expenses: Array.isArray(saved.budget?.expenses) ? saved.budget.expenses.map((item, index) => ({ id: item.id || `expense-saved-${Date.now()}-${index}`, desc: String(item.desc || item.description || ""), cat: String(item.cat || item.category || "Other"), amount: numberValue(item.amount), source: item.source || (saved.budget?.importedAt ? "Imported" : "Planner 2.0") })) : [],
-              importedAt: saved.budget?.importedAt || null
-            },
-            guests: {
-              current: { ...defaultGuestCounts(), ...(saved.guests?.current || {}) },
-              cateringRate: numberValue(saved.guests?.cateringRate ?? 130),
-              scenarios: Array.isArray(saved.guests?.scenarios) ? saved.guests.scenarios : []
-            },
-            progress: { ...defaultProgress(), ...(saved.progress || {}) }
-          }
-        : emptyState();
+      return normalizeState(saved) || emptyState();
     } catch (_) {
       return emptyState();
     }
@@ -142,16 +144,17 @@
   const showView = (view, updateUrl = false) => {
     workspace.querySelectorAll("[data-workspace-view]").forEach(button => button.classList.toggle("active", button.dataset.workspaceView === view));
     workspace.querySelectorAll("[data-workspace-panel]").forEach(panel => panel.classList.toggle("active", panel.dataset.workspacePanel === view));
-    document.getElementById("planner2Title").textContent = view.charAt(0).toUpperCase() + view.slice(1);
+    document.getElementById("planner2Title").textContent = view === "my-data" ? "My Data" : view.charAt(0).toUpperCase() + view.slice(1);
     if (updateUrl) history.replaceState(null, "", view === "overview" ? window.location.pathname : `${window.location.pathname}#${view}`);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
   workspace.querySelectorAll("[data-workspace-view]").forEach(button => button.addEventListener("click", () => showView(button.dataset.workspaceView, true)));
   const requestedView = window.location.hash.slice(1);
-  if (["overview", "budget", "vendors", "payments", "guests", "reports"].includes(requestedView)) showView(requestedView);
+  const workspaceViews = ["overview", "budget", "vendors", "payments", "guests", "reports", "my-data"];
+  if (workspaceViews.includes(requestedView)) showView(requestedView);
   window.addEventListener("hashchange", () => {
     const nextView = window.location.hash.slice(1) || "overview";
-    if (["overview", "budget", "vendors", "payments", "guests", "reports"].includes(nextView)) showView(nextView);
+    if (workspaceViews.includes(nextView)) showView(nextView);
   });
 
   const render = () => {
@@ -334,6 +337,43 @@
   document.getElementById("p2ExportExcel").addEventListener("click", exportPlanner2Excel);
   document.getElementById("p2PrintReport").addEventListener("click", () => { markExported("Print dialog opened. Choose Save as PDF to download the report."); preparePlanner2PrintReport(); window.print(); });
   window.addEventListener("beforeprint", preparePlanner2PrintReport);
+  const BACKUP_FORMAT = "wedding-budget-planner-2-backup";
+  const renderLastBackup = () => {
+    const lastBackup = localStorage.getItem(BACKUP_META_KEY);
+    document.getElementById("p2LastBackup").textContent = lastBackup ? `Last backup: ${new Date(lastBackup).toLocaleString()}` : "No backup downloaded from this browser yet";
+  };
+  renderLastBackup();
+  const exportPlannerBackup = () => {
+    const backup = { format: BACKUP_FORMAT, version: 1, exportedAt: new Date().toISOString(), state };
+    const datePart = new Date().toISOString().slice(0, 10);
+    downloadText(`Wedding_Planner_2_Backup_${datePart}.json`, JSON.stringify(backup, null, 2), "application/json;charset=utf-8");
+    localStorage.setItem(BACKUP_META_KEY, backup.exportedAt);
+    renderLastBackup();
+    document.getElementById("p2DataStatus").textContent = "Planner backup downloaded. Keep it somewhere you can find after changing browsers or clearing browser data.";
+  };
+  document.getElementById("p2ExportBackup").addEventListener("click", exportPlannerBackup);
+  const backupInput = document.getElementById("p2ImportBackup");
+  document.getElementById("p2ImportBackupButton").addEventListener("click", () => backupInput.click());
+  backupInput.addEventListener("change", async event => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+    const dataStatus = document.getElementById("p2DataStatus");
+    try {
+      if (file.size > 2 * 1024 * 1024) throw new Error("This backup is larger than 2 MB and cannot be imported.");
+      const backup = JSON.parse(await file.text());
+      if (backup?.format !== BACKUP_FORMAT || backup?.version !== 1 || !backup?.state) throw new Error("Choose a valid Planner 2.0 backup file.");
+      const restoredState = normalizeState(backup.state);
+      if (!restoredState) throw new Error("The backup does not contain a readable planner.");
+      openConfirmation({ title: "Replace this browser’s planner?", message: "Restoring this backup will replace the Planner 2.0 data currently saved in this browser. Download a backup of the current plan first if you may need it later.", confirmLabel: "Restore backup", onConfirm: () => { state = restoredState; save(); render(); dataStatus.textContent = `Backup restored${backup.exportedAt ? ` from ${new Date(backup.exportedAt).toLocaleDateString()}` : ""}.`; } });
+    } catch (error) {
+      dataStatus.textContent = error.message || "The backup could not be read.";
+    } finally {
+      event.target.value = "";
+    }
+  });
+  document.getElementById("p2ResetPlanner").addEventListener("click", () => {
+    openConfirmation({ title: "Reset Planner 2.0 in this browser?", message: "This removes the budget, expenses, vendor quotes, payments, guest plans, scenarios, and checklist progress saved in this browser. Download a backup first if you may need this plan later.", confirmLabel: "Reset planner", onConfirm: () => { state = emptyState(); editingExpenseId = null; save(); resetExpenseForm(); render(); document.getElementById("p2DataStatus").textContent = "Planner 2.0 was reset in this browser."; } });
+  });
 
   document.getElementById("p2BudgetInput").addEventListener("input", event => {
     state.budget.total = numberValue(event.target.value); state.progress.budgetReviewed = true; save(); render();

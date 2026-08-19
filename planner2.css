@@ -11,10 +11,12 @@ body.planner2-active > .site-footer { display: none !important; }
 .planner2-brand span { color: #c8c8bd; font-size: .75rem; text-transform: uppercase; letter-spacing: .12em; }
 .planner2-brand strong { font: 700 1.35rem Georgia, serif; }
 .planner2-trust { display:flex; gap:6px; }
-.planner2-trust span { display:inline-flex; align-items:center; gap:6px; border-radius:999px; font-size:.7rem; font-weight:800; line-height:1.2; }
+.planner2-trust span, .planner2-trust-link { display:inline-flex; align-items:center; gap:6px; border-radius:999px; font-size:.7rem; font-weight:800; line-height:1.2; }
+.planner2-trust-link { border:0; font-family:inherit; text-align:left; cursor:pointer; }
 .planner2-trust svg { width:14px; height:14px; flex:0 0 auto; }
 .planner2-sidebar-trust { padding:0 8px 20px; flex-direction:column; align-items:stretch; }
-.planner2-sidebar-trust span { padding:7px 9px; color:#f1d8a8; background:rgba(255,255,255,.07); border:1px solid rgba(241,216,168,.18); letter-spacing:.01em; }
+.planner2-sidebar-trust span, .planner2-sidebar-trust .planner2-trust-link { padding:7px 9px; color:#f1d8a8; background:rgba(255,255,255,.07); border:1px solid rgba(241,216,168,.18); letter-spacing:.01em; }
+.planner2-sidebar-trust .planner2-trust-link:hover, .planner2-sidebar-trust .planner2-trust-link:focus-visible { background:rgba(241,216,168,.15); outline:2px solid #f1d8a8; outline-offset:2px; }
 .planner2-sidebar-trust svg { color:#f1d8a8; }
 .planner2-mobile-brand, .planner2-mobile-trust { display:none; }
 .planner2-nav { display: flex; flex-direction: column; gap: 6px; border-top:1px solid rgba(241,216,168,.18); padding-top:16px; }
@@ -126,6 +128,25 @@ body.planner2-active > .site-footer { display: none !important; }
 .planner2-scenario-form { grid-template-columns:1.4fr repeat(4,1fr) auto; }
 .planner2-report-stats { grid-template-columns:repeat(4,minmax(0,1fr)); }
 .planner2-report-grid { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+.planner2-data-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px; }
+.planner2-data-hero { padding:30px; border-radius:18px; color:#fff; background:#3f5447; display:flex; align-items:center; justify-content:space-between; gap:28px; }
+.planner2-data-hero h2 { margin:7px 0 9px; font:700 clamp(1.75rem,3vw,2.5rem) Georgia,serif; }
+.planner2-data-hero p { max-width:760px; margin:0; color:#e1e8e1; line-height:1.6; }
+.planner2-data-hero .planner2-eyebrow { color:#f1d8a8; }
+.planner2-data-hero > svg { width:52px; height:52px; flex:0 0 auto; color:#f1d8a8; }
+.planner2-ownership-note { margin:16px 0 0; padding:16px 18px; display:flex; align-items:center; gap:13px; border:1px solid #d6e0d3; border-radius:14px; color:#4b5c4c; background:#eef4ec; }
+.planner2-ownership-note > svg { width:24px; flex:0 0 auto; }
+.planner2-ownership-note strong, .planner2-ownership-note span { display:block; }
+.planner2-ownership-note span { margin-top:3px; color:#687469; font-size:.8rem; line-height:1.45; }
+.planner2-backup-meta { align-self:end; color:#647060; font-size:.76rem; }
+.planner2-data-card { margin:0; display:grid; grid-template-columns:auto 1fr; align-items:start; gap:14px; }
+.planner2-data-card > svg { width:25px; height:25px; color:#52664e; }
+.planner2-data-card h2 { margin:0 0 5px; font-size:1.05rem; }
+.planner2-data-card p { margin:0; min-height:55px; color:#777469; font-size:.78rem; line-height:1.45; }
+.planner2-data-card button { grid-column:1 / -1; width:100%; margin-top:4px; background:#3f5447; }
+.planner2-data-card-danger { border-color:#ead3cf; background:#fffaf9; }
+.planner2-data-card-danger > svg { color:#a44a40; }
+.planner2-data-card-danger button { background:#a44a40; }
 .planner2-export-card { display:grid; grid-template-columns:auto 1fr auto; align-items:center; gap:18px; }
 .planner2-export-card > svg { width:30px; height:30px; color:#52664e; }
 .planner2-export-card h2 { margin:0 0 5px; font-size:1.15rem; }
@@ -182,7 +203,7 @@ body.planner2-active > .site-footer { display: none !important; }
   .planner2-desktop-eyebrow { display:none; }
   .planner2-mobile-brand { display:block; color:#566257; font-size:.7rem; font-weight:900; letter-spacing:.1em; text-transform:uppercase; }
   .planner2-mobile-trust { display:flex; flex-wrap:wrap; margin:10px 0 14px; }
-  .planner2-mobile-trust span { padding:6px 9px; color:#f1d8a8; background:#30332c; border:1px solid rgba(241,216,168,.24); letter-spacing:.01em; }
+  .planner2-mobile-trust span, .planner2-mobile-trust .planner2-trust-link { padding:6px 9px; color:#f1d8a8; background:#30332c; border:1px solid rgba(241,216,168,.24); letter-spacing:.01em; }
   .planner2-mobile-trust svg { color:#f1d8a8; }
   .planner2-save-state { display: none; }
   .planner2-intro { padding: 24px; align-items: start; flex-direction: column; }
@@ -192,6 +213,7 @@ body.planner2-active > .site-footer { display: none !important; }
   .planner2-form, .planner2-payment-form { grid-template-columns: 1fr 1fr; }
   .planner2-guest-form, .planner2-scenario-form { grid-template-columns:1fr 1fr; }
   .planner2-report-grid { grid-template-columns:1fr; }
+  .planner2-data-grid { grid-template-columns:1fr; }
   .planner2-guide-grid, .planner2-guide-grid-2 { grid-template-columns:1fr; }
   .planner2-heading-action, .planner2-budget-banner { align-items:stretch; flex-direction:column; }
   .planner2-budget-form { grid-template-columns:1fr 1fr; }

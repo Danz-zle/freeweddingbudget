@@ -47,7 +47,7 @@
       <div class="planner2-trust planner2-sidebar-trust" aria-label="Planner benefits">
         <span><i data-lucide="badge-check"></i>Free</span>
         <span><i data-lucide="user-round-check"></i>No account needed</span>
-        <span><i data-lucide="shield-check"></i>Saved in this browser</span>
+        <button type="button" class="planner2-trust-link" data-go-view="my-data"><i data-lucide="shield-check"></i>Saved in this browser</button>
       </div>
       <nav class="planner2-nav">
         <button class="active" aria-label="Overview" data-workspace-view="overview"><i data-lucide="layout-dashboard"></i><span>Overview</span></button>
@@ -56,6 +56,7 @@
         <button aria-label="Payments" data-workspace-view="payments"><i data-lucide="calendar-clock"></i><span>Payments</span></button>
         <button aria-label="Guests" data-workspace-view="guests"><i data-lucide="users"></i><span>Guests</span></button>
         <button aria-label="Reports" data-workspace-view="reports"><i data-lucide="file-chart-column"></i><span>Reports</span></button>
+        <button aria-label="My Data" data-workspace-view="my-data"><i data-lucide="database-backup"></i><span>My Data</span></button>
       </nav>
       <nav class="planner2-utility-nav" aria-label="Website information">
         <a href="/blog"><i data-lucide="book-open"></i><span>Guides</span></a>
@@ -75,7 +76,7 @@
           <div class="planner2-trust planner2-mobile-trust" aria-label="Planner benefits">
             <span><i data-lucide="badge-check"></i>Free</span>
             <span><i data-lucide="user-round-check"></i>No account needed</span>
-            <span><i data-lucide="shield-check"></i>Saved in this browser</span>
+            <button type="button" class="planner2-trust-link" data-go-view="my-data"><i data-lucide="shield-check"></i>Saved in this browser</button>
           </div>
           <h1 id="planner2Title">Overview</h1>
         </div>
@@ -209,6 +210,21 @@
         <p id="p2ExportStatus" class="planner2-export-status" role="status" aria-live="polite"></p>
         <div class="planner2-note"><strong>Export rule:</strong> payments are reported as cash flow and are not added on top of selected vendor true cost. This keeps the exported totals consistent with the workspace.</div>
         <aside class="planner2-guides" aria-labelledby="p2ReportGuides"><div class="planner2-guides-heading"><span class="planner2-eyebrow">Before you share</span><h2 id="p2ReportGuides">What should I verify before exporting?</h2></div><div class="planner2-guide-grid planner2-guide-grid-2"><a href="/blog-create-budget"><strong>Are the budget limits still realistic?</strong><span>Confirm priorities and category limits before relying on the report.</span></a><a href="/blog-vendor-quotes"><strong>Do selected quotes use complete true costs?</strong><span>Confirm that each selected commitment includes the same required items.</span></a></div></aside>
+      </section>
+      <section class="planner2-view" data-workspace-panel="my-data">
+        <div class="planner2-data-hero">
+          <div><span class="planner2-eyebrow">Private browser data</span><h2>Your plan belongs to you.</h2><p>Your budget, vendors, payments, and guest records stay in this browser. No account is required, and your planner records are not stored on our servers.</p></div>
+          <i data-lucide="shield-check"></i>
+        </div>
+        <div class="planner2-ownership-note"><i data-lucide="hard-drive"></i><div><strong>Saved locally on this device</strong><span>Clearing browser data can remove the plan. Download a backup before changing browsers, clearing site data, or moving to another device.</span></div></div>
+        <div class="planner2-section-heading planner2-subsection-heading"><div><span class="planner2-eyebrow">Backup and recovery</span><h2>Keep a portable copy of your planner</h2><p>The backup includes your complete Planner 2.0 workspace and can be restored in another supported browser.</p></div><strong id="p2LastBackup" class="planner2-backup-meta">No backup downloaded from this browser yet</strong></div>
+        <div class="planner2-data-grid">
+          <article class="planner2-card planner2-data-card"><i data-lucide="download"></i><div><h2>Download Planner backup</h2><p>Save your budget, expenses, vendor quotes, payments, guest plans, scenarios, and checklist progress.</p></div><button id="p2ExportBackup">Download backup</button></article>
+          <article class="planner2-card planner2-data-card"><i data-lucide="upload"></i><div><h2>Restore Planner backup</h2><p>Replace this browser’s planner with a previously downloaded Planner 2.0 backup.</p></div><button id="p2ImportBackupButton">Choose backup</button><input id="p2ImportBackup" type="file" accept="application/json,.json" hidden></article>
+          <article class="planner2-card planner2-data-card planner2-data-card-danger"><i data-lucide="trash-2"></i><div><h2>Reset this browser</h2><p>Remove the Planner 2.0 data saved in this browser after a final confirmation.</p></div><button id="p2ResetPlanner">Reset planner</button></article>
+        </div>
+        <p id="p2DataStatus" class="planner2-export-status" role="status" aria-live="polite"></p>
+        <div class="planner2-note"><strong>About the backup file:</strong> it is a readable JSON file containing the planning information you entered. Keep it somewhere private if your vendor names or wedding costs are sensitive.</div>
       </section>
     </div>
     <div id="p2ConfirmDialog" class="planner2-dialog-backdrop" hidden>
