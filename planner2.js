@@ -7,7 +7,7 @@
   const defaultBudget = () => ({ total: 40000, categories: { ...defaultCategories }, expenses: [], importedAt: null });
   const defaultGuestCounts = () => ({ Family: 0, Friends: 0, Colleagues: 0, Others: 0 });
   const defaultGuests = () => ({ current: defaultGuestCounts(), cateringRate: 130, scenarios: [] });
-  const defaultProgress = () => ({ budgetReviewed: false, exported: false });
+  const defaultProgress = () => ({ budgetReviewed: false, exported: false, quickStarted: false });
   const emptyState = () => ({ vendors: [], payments: [], budget: defaultBudget(), guests: defaultGuests(), progress: defaultProgress() });
   const normalizeState = saved => saved && typeof saved === "object"
     ? {
@@ -101,6 +101,14 @@
   const budgetExpenseFor = category => state.budget.expenses.filter(item => item.cat === category).reduce((sum, item) => sum + numberValue(item.amount), 0);
   const committedFor = category => state.vendors.filter(vendor => vendor.selected && vendor.category === category).reduce((sum, vendor) => sum + vendorTotal(vendor), 0);
   const guestTotalFor = counts => Object.values(counts || {}).reduce((sum, count) => sum + Math.max(0, Math.floor(Number(count) || 0)), 0);
+  const hasStartedPlan = () => Boolean(state.progress.quickStarted || state.progress.budgetReviewed || state.budget.importedAt || state.vendors.length || state.payments.length || state.budget.expenses.length || guestTotalFor(state.guests.current) || state.guests.scenarios.length);
+  const nextPlanningView = () => {
+    if (!state.progress.budgetReviewed && !state.budget.importedAt) return "budget";
+    if (!state.vendors.length || !state.vendors.some(vendor => vendor.selected)) return "vendors";
+    if (!state.payments.length) return "payments";
+    if (!guestTotalFor(state.guests.current) && !state.guests.scenarios.length) return "guests";
+    return "reports";
+  };
   const trackedTotal = () => state.vendors.filter(vendor => vendor.selected).reduce((sum, vendor) => sum + vendorTotal(vendor), 0) + budgetExpenseTotal();
   const scenarioProjection = counts => {
     const total = guestTotalFor(counts);
@@ -173,6 +181,21 @@
   workspace.querySelectorAll("[data-workspace-view]").forEach(button => button.addEventListener("click", () => showView(button.dataset.workspaceView, true)));
   const requestedView = window.location.hash.slice(1);
   const workspaceViews = ["overview", "budget", "vendors", "payments", "guests", "reports", "my-data"];
+  const guideTopic = new URLSearchParams(window.location.search).get("guide");
+  const guideContexts = {
+    catering: { view: "vendors", label: "Continue from the catering guide.", text: "Enter the menu or package price first, then add required service fees, delivery, rentals, likely overtime, and tax from the quote." },
+    "catering-guests": { view: "guests", label: "Continue from the catering guide.", text: "Enter your current guest groups and the quoted per-person catering amount. The projection will show how that assumption changes your headroom." },
+    vendors: { view: "vendors", label: "Continue from the vendor quote guide.", text: "Compare the same scope for every vendor and include every required charge before selecting a commitment." },
+    venue: { view: "vendors", label: "Continue from the venue guide.", text: "Include required staffing, rentals, security, cleanup, overtime, and tax so the comparison reflects the event you plan to hold." },
+    hidden: { view: "vendors", label: "Continue from the hidden-cost guide.", text: "Use separate fields for required fees, delivery or travel, rentals, overtime, and tax instead of relying on the advertised package price." },
+    "guest-count": { view: "guests", label: "Continue from the guest-count guide.", text: "Enter the guest groups for your current plan, then save a smaller or larger scenario to compare catering cost and projected headroom." }
+  };
+  if (guideContexts[guideTopic]) {
+    const context = guideContexts[guideTopic];
+    const banner = document.querySelector(`[data-guide-context="${context.view}"]`);
+    if (banner) { banner.innerHTML = `<strong>${safe(context.label)}</strong> ${safe(context.text)}`; banner.hidden = false; }
+    trackPlannerAction("planner_guide_workflow_opened", { guide_topic: guideTopic, destination: context.view });
+  }
   if (workspaceViews.includes(requestedView)) showView(requestedView);
   window.addEventListener("hashchange", () => {
     const nextView = window.location.hash.slice(1) || "overview";
@@ -190,6 +213,20 @@
       { label: "Export a planning snapshot", detail: "Download a report when the current plan is ready to review.", view: "reports", done: state.progress.exported }
     ];
     const completedSteps = startSteps.filter(step => step.done).length;
+    const started = hasStartedPlan();
+    const quickStart = document.getElementById("p2QuickStart");
+    const quickSummary = document.getElementById("p2QuickStartSummary");
+    quickStart.hidden = started;
+    quickSummary.hidden = !started;
+    if (!started) {
+      const quickForm = document.getElementById("p2QuickStartForm");
+      if (document.activeElement !== quickForm.elements.budget) quickForm.elements.budget.value = state.budget.total;
+      if (document.activeElement !== quickForm.elements.cateringRate) quickForm.elements.cateringRate.value = state.guests.cateringRate;
+    } else {
+      document.getElementById("p2QuickStartSummaryText").textContent = `${money2(state.budget.total)} budget · ${guestTotalFor(state.guests.current)} guests · ${money2(state.guests.cateringRate)} catering per guest`;
+    }
+    const introAction = document.getElementById("p2IntroAction");
+    introAction.textContent = started ? "Continue my plan" : "Start my plan";
     document.getElementById("p2StartProgress").textContent = `${completedSteps} of ${startSteps.length} complete`;
     document.getElementById("p2StartSteps").innerHTML = startSteps.map((step, index) => `<button class="planner2-start-step ${step.done ? "is-complete" : ""}" data-go-view="${step.view}"><span class="planner2-step-marker">${step.done ? "✓" : index + 1}</span><span><strong>${step.label}</strong><small>${step.detail}</small></span><span class="planner2-step-action">${step.done ? "Review" : "Start"}</span></button>`).join("");
     const vendorRows = document.getElementById("p2VendorRows");
@@ -448,6 +485,28 @@
 
   document.getElementById("p2BudgetInput").addEventListener("input", event => {
     state.budget.total = numberValue(event.target.value); state.progress.budgetReviewed = true; save(); render();
+  });
+  document.getElementById("p2IntroAction").addEventListener("click", () => {
+    if (hasStartedPlan()) {
+      showView(nextPlanningView(), true);
+      return;
+    }
+    document.getElementById("p2QuickStartForm").elements.budget.focus();
+    document.getElementById("p2QuickStart").scrollIntoView({ behavior: "smooth", block: "center" });
+  });
+  document.getElementById("p2QuickStartForm").addEventListener("submit", event => {
+    event.preventDefault();
+    const data = Object.fromEntries(new FormData(event.currentTarget));
+    const budget = numberValue(data.budget);
+    const guests = Math.max(0, Math.floor(Number(data.guests) || 0));
+    if (!budget || !guests) { event.currentTarget.reportValidity(); return; }
+    state.budget.total = budget;
+    state.guests.current = { ...defaultGuestCounts(), Others: guests };
+    state.guests.cateringRate = numberValue(data.cateringRate);
+    state.progress.budgetReviewed = true;
+    state.progress.quickStarted = true;
+    trackPlannerAction("planner_quick_start_completed");
+    save(); render();
   });
   document.getElementById("p2BudgetRows").addEventListener("input", event => {
     if (!event.target.dataset.budgetCategory) return;
