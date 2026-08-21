@@ -3,20 +3,21 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Wedding Budget Planner – Free Calculator and Practical Guides</title>
-  <meta name="description" content="Plan a wedding budget with a free calculator, sample category splits, guest cost tracking, and practical wedding budgeting guides.">
+  <title>Free Wedding Budget Planner 2.0 | Vendors, Payments &amp; Guests</title>
+  <meta name="description" content="Plan your wedding budget in one free browser workspace. Compare full vendor costs, schedule payments, test guest counts, track expenses, and export reports.">
   <meta name="keywords" content="wedding budget calculator, wedding budget planner, wedding cost tracker, wedding expenses, wedding planning budget">
   <meta name="google-adsense-account" content="ca-pub-4504023199353060">
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4504023199353060" crossorigin="anonymous"></script>
   <link rel="canonical" href="https://freeweddingbudget.com/">
   <link rel="sitemap" type="application/xml" href="/sitemap.xml">
   <link rel="alternate" type="text/plain" title="Ads.txt" href="/ads.txt">
-  <meta property="og:title" content="Wedding Budget Planner">
-  <meta property="og:description" content="Plan wedding expenses, guest costs, category budgets, and vendor payments with a free browser-based calculator.">
+  <meta property="og:title" content="Free Wedding Budget Planner 2.0">
+  <meta property="og:description" content="Compare vendor costs, schedule payments, test guest counts, track expenses, and export your wedding plan from one private browser workspace.">
   <meta property="og:url" content="https://freeweddingbudget.com/">
   <meta property="og:type" content="website">
   <link rel="icon" href="/favicon.ico">
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Free Wedding Budget Calculator","operatingSystem":"Web","applicationCategory":"FinanceApplication","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"A browser-based tool for planning wedding budgets, tracking expenses, and estimating costs per guest.","url":"https://freeweddingbudget.com/","publisher":{"@type":"Organization","name":"Wedding Budget Planner"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"Free Wedding Budget Planner","alternateName":"Wedding Budget Planner 2.0","url":"https://freeweddingbudget.com/"}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Free Wedding Budget Planner 2.0","operatingSystem":"Web","applicationCategory":"FinanceApplication","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"A free browser-based wedding planning workspace for category budgets, full vendor-cost comparisons, payment schedules, expenses, guest scenarios, reports, and portable backups.","featureList":["Wedding category budget planning","Vendor true-cost comparison","Payment schedule tracking","Wedding expense tracking","Guest-count scenarios","CSV, Excel, and PDF reports","Browser backup and recovery"],"url":"https://freeweddingbudget.com/","publisher":{"@type":"Organization","name":"Wedding Budget Planner"}}</script>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"Wedding Budget Planner","url":"https://freeweddingbudget.com/","logo":"https://freeweddingbudget.com/favicon.ico","contactPoint":[{"@type":"ContactPoint","contactType":"support","email":"liubigcow@yahoo.com"}]}</script>
   <link rel="stylesheet" href="style.css?v=2.0.0">
   <link rel="stylesheet" href="planner2.css?v=2.0.5">
@@ -84,11 +85,25 @@
       </header>
 
       <section class="planner2-view active" data-workspace-panel="overview">
-        <div class="planner2-intro"><div><span class="planner2-eyebrow">Planning snapshot</span><h2>Know what is committed before it becomes due.</h2><p>Compare complete vendor costs, track commitments, and keep payment dates visible without counting the same cost twice.</p></div><button data-go-view="vendors">Compare a vendor</button></div>
+        <div class="planner2-intro"><div><span class="planner2-eyebrow">Wedding budget workspace</span><h2>See the full cost before you commit.</h2><p>Compare complete vendor quotes, schedule deposits and balances, test guest counts, and keep each cost in the budget once.</p></div><button id="p2IntroAction">Start my plan</button></div>
         <details class="planner2-privacy-note">
           <summary><i data-lucide="shield-check"></i> Free, private planning — how browser saving works</summary>
           <p>Your wedding plan is stored in this browser and is not attached to a personal profile. Analytics may count general site use according to your consent choice, but your saved budget, vendor, payment, and guest records are not sent as analytics details.</p>
         </details>
+        <section id="p2QuickStart" class="planner2-card planner2-quick-start" aria-labelledby="p2QuickStartTitle">
+          <div><span class="planner2-eyebrow">Two-minute setup</span><h2 id="p2QuickStartTitle">Start with the three numbers you know</h2><p>You can refine categories, guest groups, and quotes later.</p></div>
+          <form id="p2QuickStartForm">
+            <label>Total budget<input name="budget" type="number" min="1" step="1" required></label>
+            <label>Estimated guests<input name="guests" type="number" min="1" step="1" required></label>
+            <label>Catering per guest<input name="cateringRate" type="number" min="0" step="1" required></label>
+            <button type="submit">Create my starting plan</button>
+          </form>
+          <p class="planner2-quick-start-note"><i data-lucide="shield-check"></i> These numbers stay in this browser. No account is needed.</p>
+        </section>
+        <section id="p2QuickStartSummary" class="planner2-quick-summary" hidden aria-live="polite">
+          <div><span class="planner2-eyebrow">Your starting point</span><strong id="p2QuickStartSummaryText"></strong></div>
+          <div><button class="planner2-secondary-button" data-go-view="budget">Adjust budget</button><button class="planner2-secondary-button" data-go-view="guests">Refine guests</button></div>
+        </section>
         <section class="planner2-card planner2-start-card" aria-labelledby="p2StartTitle">
           <div class="planner2-card-heading"><div><span class="planner2-eyebrow">Start here</span><h2 id="p2StartTitle">Build your plan in six steps</h2><p>Follow this order once, then return to any section whenever your plans change.</p></div><strong id="p2StartProgress" class="planner2-progress-count">0 of 6 complete</strong></div>
           <div id="p2StartSteps" class="planner2-start-steps"></div>
@@ -133,6 +148,7 @@
 
       <section class="planner2-view" data-workspace-panel="vendors">
         <div class="planner2-section-heading"><div><span class="planner2-eyebrow">Priority workflow</span><h2>Vendor true-cost comparator</h2><p>Normalize every required charge so a low package price cannot hide a higher final cost.</p></div></div>
+        <div class="planner2-guide-context" data-guide-context="vendors" hidden></div>
         <div class="planner2-note planner2-selection-note"><strong>What “Selected” means:</strong> selecting a quote adds its true cost to your commitments and makes that vendor available in the payment tracker. Unselected quotes stay here for comparison.</div>
         <form id="p2VendorForm" class="planner2-card planner2-form">
           <label>Vendor name<input name="name" required placeholder="e.g. Silverline Photography"></label>
@@ -167,6 +183,7 @@
 
       <section class="planner2-view" data-workspace-panel="guests">
         <div class="planner2-section-heading"><div><span class="planner2-eyebrow">Guest scenarios</span><h2>Guest count planner</h2><p>Compare guest lists before catering and venue-capacity decisions become commitments.</p></div></div>
+        <div class="planner2-guide-context" data-guide-context="guests" hidden></div>
         <div class="planner2-stats planner2-guest-stats">
           <article><span>Current guests</span><strong id="p2GuestTotal">0</strong><small>Active guest plan</small></article>
           <article><span>Tracked cost / guest</span><strong id="p2GuestCost">$0</strong><small>Commitments plus other expenses</small></article>
