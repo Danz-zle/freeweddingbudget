@@ -4,16 +4,32 @@
   <meta charset="UTF-8">
   <title>Hidden Wedding Costs: Fees, Overtime &amp; Full-Cost Example</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Check wedding quotes for service charges, tax, overtime, delivery, setup, vendor meals, alterations, rentals, and other costs missing from package prices.">
+  <meta name="description" content="Audit wedding quotes with a downloadable worksheet, a verified full-cost example, and clear Planner 2.0 fields for fees, tax, overtime, payments, and separate expenses.">
   <link rel="canonical" href="https://freeweddingbudget.com/blog-hidden-costs">
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="content-v2.css?v=2.0.5">
   <script src="https://unpkg.com/lucide@latest"></script>
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4504023199353060" crossorigin="anonymous"></script>
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Hidden Wedding Costs: Fees, Overtime and a Full-Cost Example","description":"A practical guide to finding wedding costs that may be missing from headline quotes, including mandatory fees, tax, overtime, logistics, vendor meals, alterations, rentals, payment timing, and buffer planning.","author":{"@type":"Person","name":"Dan. Liu"},"datePublished":"2026-05-01","dateModified":"2026-08-21","url":"https://freeweddingbudget.com/blog-hidden-costs","mainEntityOfPage":"https://freeweddingbudget.com/blog-hidden-costs","publisher":{"@type":"Organization","name":"Wedding Budget Planner"},"image":"https://images.unsplash.com/photo-1532712938310-34cb3982ef74?auto=format&fit=cover&w=1200&q=80"}</script>
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What wedding costs are most often missing from the first quote?","acceptedAnswer":{"@type":"Answer","text":"Possible missing costs include service charges, tax, gratuity, overtime, travel, delivery, setup, cleanup, rentals, staffing, vendor meals, alterations, permits, insurance, parking, postage, trials, rush work, and cancellation or rescheduling costs."}},{"@type":"Question","name":"Is a mandatory service charge the same as a tip?","acceptedAnswer":{"@type":"Answer","text":"Not necessarily. In U.S. federal tax guidance, a mandatory service charge is treated differently from a voluntary tip. Ask the vendor what the charge covers, whether staff receive it, and whether a separate gratuity is expected."}},{"@type":"Question","name":"How should I track hidden wedding costs in a budget calculator?","acceptedAnswer":{"@type":"Answer","text":"Enter each required fee as its own expense line instead of hiding it inside a package price. Track the full likely contract total, amount paid, remaining balance, due dates, and a separate reserve for uncertain or late-arriving costs."}}]}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Hidden Wedding Costs: Fees, Overtime and a Full-Cost Example","description":"A quote-audit guide with a downloadable worksheet, a verified catering calculation, Planner 2.0 field mapping, source notes, and safeguards against double-counting.","author":{"@type":"Person","name":"Dan. Liu"},"datePublished":"2026-05-01","dateModified":"2026-09-20","url":"https://freeweddingbudget.com/blog-hidden-costs","mainEntityOfPage":"https://freeweddingbudget.com/blog-hidden-costs","publisher":{"@type":"Organization","name":"Wedding Budget Planner"},"image":"https://images.unsplash.com/photo-1532712938310-34cb3982ef74?auto=format&fit=cover&w=1200&q=80"}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What wedding costs are most often missing from the first quote?","acceptedAnswer":{"@type":"Answer","text":"Possible missing costs include service charges, tax, gratuity, overtime, travel, delivery, setup, cleanup, rentals, staffing, vendor meals, alterations, permits, insurance, parking, postage, trials, rush work, and cancellation or rescheduling costs."}},{"@type":"Question","name":"Is a mandatory service charge the same as a tip?","acceptedAnswer":{"@type":"Answer","text":"Not necessarily. In U.S. federal tax guidance, required service charges are not tips. Ask the vendor what the charge covers, whether staff receive it, and whether a separate gratuity is expected."}},{"@type":"Question","name":"How should I track hidden wedding costs in Planner 2.0?","acceptedAnswer":{"@type":"Answer","text":"Put required vendor charges in the quote's true-cost fields and record deposits and balances in Payments. Use Actual expenses only for costs that are not already represented by a selected vendor commitment or payment. This keeps the same charge from being counted twice."}}]}</script>
   <style>
     .hidden-mobile-checklist { display:none; }
+    .quote-audit-download {
+      background:#f3f7f2;
+      border:1px solid #cddacb;
+      border-radius:18px;
+      padding:1.35rem;
+      margin:2rem 0;
+    }
+    .quote-audit-download h2 { margin-top:0; }
+    .audit-steps { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:.8rem; margin:1rem 0; }
+    .audit-step { background:white; border:1px solid #dce5da; border-radius:13px; padding:.95rem; }
+    .audit-step strong { display:block; color:#355544; margin-bottom:.3rem; }
+    .audit-actions { display:flex; flex-wrap:wrap; gap:.75rem; margin-top:1rem; }
+    .audit-actions a { display:inline-block; border-radius:9px; padding:.72rem 1rem; font-weight:800; text-decoration:none; }
+    .audit-actions .primary-download { background:var(--primary); color:white; }
+    .audit-actions .secondary-download { background:white; color:#355544; border:1px solid #9fb4a4; }
+    .planner-field-map { margin:2rem 0; }
     @media (max-width:1100px) {
       .hidden-mobile-checklist {
         display:block;
@@ -29,6 +45,7 @@
         line-height:1.7;
       }
       .hidden-mobile-checklist strong { display:block;color:#831843;margin-bottom:.3rem; }
+      .audit-steps { grid-template-columns:1fr; }
     }
   </style>
 </head>
@@ -48,14 +65,14 @@
   <main class="dashboard-container">
     <div class="main-grid" style="grid-template-columns:2.2fr 1fr;">
       <article class="card" style="line-height:1.8;font-size:1.05rem;color:var(--text-main);">
-        <span style="color:var(--primary);font-weight:800;font-size:.8rem;text-transform:uppercase;letter-spacing:1.5px;">HIDDEN COSTS • PRACTICAL GUIDE • AUGUST 2026</span>
+        <span style="color:var(--primary);font-weight:800;font-size:.8rem;text-transform:uppercase;letter-spacing:1.5px;">HIDDEN COSTS • QUOTE AUDIT • SEPTEMBER 2026</span>
         <h1 style="font-size:2.6rem;color:#1e293b;line-height:1.2;margin-top:.5rem;margin-bottom:1rem;font-weight:900;">Hidden Wedding Costs to Check Before You Sign</h1>
 
         <div style="display:flex;align-items:center;gap:12px;margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:1px solid #f1f5f9;">
           <div style="width:44px;height:44px;border-radius:50%;background:#be185d;color:white;display:flex;align-items:center;justify-content:center;font-weight:800;">DL</div>
           <div>
             <div style="font-weight:700;color:#1e293b;">Written by Dan. Liu / Wedding Budget Planner</div>
-            <div style="font-size:.85rem;color:var(--text-muted);">Practical budgeting guide • Updated August 2026</div>
+            <div style="font-size:.85rem;color:var(--text-muted);">Calculation, sources, and planner fields checked September 2026</div>
           </div>
         </div>
 
@@ -126,11 +143,25 @@
               <tr><td>Vendor meals</td><td>6 meals × $35</td><td>$210</td></tr>
               <tr><td>Rentals, delivery, and setup</td><td>Combined fictional quote</td><td>$850</td></tr>
               <tr><td><strong>Estimated full total</strong></td><td>All known required lines</td><td><strong>$14,020</strong></td></tr>
-              <tr><td><strong>Increase above headline price</strong></td><td>$14,020 − $10,000</td><td><strong>$4,020</strong></td></tr>
+              <tr><td><strong>Increase above headline price</strong></td><td>$14,020 - $10,000</td><td><strong>$4,020</strong></td></tr>
             </tbody>
           </table>
         </div>
         <p>Not every caterer adds these percentages. Enter the full likely total in the calculator rather than relying on the menu or package price.</p>
+
+        <section class="quote-audit-download" aria-labelledby="quoteAuditHeading">
+          <h2 id="quoteAuditHeading">Audit one quote before it becomes a commitment</h2>
+          <p>The worksheet follows the fields in Planner 2.0 and leaves space for written confirmation, due dates, and contract notes.</p>
+          <div class="audit-steps">
+            <div class="audit-step"><strong>1. Mark what is included</strong>Do not assume that delivery, setup, rentals, overtime, or tax is inside the package.</div>
+            <div class="audit-step"><strong>2. Add the required amount</strong>Use the vendor true-cost fields for charges needed to deliver the agreed scope.</div>
+            <div class="audit-step"><strong>3. Separate the payment dates</strong>Move deposits and balances to Payments after the quote is selected.</div>
+          </div>
+          <div class="audit-actions">
+            <a class="primary-download" href="/wedding-hidden-cost-audit.csv" download>Download quote-audit CSV</a>
+            <a class="secondary-download" href="/?guide=hidden#vendors">Audit a quote in Planner 2.0</a>
+          </div>
+        </section>
 
         <h2>Service charge, gratuity, and tip are not interchangeable words</h2>
         <p>A mandatory service charge and a voluntary tip may be treated differently. In U.S. federal tax guidance, the IRS states that required service charges are not tips, while a tip is voluntarily decided by the customer. A contract may still use different wording, so ask what the charge covers, whether staff receive it, and whether an additional gratuity is expected.</p>
@@ -162,14 +193,30 @@
 
         <h2>How this affects the default $40,000 calculator</h2>
         <p>The calculator's default category allocation already uses the full $40,000 across venue, catering, photography, decor, entertainment, attire, and transportation. If hidden fees are not included inside those category amounts, every extra line pushes the plan over budget.</p>
-        <p>A safer workflow is to replace headline estimates with full-cost estimates as soon as written quotes arrive. Keep uncertain fees as separate temporary expense lines, and do not treat unallocated money as available for upgrades until tax, required fees, and final payment schedules are known.</p>
+        <p>Replace headline estimates with full-cost estimates as soon as written quotes arrive. Keep required and likely charges in the vendor fields. Use Actual expenses only when the cost is not already represented by a selected vendor or one of its payments.</p>
+
+        <section class="planner-field-map" aria-labelledby="plannerFieldMapHeading">
+          <h2 id="plannerFieldMapHeading">Where each number belongs in Planner 2.0</h2>
+          <div class="table-responsive">
+            <table class="spacious-table">
+              <thead><tr><th>Quote or payment detail</th><th>Planner location</th><th>Reason</th></tr></thead>
+              <tbody>
+                <tr><td>Package, required fees, travel, rentals, overtime, and tax</td><td>Vendors</td><td>These lines form the selected vendor's true-cost commitment.</td></tr>
+                <tr><td>Deposit, installment, and final balance</td><td>Payments</td><td>These records show cash flow inside the commitment.</td></tr>
+                <tr><td>A cost not represented by a selected vendor or payment</td><td>Budget: Actual expenses</td><td>This reduces available budget separately.</td></tr>
+                <tr><td>Cancellation, rescheduling, refund, and substitution terms</td><td>Written contract</td><td>The planner tracks amounts and dates, not complete contract language.</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p>Do not record the same fee inside a selected vendor quote and again as an Actual expense.</p>
+        </section>
 
         <section style="background:#f8fafc;border:1px solid #e5e7eb;border-radius:16px;padding:1.25rem;margin:2rem 0;">
           <h2 style="margin-top:0;">Expose the full cost before selecting a quote</h2>
           <ol>
             <li>Enter the advertised amount as package price in <strong>Vendors</strong>.</li>
             <li>Add required fees, travel or delivery, rentals or add-ons, likely overtime, and tax in their separate fields.</li>
-            <li>Compare the calculated true cost with the category’s planned amount in <strong>Budget</strong>.</li>
+            <li>Compare the calculated true cost with the category's planned amount in <strong>Budget</strong>.</li>
             <li>Select the quote only after its required scope is confirmed in writing. The selection becomes a commitment.</li>
             <li>Record deposits and balances in <strong>Payments</strong>; payment entries reduce the amount still payable but do not increase contract cost.</li>
           </ol>
@@ -182,6 +229,9 @@
 
         <h3>Is a mandatory service charge the same as a tip?</h3>
         <p>Not necessarily. U.S. IRS guidance distinguishes required service charges from voluntary tips. Ask the vendor how the charge is calculated, what it covers, and whether a separate gratuity is expected.</p>
+
+        <h3>How should I track hidden wedding costs in Planner 2.0?</h3>
+        <p>Put required vendor charges in the quote's true-cost fields and record deposits and balances in Payments. Use Actual expenses only for costs that are not already represented by a selected vendor commitment or payment. This keeps the same charge from being counted twice.</p>
 
         <h3>How much buffer should a wedding budget keep?</h3>
         <p>There is no universal percentage that fits every wedding. The reserve should reflect how many quotes are still incomplete, how many costs are variable, the contract terms, and how much uncertainty remains around guest count, weather, transport, tax, and overtime.</p>
@@ -234,6 +284,6 @@
     <div class="footer-links"><a href="/about">About</a> <span>•</span> <a href="/blog">Blog</a> <span>•</span> <a href="/privacy">Privacy Policy</a> <span>•</span> <a href="/terms">Terms &amp; Conditions</a> <span>•</span> <a href="/contact">Contact</a></div>
     <p><small>Disclaimer: This site provides general wedding budgeting information only and does not provide personal financial, tax, legal, or professional planning advice.</small></p>
   </footer>
-  <script>lucide.createIcons();</script>
+  <script>if (window.lucide) lucide.createIcons();</script>
 </body>
 </html>

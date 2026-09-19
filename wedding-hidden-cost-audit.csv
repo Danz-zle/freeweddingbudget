@@ -1,0 +1,11 @@
+Cost Area,Quote Line to Confirm,Included in Package?,Amount,Required or Optional,Taxable?,Due Date,Written Confirmation?,Planner Location,Notes
+Package,Advertised package price,,,,,,,Vendors: Package price,
+Fees,Mandatory service or administrative fee,,,,,,,Vendors: Required fees,
+Logistics,Travel or delivery charge,,,,,,,Vendors: Travel / delivery,
+Add-ons,Rentals or required add-ons,,,,,,,Vendors: Rentals / add-ons,
+Time,Likely overtime amount or rate,,,,,,,Vendors: Likely overtime,
+Tax,Tax amount and taxable subtotal,,,,,,,Vendors: Tax rate or effective rate,
+Deposit,Deposit or retainer,,,,,,,Payments: Deposit,
+Balance,Installment or final balance,,,,,,,Payments: Scheduled payment,
+Separate cost,Cost not represented by the selected vendor or its payments,,,,,,,Budget: Actual expenses,
+Contract terms,Cancellation rescheduling refund and substitution terms,,,,,,,Keep with the written contract,
