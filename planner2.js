@@ -176,12 +176,14 @@
     URL.revokeObjectURL(url);
   };
   const csvRows = rows => rows.map(row => row.map(csvCell).join(",")).join("\n") + "\n";
-  const appendSheet = (wb, rows, name, widths, moneyCols = [], percentCols = []) => {
+  const appendSheet = (wb, rows, name, widths, moneyCols = [], percentCols = [], moneyRows = null) => {
     const ws = XLSX.utils.aoa_to_sheet(rows);
     ws["!cols"] = widths.map(wch => ({ wch }));
     const range = XLSX.utils.decode_range(ws["!ref"]);
+    const moneyRowSet = moneyRows ? new Set(moneyRows) : null;
     moneyCols.forEach(col => {
       for (let row = 1; row <= range.e.r; row++) {
+        if (moneyRowSet && !moneyRowSet.has(row)) continue;
         const cell = XLSX.utils.encode_cell({ r: row, c: col });
         if (ws[cell] && typeof ws[cell].v === "number") ws[cell].z = `#,##0.00 "${state.settings.currency}"`;
       }
@@ -411,14 +413,14 @@
     const actualSpent = budgetExpenseTotal();
     const paid = state.payments.filter(payment => payment.paid).reduce((sum, payment) => sum + numberValue(payment.amount), 0);
     const wb = XLSX.utils.book_new();
-    appendSheet(wb, [["Metric", "Value"], ["Generated", todayLabel()], ["Currency", state.settings.currency], ["Total Budget", state.budget.total], ["Selected Commitments", committed], ["Actual Expenses", actualSpent], ["Uncommitted", state.budget.total - committed - actualSpent], ["Payments Paid", paid], ["Payments Scheduled", state.payments.length], ["Current Guests", guestTotalFor(state.guests.current)], ["Catering Per Guest", state.guests.cateringRate]], "Summary", [26, 20], [1]);
+    appendSheet(wb, [["Metric", "Value"], ["Generated", todayLabel()], ["Currency", state.settings.currency], ["Total Budget", state.budget.total], ["Selected Commitments", committed], ["Actual Expenses", actualSpent], ["Uncommitted", state.budget.total - committed - actualSpent], ["Payments Paid", paid], ["Payments Scheduled", state.payments.length], ["Current Guests", guestTotalFor(state.guests.current)], ["Catering Per Guest", state.guests.cateringRate]], "Summary", [26, 20], [1], [], [3, 4, 5, 6, 7, 10]);
     const budgetRows = [["Category", "Planned", "Committed", "Other Expenses", "Available", "Status"]];
     Object.entries(state.budget.categories).forEach(([category, plannedValue]) => { const planned = numberValue(plannedValue); const committedCategory = committedFor(category); const spentCategory = budgetExpenseFor(category); const available = planned - committedCategory - spentCategory; const isUnset = planned === 0 && committedCategory === 0 && spentCategory === 0; budgetRows.push([category, planned, committedCategory, spentCategory, available, available < 0 ? "OVER" : isUnset ? "NOT SET" : available <= planned * .25 ? "WATCH" : "AVAILABLE"]); });
     appendSheet(wb, budgetRows, "Budget", [18, 14, 14, 16, 14, 12], [1, 2, 3, 4]);
     appendSheet(wb, [["Expense", "Category", "Amount", "Source"], ...state.budget.expenses.map(expense => [expense.desc, expense.cat, expense.amount, expense.source || "Planner 2.0"])], "Expenses", [32, 18, 14, 16], [2]);
     appendSheet(wb, [["Vendor", "Category", "Package Price", "Required Fees", "Travel / Delivery", "Rentals / Add-ons", "Likely Overtime", "Tax Rate", "True Cost", "Selected"], ...state.vendors.map(vendor => [vendor.name, vendor.category, vendor.packagePrice, vendor.fees, vendor.travel, vendor.rentals, vendor.overtime, vendor.taxRate / 100, vendorTotal(vendor), vendor.selected ? "Yes" : "No"])], "Vendors", [28, 18, 15, 14, 16, 17, 16, 11, 15, 11], [2, 3, 4, 5, 6, 8], [7]);
     appendSheet(wb, [["Payment", "Vendor", "Due Date", "Amount", "Status"], ...[...state.payments].sort((a, b) => a.dueDate.localeCompare(b.dueDate)).map(payment => [payment.name, payment.vendor, payment.dueDate, payment.amount, paymentStatus(payment).toUpperCase()])], "Payments", [28, 24, 14, 14, 14], [3]);
-    appendSheet(wb, [["Group", "Current Count"], ...Object.entries(state.guests.current), ["Total", guestTotalFor(state.guests.current)], ["Catering Per Guest", state.guests.cateringRate]], "Guest Plan", [20, 16], [1]);
+    appendSheet(wb, [["Group", "Current Count"], ...Object.entries(state.guests.current), ["Total", guestTotalFor(state.guests.current)], ["Catering Per Guest", state.guests.cateringRate]], "Guest Plan", [20, 16], [1], [], [6]);
     appendSheet(wb, [["Scenario", "Family", "Friends", "Colleagues", "Others", "Total Guests", "Catering Estimate", "Tracked Cost / Guest", "Projected Total", "Headroom"], ...state.guests.scenarios.map(scenario => { const projection = scenarioProjection(scenario.counts); return [scenario.name, scenario.counts.Family, scenario.counts.Friends, scenario.counts.Colleagues, scenario.counts.Others, projection.total, projection.catering, projection.costPerGuest, projection.projectedTotal, projection.headroom]; })], "Guest Scenarios", [24, 11, 11, 13, 11, 13, 17, 19, 16, 14], [6, 7, 8, 9]);
     XLSX.writeFile(wb, "Wedding_Planner_2_Report.xlsx");
     markExported("Excel workbook downloaded.");
@@ -431,7 +433,7 @@
     const committed = selected.reduce((sum, vendor) => sum + vendorTotal(vendor), 0);
     const actualSpent = budgetExpenseTotal();
     const paid = state.payments.filter(payment => payment.paid).reduce((sum, payment) => sum + numberValue(payment.amount), 0);
-    const budgetRows = Object.entries(state.budget.categories).map(([category, plannedValue]) => { const planned = numberValue(plannedValue); const used = committedFor(category) + budgetExpenseFor(category); const available = planned - used; return `<tr><td>${safe(category)}</td><td>${money2(planned)}</td><td>${money2(used)}</td><td>${available < 0 ? "-" : ""}${money2(Math.abs(available))}</td><td>${available < 0 ? "Over" : available <= planned * .25 ? "Watch" : "Available"}</td></tr>`; }).join("");
+    const budgetRows = Object.entries(state.budget.categories).map(([category, plannedValue]) => { const planned = numberValue(plannedValue); const used = committedFor(category) + budgetExpenseFor(category); const available = planned - used; const isUnset = planned === 0 && used === 0; return `<tr><td>${safe(category)}</td><td>${money2(planned)}</td><td>${money2(used)}</td><td>${available < 0 ? "-" : ""}${money2(Math.abs(available))}</td><td>${available < 0 ? "Over" : isUnset ? "Not set" : available <= planned * .25 ? "Watch" : "Available"}</td></tr>`; }).join("");
     const vendorRows = state.vendors.length ? state.vendors.map(vendor => `<tr><td>${safe(vendor.name)}</td><td>${safe(vendor.category)}</td><td>${money2(vendor.packagePrice)}</td><td>${money2(vendorTotal(vendor))}</td><td>${vendor.selected ? "Selected" : "Comparing"}</td></tr>`).join("") : `<tr><td colspan="5">No vendor quotes saved.</td></tr>`;
     const paymentRows = state.payments.length ? [...state.payments].sort((a,b) => a.dueDate.localeCompare(b.dueDate)).map(payment => `<tr><td>${safe(payment.name)}</td><td>${safe(payment.vendor || "-")}</td><td>${safe(payment.dueDate)}</td><td>${money2(payment.amount)}</td><td>${paymentStatus(payment).replace("-", " ")}</td></tr>`).join("") : `<tr><td colspan="5">No payments scheduled.</td></tr>`;
     const expenseRows = state.budget.expenses.length ? state.budget.expenses.map(expense => `<tr><td>${safe(expense.desc)}</td><td>${safe(expense.cat)}</td><td>${money2(expense.amount)}</td><td>${safe(expense.source || "Planner 2.0")}</td></tr>`).join("") : `<tr><td colspan="4">No actual expenses recorded.</td></tr>`;

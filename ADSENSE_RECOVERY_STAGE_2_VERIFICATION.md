@@ -118,3 +118,22 @@ The rollback point is the tag `pre-adsense-recovery-stage2-2026-09-18`, which po
 Stage 2 is suitable for local sign-off. It must not be pushed, merged, or deployed until the user gives explicit production approval.
 
 Stage 3 should focus on distinct first-party evidence and content architecture. It should not repeat a cosmetic rewrite of all articles or trigger an immediate AdSense resubmission.
+
+## Codex review follow-up
+
+Follow-up date: September 20, 2026
+
+A dedicated Codex review compared Stage 2 commit `3d14fc8` with production baseline `e91ace6`. No critical or high-risk regression was found. Two report-format inconsistencies were corrected:
+
+- Excel Summary and Guest Plan sheets now apply currency formatting only to financial rows. Payment totals and guest counts remain ordinary numeric cells.
+- The PDF budget table now shows an unused zero-value `Other` category as `Not set`, matching the workspace and Excel report.
+
+Follow-up checks passed:
+
+- JavaScript syntax and Git whitespace validation.
+- An isolated test of the actual `appendSheet` helper confirmed that summary and guest-count cells do not receive currency formatting while budget and catering values do.
+- Browser Excel export completed without a warning or error.
+- Browser PDF generation showed `Other` as `Not set`.
+- Browser console remained free of warnings and errors.
+
+The follow-up remains local and has not been pushed, merged, or deployed.
