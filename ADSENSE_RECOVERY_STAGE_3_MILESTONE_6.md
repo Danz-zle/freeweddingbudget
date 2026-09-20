@@ -55,4 +55,3 @@ Browser warnings were limited to third-party resources blocked by the isolated t
 - `ads.txt`, `_headers`, `robots.txt`, `sitemap.xml`, and analytics consent.
 - Cloudflare and AdSense settings.
 - Production deployment.
-
