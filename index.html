@@ -20,7 +20,7 @@
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Free Wedding Budget Planner 2.0","operatingSystem":"Web","applicationCategory":"FinanceApplication","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"A free browser-based wedding planning workspace for category budgets, full vendor-cost comparisons, payment schedules, expenses, guest scenarios, reports, and portable backups.","featureList":["Wedding category budget planning","Vendor true-cost comparison","Payment schedule tracking","Wedding expense tracking","Guest-count scenarios","CSV, Excel, and PDF reports","Browser backup and recovery"],"url":"https://freeweddingbudget.com/","publisher":{"@type":"Organization","name":"Wedding Budget Planner"}}</script>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"Wedding Budget Planner","url":"https://freeweddingbudget.com/","logo":"https://freeweddingbudget.com/favicon.ico","contactPoint":[{"@type":"ContactPoint","contactType":"support","email":"liubigcow@yahoo.com"}]}</script>
   <link rel="stylesheet" href="style.css?v=2.0.0">
-  <link rel="stylesheet" href="planner2.css?v=2.1.1">
+  <link rel="stylesheet" href="planner2.css?v=2.1.2">
   <script src="https://unpkg.com/lucide@latest"></script>
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 </head>
@@ -144,7 +144,7 @@
         <div class="planner2-card"><div class="planner2-table-wrap"><table class="planner2-table"><thead><tr><th>Category</th><th>Planned</th><th>Committed</th><th>Other expenses</th><th>Available</th><th>Status</th></tr></thead><tbody id="p2BudgetRows"></tbody></table></div></div>
         <div class="planner2-section-heading planner2-subsection-heading"><div><span class="planner2-eyebrow">Permanent expense ledger</span><h2>Actual expenses</h2><p>Record costs that are not already represented by a selected vendor commitment or payment.</p></div></div>
         <form id="p2ExpenseForm" class="planner2-card planner2-form planner2-expense-form">
-          <label>Description<input name="description" required placeholder="e.g. Marriage licence"></label>
+          <label>Description<input name="description" type="text" required placeholder="e.g. Marriage licence"></label>
           <label>Category<select name="category"><option>Venue</option><option>Catering</option><option>Photography</option><option>Decor</option><option>Entertainment</option><option>Attire</option><option>Transportation</option><option>Other</option></select></label>
           <label>Amount<input name="amount" type="number" min="0" step="0.01" required></label>
           <div class="planner2-form-actions"><button id="p2ExpenseSubmit" type="submit">Add expense</button><button id="p2ExpenseCancel" class="planner2-secondary-button" type="button" hidden>Cancel edit</button></div>
@@ -159,7 +159,7 @@
         <div class="planner2-guide-context" data-guide-context="vendors" hidden></div>
         <div class="planner2-note planner2-selection-note"><strong>What "Selected" means:</strong> selecting a quote adds its true cost to your commitments and makes that vendor available in the payment tracker. Unselected quotes stay here for comparison.</div>
         <form id="p2VendorForm" class="planner2-card planner2-form">
-          <label>Vendor name<input name="name" required placeholder="e.g. Silverline Photography"></label>
+          <label>Vendor name<input name="name" type="text" required placeholder="e.g. Silverline Photography"></label>
           <label>Category<select name="category"><option>Venue</option><option>Catering</option><option>Photography</option><option>Decor</option><option>Entertainment</option><option>Attire</option><option>Transportation</option><option>Other</option></select></label>
           <label>Package price<input name="packagePrice" type="number" min="0" step="0.01" value="0"></label>
           <label>Required fees<input name="fees" type="number" min="0" step="0.01" value="0"></label>
@@ -178,8 +178,8 @@
       <section class="planner2-view" data-workspace-panel="payments">
         <div class="planner2-section-heading"><div><span class="planner2-eyebrow">Priority workflow</span><h2>Payment tracker</h2><p>Track deposits, installments, and final balances without counting a deposit as the full contract cost.</p></div></div>
         <form id="p2PaymentForm" class="planner2-card planner2-form planner2-payment-form">
-          <label>Payment name<input name="name" required placeholder="e.g. Venue deposit"></label>
-          <label>Vendor<input name="vendor" list="p2SelectedVendorOptions" required placeholder="Choose a selected vendor"><datalist id="p2SelectedVendorOptions"></datalist></label>
+          <label>Payment name<input name="name" type="text" required placeholder="e.g. Venue deposit"></label>
+          <label>Vendor<input name="vendor" type="text" list="p2SelectedVendorOptions" required placeholder="Choose a selected vendor"><datalist id="p2SelectedVendorOptions"></datalist></label>
           <label>Amount<input name="amount" type="number" min="0" step="0.01" required></label>
           <label>Due date<input name="dueDate" type="date" required></label>
           <button type="submit">Add payment</button>
@@ -207,7 +207,7 @@
           <label>Estimated catering / guest<input id="p2CateringRate" type="number" min="0" step="1"></label>
         </form>
         <form id="p2ScenarioForm" class="planner2-card planner2-form planner2-scenario-form">
-          <label>Scenario name<input name="name" required placeholder="e.g. Intimate 60"></label>
+          <label>Scenario name<input name="name" type="text" required placeholder="e.g. Intimate 60"></label>
           <label>Family<input name="Family" type="number" min="0" step="1" value="0"></label>
           <label>Friends<input name="Friends" type="number" min="0" step="1" value="0"></label>
           <label>Colleagues<input name="Colleagues" type="number" min="0" step="1" value="0"></label>
