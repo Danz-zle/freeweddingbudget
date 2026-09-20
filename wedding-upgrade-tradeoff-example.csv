@@ -1,0 +1,7 @@
+Option,Guests,Fixed Upgrade,Per Guest Upgrade,Total Upgrade,Reserve Before Upgrade,Reserve After Upgrade Without Offset,Lower Priority Reduction Needed to Keep Reserve
+Fixed photography upgrade,50,1200,0,1200,3000,1800,1200
+Per guest food or rental upgrade,50,0,12,600,3000,2400,600
+Fixed photography upgrade,100,1200,0,1200,3000,1800,1200
+Per guest food or rental upgrade,100,0,12,1200,3000,1800,1200
+Fixed photography upgrade,150,1200,0,1200,3000,1800,1200
+Per guest food or rental upgrade,150,0,12,1800,3000,1200,1800

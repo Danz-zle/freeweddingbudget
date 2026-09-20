@@ -12,7 +12,7 @@
   <script src="https://unpkg.com/lucide@latest"></script>
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4504023199353060" crossorigin="anonymous"></script>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"CollectionPage","name":"Wedding Budget Planning Guides and Real-Cost Examples","description":"A collection of practical wedding budgeting guides with worked examples, comparison tables, checklists, calculator workflows, and source notes.","url":"https://freeweddingbudget.com/blog","publisher":{"@type":"Organization","name":"Wedding Budget Planner","url":"https://freeweddingbudget.com/"},"author":{"@type":"Person","name":"Dan. Liu","url":"https://freeweddingbudget.com/about"}}</script>
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"ItemList","itemListElement":[{"@type":"ListItem","position":1,"url":"https://freeweddingbudget.com/blog-create-budget","name":"How to Create a Wedding Budget That Actually Works"},{"@type":"ListItem","position":2,"url":"https://freeweddingbudget.com/blog-50-vs-100-guests","name":"Wedding Budget for 50 vs 100 Guests"},{"@type":"ListItem","position":3,"url":"https://freeweddingbudget.com/blog-average-cost-2026","name":"Average Wedding Cost in 2026: What the $34,200 US Figure Really Means"},{"@type":"ListItem","position":4,"url":"https://freeweddingbudget.com/blog-planning-timeline","name":"Wedding Planning Timeline and Budget Checklist"},{"@type":"ListItem","position":5,"url":"https://freeweddingbudget.com/blog-hidden-costs","name":"Hidden Wedding Costs to Check Before You Sign"},{"@type":"ListItem","position":6,"url":"https://freeweddingbudget.com/blog-catering-budget-guide","name":"Wedding Catering Budget for 50, 100, and 150 Guests"},{"@type":"ListItem","position":7,"url":"https://freeweddingbudget.com/blog-venue-cost-checklist","name":"Wedding Venue Cost Checklist"},{"@type":"ListItem","position":8,"url":"https://freeweddingbudget.com/blog-vendor-quotes","name":"Compare Wedding Vendor Quotes by True Cost"},{"@type":"ListItem","position":9,"url":"https://freeweddingbudget.com/blog-spend-vs-save","name":"Wedding Budget Breakdown: Where to Spend and Where to Save"},{"@type":"ListItem","position":10,"url":"https://freeweddingbudget.com/blog-diy-decor","name":"DIY Wedding Decor That Looks Professional"}]}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"ItemList","itemListElement":[{"@type":"ListItem","position":1,"url":"https://freeweddingbudget.com/blog-create-budget","name":"How to Create a Wedding Budget That Actually Works"},{"@type":"ListItem","position":2,"url":"https://freeweddingbudget.com/blog-50-vs-100-guests","name":"Wedding Budget for 50 vs 100 Guests"},{"@type":"ListItem","position":3,"url":"https://freeweddingbudget.com/blog-average-cost-2026","name":"Average Wedding Cost in 2026: What the $34,200 US Figure Really Means"},{"@type":"ListItem","position":4,"url":"https://freeweddingbudget.com/blog-planning-timeline","name":"Wedding Planning Timeline and Budget Checklist"},{"@type":"ListItem","position":5,"url":"https://freeweddingbudget.com/blog-hidden-costs","name":"Hidden Wedding Costs to Check Before You Sign"},{"@type":"ListItem","position":6,"url":"https://freeweddingbudget.com/blog-catering-budget-guide","name":"Wedding Catering Budget for 50, 100, and 150 Guests"},{"@type":"ListItem","position":7,"url":"https://freeweddingbudget.com/blog-venue-cost-checklist","name":"Wedding Venue Cost Checklist"},{"@type":"ListItem","position":8,"url":"https://freeweddingbudget.com/blog-vendor-quotes","name":"Compare Wedding Vendor Quotes by True Cost"},{"@type":"ListItem","position":9,"url":"https://freeweddingbudget.com/blog-spend-vs-save","name":"Where to Spend and Save in a Wedding Budget: Upgrade Worksheet"},{"@type":"ListItem","position":10,"url":"https://freeweddingbudget.com/blog-diy-decor","name":"DIY Wedding Decor Budget: DIY vs Rental vs Full Service"}]}</script>
   <style>
     .blog-hero { text-align:center; padding:3.5rem 1.5rem; background:linear-gradient(135deg,#fff5f5 0%,#fdf2f8 100%); border-radius:24px; margin-bottom:2rem; }
     .blog-hero h1 { font-size:2.8rem; color:#1e293b; font-weight:800; margin:0 0 12px 0; }
@@ -31,6 +31,28 @@
     .card-title { font-size:1.25rem; font-weight:800; color:#1e293b; margin:0 0 12px 0; line-height:1.4; }
     .card-excerpt { color:var(--text-muted); font-size:.95rem; line-height:1.6; flex-grow:1; }
     .card-footer { font-size:.8rem; color:var(--text-muted); border-top:1px solid #f1f5f9; padding-top:1rem; font-weight:600; }
+    .guide-paths { margin: 0 0 2.75rem 0; }
+    .guide-paths-heading { max-width: 760px; margin-bottom: 1.2rem; }
+    .guide-paths-heading h2 { margin: 0 0 .45rem 0; color: #1e293b; font-size: 1.75rem; }
+    .guide-paths-heading p { margin: 0; color: var(--text-muted); line-height: 1.6; }
+    .guide-path-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+    .guide-path-card { background: white; border: 1px solid #e5e7eb; border-radius: 16px; padding: 1.25rem; text-decoration: none; color: inherit; display: block; }
+    .guide-path-card.featured { background: #f3f7f2; border-color: #bdcebb; }
+    .guide-type { display: inline-block; color: #355544; background: #e4ece2; border-radius: 999px; padding: .24rem .6rem; font-size: .7rem; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; }
+    .guide-path-card h3 { color: #1e293b; margin: .65rem 0 .35rem 0; font-size: 1.15rem; }
+    .guide-path-card p { color: var(--text-muted); margin: 0; line-height: 1.55; }
+    .guide-path-card .path-link { display: block; color: var(--primary); margin-top: .8rem; font-weight: 800; }
+    .signature-guide { display: grid; grid-template-columns: 1.25fr .75fr; gap: 1.2rem; align-items: center; background: #26362e; color: white; padding: 1.5rem; border-radius: 20px; margin-bottom: 2.75rem; }
+    .signature-guide h2 { color: white; margin: .35rem 0 .65rem 0; }
+    .signature-guide p { color: #dce6df; line-height: 1.6; }
+    .signature-guide .guide-type { background: #f4dda0; color: #26362e; }
+    .signature-example { background: rgba(255,255,255,.09); border: 1px solid rgba(255,255,255,.2); border-radius: 14px; padding: 1rem; }
+    .signature-example strong { display: block; font-size: 1.35rem; color: #f4dda0; margin-bottom: .25rem; }
+    .signature-links { display: flex; flex-wrap: wrap; gap: .7rem; margin-top: 1rem; }
+    .signature-links a { border-radius: 9px; padding: .65rem .85rem; font-weight: 800; text-decoration: none; }
+    .signature-links a:first-child { background: #f4dda0; color: #26362e; }
+    .signature-links a:last-child { border: 1px solid #9fb4a4; color: white; }
+    .all-guides-heading { margin: 0 0 1rem 0; color: #1e293b; }
     @media (max-width:1100px) {
       .blog-hero { padding:2.5rem 1.1rem; border-radius:18px; }
       .blog-hero h1 { font-size:2.15rem; line-height:1.15; }
@@ -38,6 +60,7 @@
       .blog-grid { grid-template-columns:1fr; gap:1.25rem; }
       .blog-filter-container { margin-bottom:2rem; }
       .blog-filter-btn { padding:.6rem 1rem; font-size:.84rem; }
+      .guide-path-grid, .signature-guide { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -64,6 +87,58 @@
       <strong>How these guides are written:</strong> examples are clearly labeled when they are fictional, current data is linked to its source, and legal, tax, safety, or contract rules are described as location-dependent when they are not universal. Read more about the site's <a href="/about">editorial approach and author</a>.
     </div>
 
+    <section class="guide-paths" aria-labelledby="guidePathsHeading">
+      <div class="guide-paths-heading">
+        <h2 id="guidePathsHeading">Start with the decision in front of you</h2>
+        <p>You do not need to read every guide. Pick the task you are working on, use the worksheet or example, then take the result back to the planner.</p>
+      </div>
+      <div class="guide-path-grid">
+        <a class="guide-path-card" href="/blog-create-budget">
+          <span class="guide-type">Step-by-step setup</span>
+          <h3>I need to build the first budget</h3>
+          <p>Follow the tested setup, audit the formulas, and download both the starting categories and a reserve-first alternative.</p>
+          <span class="path-link">Build the budget</span>
+        </a>
+        <a class="guide-path-card featured" href="/blog-vendor-quotes">
+          <span class="guide-type">Tested planner workflow</span>
+          <h3>I have vendor quotes to compare</h3>
+          <p>Use the true-cost formula, see how quote replacement works, and download the same example used in Planner 2.0.</p>
+          <span class="path-link">Compare the quotes</span>
+        </a>
+        <a class="guide-path-card" href="/blog-50-vs-100-guests">
+          <span class="guide-type">Worked scenario</span>
+          <h3>I need to test the guest list</h3>
+          <p>Reproduce the 50-versus-100 guest calculation, download the worksheet, and see exactly what the planner projection changes.</p>
+          <span class="path-link">Test 50 vs 100 guests</span>
+        </a>
+        <a class="guide-path-card" href="/blog-hidden-costs">
+          <span class="guide-type">Pre-contract checklist</span>
+          <h3>I am checking a quote or contract</h3>
+          <p>Download the quote-audit worksheet and map every fee, payment, and separate expense to the correct planner field.</p>
+          <span class="path-link">Check the missing costs</span>
+        </a>
+      </div>
+    </section>
+
+    <section class="signature-guide" aria-labelledby="signatureGuideHeading">
+      <div>
+        <span class="guide-type">Original planner example</span>
+        <h2 id="signatureGuideHeading">The cheaper package finishes $108 higher</h2>
+        <p>Silverline starts $300 below Willow. After both quotes use the same fee, travel, add-on, overtime, and tax fields, Willow becomes the lower true cost.</p>
+        <div class="signature-links">
+          <a href="/blog-vendor-quotes">See the full calculation</a>
+          <a href="/vendor-true-cost-example.csv" download>Download example CSV</a>
+        </div>
+      </div>
+      <div class="signature-example" aria-label="Vendor true cost result">
+        <span>Silverline true cost</span><strong>$4,374</strong>
+        <span>Willow true cost</span><strong>$4,266</strong>
+        <small>Fictional USD example with an 8% tax assumption.</small>
+      </div>
+    </section>
+
+    <h2 class="all-guides-heading">Browse all planning guides</h2>
+
     <div class="blog-filter-container" aria-label="Filter planning guides">
       <button class="blog-filter-btn active" onclick="filterArticles('all',this)">All Articles</button>
       <button class="blog-filter-btn" onclick="filterArticles('budget',this)">Budget Planning</button>
@@ -75,52 +150,52 @@
     <div class="blog-grid" id="articlesGrid">
       <a href="/blog-create-budget" class="premium-blog-card" data-cat="budget">
         <img src="https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?auto=format&fit=cover&w=800&q=80" loading="lazy" alt="Wedding rings and planning notebook">
-        <div class="card-content"><span class="meta-tag">Budget Planning</span><h2 class="card-title">How to Create a Wedding Budget That Actually Works</h2><p class="card-excerpt">Build a safe spending ceiling, estimate guest count, set category limits, compare full quotes, and protect a reserve.</p><div class="card-footer">Practical guide • Updated August 2026</div></div>
+        <div class="card-content"><span class="meta-tag">Budget Planning</span><h2 class="card-title">How to Create a Wedding Budget That Actually Works</h2><p class="card-excerpt">Use the planner's formulas, separate commitments from payments, and download two complete category examples.</p><div class="card-footer">Tested walkthrough • Updated September 2026</div></div>
       </a>
 
       <a href="/blog-50-vs-100-guests" class="premium-blog-card" data-cat="budget">
         <img src="https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=cover&w=800&q=80" loading="lazy" alt="Wedding reception guest tables">
-        <div class="card-content"><span class="meta-tag">Budget Planning</span><h2 class="card-title">Wedding Budget for 50 vs 100 Guests</h2><p class="card-excerpt">See which costs grow with the guest list and which ones may stay fixed, using a worked $40,000 comparison.</p><div class="card-footer">Worked comparison • Updated August 2026</div></div>
+        <div class="card-content"><span class="meta-tag">Budget Planning</span><h2 class="card-title">Wedding Budget for 50 vs 100 Guests</h2><p class="card-excerpt">Reproduce the $8,000 guest-linked difference and see which costs the planner changes automatically.</p><div class="card-footer">Reproducible scenario • Updated September 2026</div></div>
       </a>
 
       <a href="/blog-average-cost-2026" class="premium-blog-card" data-cat="budget">
         <img src="https://images.unsplash.com/photo-1507504031003-b417219a0fde?auto=format&fit=cover&w=800&q=80" loading="lazy" alt="Wedding planning notes on a table">
-        <div class="card-content"><span class="meta-tag">2026 Cost Data</span><h2 class="card-title">Average Wedding Cost in 2026: What the $34,200 US Figure Really Means</h2><p class="card-excerpt">Read the survey year and method correctly, then replace the national average with comparable local quotes.</p><div class="card-footer">Survey interpretation • Updated August 2026</div></div>
+        <div class="card-content"><span class="meta-tag">2026 Cost Data</span><h2 class="card-title">Average Wedding Cost in 2026: What the $34,200 US Figure Really Means</h2><p class="card-excerpt">Compare two published survey figures without mixing their methods, then replace them with local quotes.</p><div class="card-footer">Source-check worksheet • Updated September 2026</div></div>
       </a>
 
       <a href="/blog-planning-timeline" class="premium-blog-card" data-cat="budget">
         <img src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=cover&w=800&q=80" loading="lazy" alt="Wedding reception timeline and planning">
-        <div class="card-content"><span class="meta-tag">Budget Planning</span><h2 class="card-title">Wedding Planning Timeline and Budget Checklist</h2><p class="card-excerpt">Connect every decision to its quote, contract, deposit, guest deadline, balance, and responsible person.</p><div class="card-footer">12-month framework • Updated August 2026</div></div>
+        <div class="card-content"><span class="meta-tag">Budget Planning</span><h2 class="card-title">Wedding Planning Timeline and Budget Checklist</h2><p class="card-excerpt">Download a 12-payment example and connect each contract to its deposits, balances, and due dates.</p><div class="card-footer">Payment calendar • Updated September 2026</div></div>
       </a>
 
       <a href="/blog-hidden-costs" class="premium-blog-card" data-cat="hidden">
         <img src="https://images.unsplash.com/photo-1532712938310-34cb3982ef74?auto=format&fit=cover&w=800&q=80" loading="lazy" alt="Wedding paperwork and envelopes">
-        <div class="card-content"><span class="meta-tag">Hidden Costs</span><h2 class="card-title">Hidden Wedding Costs to Check Before You Sign</h2><p class="card-excerpt">Check service charges, tax, overtime, delivery, setup, vendor meals, alterations, rentals, and late costs.</p><div class="card-footer">Full-cost audit • Updated August 2026</div></div>
+        <div class="card-content"><span class="meta-tag">Hidden Costs</span><h2 class="card-title">Hidden Wedding Costs to Check Before You Sign</h2><p class="card-excerpt">Use the quote-audit worksheet and put each fee, payment, and separate expense in the correct place.</p><div class="card-footer">Quote audit worksheet • Updated September 2026</div></div>
       </a>
 
       <a href="/blog-catering-budget-guide" class="premium-blog-card" data-cat="hidden">
         <img src="https://images.unsplash.com/photo-1482275548304-a58859dc31b7?auto=format&fit=cover&w=800&q=80" loading="lazy" alt="Wedding catering table setting">
-        <div class="card-content"><span class="meta-tag">Catering Budget</span><h2 class="card-title">Wedding Catering Budget for 50, 100, and 150 Guests</h2><p class="card-excerpt">Work from the per-person price to the likely full invoice, including service charges, tax, rentals, and vendor meals.</p><div class="card-footer">Worked examples • Updated August 2026</div></div>
+        <div class="card-content"><span class="meta-tag">Catering Budget</span><h2 class="card-title">Wedding Catering Budget for 50, 100, and 150 Guests</h2><p class="card-excerpt">Download the invoice worksheet and keep tax, rentals, delivery, and other unconfirmed lines visible.</p><div class="card-footer">Invoice worksheet • Updated September 2026</div></div>
       </a>
 
       <a href="/blog-venue-cost-checklist" class="premium-blog-card" data-cat="vendor">
         <img src="https://images.unsplash.com/photo-1519167758481-83f550bb49b3?auto=format&fit=cover&w=800&q=80" loading="lazy" alt="Wedding venue reception room">
-        <div class="card-content"><span class="meta-tag">Vendor Decisions</span><h2 class="card-title">Wedding Venue Cost Checklist Before You Sign</h2><p class="card-excerpt">Compare full venue costs, inclusions, restrictions, access hours, accessibility, weather backup, and contract terms.</p><div class="card-footer">Venue comparison • Updated August 2026</div></div>
+        <div class="card-content"><span class="meta-tag">Vendor Decisions</span><h2 class="card-title">Wedding Venue Cost Checklist Before You Sign</h2><p class="card-excerpt">Use the same-scope worksheet to compare room price, required additions, and weather backup.</p><div class="card-footer">Same-scope worksheet • Updated September 2026</div></div>
       </a>
 
       <a href="/blog-vendor-quotes" class="premium-blog-card" data-cat="vendor">
         <img src="https://images.unsplash.com/photo-1520854221256-17451cc331bf?auto=format&fit=cover&w=800&q=80" loading="lazy" alt="Couple reviewing wedding vendor paperwork">
-        <div class="card-content"><span class="meta-tag">Vendor Decisions</span><h2 class="card-title">Compare Wedding Vendor Quotes by True Cost</h2><p class="card-excerpt">Match the scope, add required fees, separate deposits from full cost, and review cancellation terms.</p><div class="card-footer">Three-vendor example • Updated August 2026</div></div>
+        <div class="card-content"><span class="meta-tag">Vendor Decisions</span><h2 class="card-title">Compare Wedding Vendor Quotes by True Cost</h2><p class="card-excerpt">Follow the tested compare, select, and pay workflow, with a downloadable example built from the planner fields.</p><div class="card-footer">Tested workflow • Updated September 2026</div></div>
       </a>
 
       <a href="/blog-spend-vs-save" class="premium-blog-card" data-cat="vendor">
         <img src="https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?auto=format&fit=cover&w=800&q=80" loading="lazy" alt="Wedding table setup">
-        <div class="card-content"><span class="meta-tag">Vendor Decisions</span><h2 class="card-title">Wedding Budget Breakdown: Where to Spend and Where to Save</h2><p class="card-excerpt">Protect requirements and personal priorities while simplifying optional upgrades and restoring a reserve.</p><div class="card-footer">Priority framework • Updated August 2026</div></div>
+        <div class="card-content"><span class="meta-tag">Vendor Decisions</span><h2 class="card-title">Where to Spend and Save: Upgrade Worksheet</h2><p class="card-excerpt">Download the worksheet and compare fixed or per-guest upgrades without quietly spending the reserve.</p><div class="card-footer">Upgrade calculation • Updated September 2026</div></div>
       </a>
 
       <a href="/blog-diy-decor" class="premium-blog-card" data-cat="diy">
         <img src="https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=cover&w=800&q=80" loading="lazy" alt="DIY wedding flowers and chairs">
-        <div class="card-content"><span class="meta-tag">DIY &amp; Decor</span><h2 class="card-title">DIY Wedding Decor That Looks Professional</h2><p class="card-excerpt">Compare DIY, rental, and full-service decor after counting supplies, tools, transport, setup, safety, and cleanup.</p><div class="card-footer">Cost and setup plan • Updated August 2026</div></div>
+        <div class="card-content"><span class="meta-tag">DIY &amp; Decor</span><h2 class="card-title">DIY Wedding Decor: DIY vs Rental vs Full Service</h2><p class="card-excerpt">Use the cost worksheet to compare complete scope, then place the chosen amount in the planner once.</p><div class="card-footer">Option comparison • Updated September 2026</div></div>
       </a>
     </div>
   </main>
@@ -132,7 +207,7 @@
   </footer>
 
   <script>
-    lucide.createIcons();
+    if (window.lucide) lucide.createIcons();
     function filterArticles(category, buttonElement) {
       document.querySelectorAll('.blog-filter-btn').forEach(btn => btn.classList.remove('active'));
       buttonElement.classList.add('active');

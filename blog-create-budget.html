@@ -4,14 +4,58 @@
   <meta charset="UTF-8">
   <title>How to Create a Wedding Budget That Actually Works | Wedding Budget Planner</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Create a practical wedding budget with a spending ceiling, guest-count planning, a $40,000 example split, estimated vs actual tracking, deposit planning, and calculator workflow.">
+  <meta name="description" content="Build a wedding budget with a tested Planner 2.0 workflow, auditable formulas, a downloadable $40,000 category example, quote tracking, payments, and reports.">
   <link rel="canonical" href="https://freeweddingbudget.com/blog-create-budget">
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="content-v2.css?v=2.0.5">
   <script src="https://unpkg.com/lucide@latest"></script>
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4504023199353060" crossorigin="anonymous"></script>
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"How to Create a Wedding Budget That Actually Works","description":"A practical guide to setting a realistic wedding budget, estimating guest-count pressure, dividing a $40,000 sample budget into categories, tracking estimated versus actual costs, and using a calculator before signing vendor contracts.","author":{"@type":"Person","name":"Dan. Liu"},"datePublished":"2026-05-01","dateModified":"2026-08-17","url":"https://freeweddingbudget.com/blog-create-budget","mainEntityOfPage":"https://freeweddingbudget.com/blog-create-budget","publisher":{"@type":"Organization","name":"Wedding Budget Planner"},"image":"https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?auto=format&fit=cover&w=1200&q=80"}</script>
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is the first step in creating a wedding budget?","acceptedAnswer":{"@type":"Answer","text":"Start with a safe spending ceiling. Add money that is already available, realistic savings before the wedding date, and confirmed contributions. Do not build the plan around uncertain money."}},{"@type":"Question","name":"Why should guest count come early in wedding budgeting?","acceptedAnswer":{"@type":"Answer","text":"Guest count affects venue size, catering, drinks, rentals, favors, stationery, transportation, and other guest-based costs. A budget can change quickly when the guest list grows."}},{"@type":"Question","name":"How should I track wedding deposits and balances?","acceptedAnswer":{"@type":"Answer","text":"Track the full contract total, amount paid, remaining balance, due date, taxes, service charges, and cancellation terms. A deposit alone does not show the real amount still owed."}}]}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"How to Create a Wedding Budget That Actually Works","description":"A tested Planner 2.0 walkthrough for setting a spending ceiling, dividing a $40,000 fictional example into categories, tracking commitments without double-counting payments, and exporting a report.","author":{"@type":"Person","name":"Dan. Liu"},"datePublished":"2026-05-01","dateModified":"2026-09-20","url":"https://freeweddingbudget.com/blog-create-budget","mainEntityOfPage":"https://freeweddingbudget.com/blog-create-budget","publisher":{"@type":"Organization","name":"Wedding Budget Planner"},"image":"https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?auto=format&fit=cover&w=1200&q=80"}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is the first step in creating a wedding budget?","acceptedAnswer":{"@type":"Answer","text":"Start with a safe spending ceiling. Add money that is already available, realistic savings before the wedding date, and confirmed contributions. Do not build the plan around uncertain money."}},{"@type":"Question","name":"Why should guest count come early in wedding budgeting?","acceptedAnswer":{"@type":"Answer","text":"Guest count affects venue size, catering, drinks, rentals, favors, stationery, transportation, and other guest-based costs. A budget can change quickly when the guest list grows."}},{"@type":"Question","name":"How should I track wedding deposits and balances?","acceptedAnswer":{"@type":"Answer","text":"Track the selected vendor's full true cost as a commitment. Record deposits and balances in the payment schedule as cash flow inside that commitment, not as extra spending."}}]}</script>
+  <style>
+    .budget-method {
+      background: #f3f7f2;
+      border: 1px solid #cddacb;
+      border-radius: 18px;
+      padding: 1.35rem;
+      margin: 2rem 0;
+    }
+    .budget-method h2 { margin-top: 0; }
+    .budget-method-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: .8rem;
+      margin-top: 1rem;
+    }
+    .budget-formula {
+      background: white;
+      border: 1px solid #dce5da;
+      border-radius: 13px;
+      padding: .95rem;
+    }
+    .budget-formula strong { display: block; color: #355544; margin-bottom: .3rem; }
+    .budget-formula code { color: #293f32; white-space: normal; }
+    .budget-downloads { display: flex; flex-wrap: wrap; gap: .75rem; margin: 1rem 0 0; }
+    .budget-downloads a { display: inline-block; border-radius: 9px; padding: .72rem 1rem; font-weight: 800; text-decoration: none; }
+    .budget-downloads .primary-download { background: var(--primary); color: white; }
+    .budget-downloads .secondary-download { background: white; color: #355544; border: 1px solid #9fb4a4; }
+    .number-ledger { margin: 2rem 0; }
+    .tested-budget-path {
+      background: #26362e;
+      color: white;
+      border-radius: 18px;
+      padding: 1.35rem;
+      margin: 2rem 0;
+    }
+    .tested-budget-path h2 { color: white; margin-top: 0; }
+    .tested-budget-path p { color: #dce6df; }
+    .tested-budget-path ol { padding-left: 1.25rem; }
+    .tested-budget-path li { margin: .55rem 0; }
+    .tested-budget-path a { color: #f4dda0; font-weight: 800; }
+    @media (max-width: 1100px) {
+      .budget-method-grid { grid-template-columns: 1fr; }
+    }
+  </style>
 </head>
 <body>
   <header class="top-nav">
@@ -29,14 +73,14 @@
   <main class="dashboard-container">
     <div class="main-grid" style="grid-template-columns:2.2fr 1fr;">
       <article class="card" style="line-height:1.8;font-size:1.05rem;color:var(--text-main);">
-        <span style="color:var(--primary);font-weight:800;font-size:.8rem;text-transform:uppercase;letter-spacing:1.5px;">BUDGET PLANNING • PRACTICAL GUIDE • AUGUST 2026</span>
+        <span style="color:var(--primary);font-weight:800;font-size:.8rem;text-transform:uppercase;letter-spacing:1.5px;">BUDGET PLANNING • TESTED WALKTHROUGH • SEPTEMBER 2026</span>
         <h1 style="font-size:2.6rem;color:#1e293b;line-height:1.2;margin-top:.5rem;margin-bottom:1rem;font-weight:900;">How to Create a Wedding Budget That Actually Works</h1>
 
         <div style="display:flex;align-items:center;gap:12px;margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:1px solid #f1f5f9;">
           <div style="width:44px;height:44px;border-radius:50%;background:#be185d;color:white;display:flex;align-items:center;justify-content:center;font-weight:800;">DL</div>
           <div>
             <div style="font-weight:700;color:#1e293b;">Written by Dan. Liu / Wedding Budget Planner</div>
-            <div style="font-size:.85rem;color:var(--text-muted);">Practical budgeting guide • Updated August 2026</div>
+            <div style="font-size:.85rem;color:var(--text-muted);">Planner workflow and calculations checked September 2026</div>
           </div>
         </div>
 
@@ -57,15 +101,16 @@
         <p>A usable wedding budget starts with a safe spending ceiling, then divides it into category limits. It should also account for guest count, payment dates, and the cuts you would make if a quote comes in higher than expected.</p>
         <p>The examples use USD, but the same structure works with another currency. Replace the sample numbers with your vendor quotes and local taxes; they are examples, not price rules.</p>
 
-        <section style="background:#f8fafc;border:1px solid #e5e7eb;border-radius:16px;padding:1.25rem;margin:2rem 0;">
-          <h2 style="margin-top:0;">A workable budget has five moving parts</h2>
-          <ol>
-            <li><strong>Choose a safe total budget.</strong> Use money that is available or very likely to be available.</li>
-            <li><strong>Estimate guest count early.</strong> Guest count affects venue size, catering, drinks, rentals, favors, and transportation.</li>
-            <li><strong>Split the budget into categories.</strong> Give every major spending area a planned limit before shopping.</li>
-            <li><strong>Replace estimates with real quotes.</strong> Track the full contract amount, not only the deposit.</li>
-            <li><strong>Keep a buffer.</strong> Leave room for tax, tips, delivery, overtime, and changes close to the wedding date.</li>
-          </ol>
+        <section class="budget-method" aria-labelledby="budgetMethodHeading">
+          <h2 id="budgetMethodHeading">Four calculations behind the budget screen</h2>
+          <p>Planner 2.0 keeps planning limits, contract commitments, cash flow, and separate expenses in different places. These are the formulas used on the Budget and Overview pages.</p>
+          <div class="budget-method-grid">
+            <div class="budget-formula"><strong>Category available</strong><code>planned limit - selected vendor commitments - other expenses</code></div>
+            <div class="budget-formula"><strong>Overall uncommitted</strong><code>total budget - all selected commitments - all other expenses</code></div>
+            <div class="budget-formula"><strong>Payment progress</strong><code>paid payments / selected commitments</code></div>
+            <div class="budget-formula"><strong>Allocation check</strong><code>total budget - sum of planned category limits</code></div>
+          </div>
+          <p style="margin-bottom:0;"><strong>Why the separation matters:</strong> paying a deposit changes cash flow, but it does not create a second copy of the vendor contract in the budget.</p>
         </section>
 
         <h2>Step 1: Start with money that is actually available</h2>
@@ -139,7 +184,16 @@
           </table>
         </div>
 
-        <p>This example intentionally gives venue and catering the largest combined share because guest experience and guest-count-sensitive costs often dominate the budget. If your wedding is smaller, simpler, or hosted at home, you may shift more money toward photography, attire, decor, or honeymoon savings.</p>
+        <p>The seven planned categories total exactly $40,000. That leaves no separate reserve in the starting example. To protect one, reduce one or more category limits or put an amount in Other and treat it as unavailable for upgrades.</p>
+
+        <section style="background:#fff7fb;border:1px solid #f3d4e2;border-radius:16px;padding:1.25rem;margin:2rem 0;">
+          <h2 style="margin-top:0;">Download two versions of the category plan</h2>
+          <p>The CSV includes the planner's starting example and a fictional reserve-first alternative. Both columns total $40,000. The alternative moves $5,000 into Other as a visible reserve; it is an example, not a recommended percentage.</p>
+          <div class="budget-downloads">
+            <a class="primary-download" href="/wedding-budget-starter-example.csv" download>Download category CSV</a>
+            <a class="secondary-download" href="/#budget">Edit the categories in Planner 2.0</a>
+          </div>
+        </section>
 
         <h2>Step 4: Replace estimates with real vendor quotes</h2>
         <p>Once you start contacting vendors, keep both the estimated number and the actual quote. This prevents a common planning mistake: thinking the budget is safe because the deposit is small, while the final balance is much larger.</p>
@@ -192,6 +246,22 @@
           </ul>
         </div>
 
+        <section class="number-ledger" aria-labelledby="numberLedgerHeading">
+          <h2 id="numberLedgerHeading">Do not add these numbers together</h2>
+          <div class="table-responsive">
+            <table class="spacious-table">
+              <thead><tr><th>Number</th><th>What it means</th><th>What changes it</th></tr></thead>
+              <tbody>
+                <tr><td>Planned</td><td>The category limit you set before committing money.</td><td>Editing the category amount in Budget.</td></tr>
+                <tr><td>Committed</td><td>The true cost of the selected vendor quote.</td><td>Selecting, replacing, or unselecting a quote.</td></tr>
+                <tr><td>Paid</td><td>Money already paid toward selected commitments.</td><td>Marking a scheduled payment paid or unpaid.</td></tr>
+                <tr><td>Other expenses</td><td>Costs not already represented by a selected vendor commitment or payment.</td><td>Adding or editing an expense in Budget.</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p>A payment belongs inside its vendor commitment. Recording the same deposit as an Other expense would count that money twice.</p>
+        </section>
+
         <h2>Common wedding budget mistakes</h2>
         <p>The most common mistakes are not always dramatic. They are usually small planning gaps that compound later.</p>
         <ul>
@@ -206,16 +276,18 @@
         <h2>How to use the wedding budget calculator</h2>
         <p>Open the <a href="/#budget">Planner 2.0 budget</a>, enter the safe ceiling, and adjust category limits to match the plan. Compare quotes as commitments in Vendors and record deposits separately in Payments. If headroom becomes too low, test guest count, catering, venue, or category changes before accepting another commitment.</p>
 
-        <section style="background:#f8fafc;border:1px solid #e5e7eb;border-radius:16px;padding:1.25rem;margin:2rem 0;">
-          <h2 style="margin-top:0;">Build the plan in the order decisions happen</h2>
+        <section class="tested-budget-path" aria-labelledby="testedBudgetPathHeading">
+          <h2 id="testedBudgetPathHeading">The full path was tested from setup to report</h2>
+          <p>This sequence was checked in the browser with a fresh planner, two competing quotes, a payment, a guest scenario, and each report format.</p>
           <ol>
-            <li>Enter your safe ceiling and category limits in <strong>Budget</strong>. Treat Available, Watch, and Over as decision signals, not spending targets.</li>
-            <li>Use <strong>Guests</strong> to test attendance and catering assumptions before committing to capacity-sensitive packages.</li>
-            <li>Compare complete quotes in <strong>Vendors</strong>. Selecting a quote creates a commitment; it is not the same as recording a payment.</li>
-            <li>Schedule deposits, installments, and balances in <strong>Payments</strong>, marking them paid only when money has actually left.</li>
-            <li>Use <strong>Reports</strong> for the integrated PDF or Excel snapshot and focused vendor/payment CSV files.</li>
+            <li>Set the total and category limits in Budget.</li>
+            <li>Add competing quotes in Vendors and select one commitment per category.</li>
+            <li>Schedule its deposit and balance in Payments.</li>
+            <li>Test a guest-count change without altering the saved current plan.</li>
+            <li>Export the integrated PDF and Excel reports, plus the focused CSV files.</li>
+            <li>Download a planner backup and restore it in a separate browser session.</li>
           </ol>
-          <a href="/#budget" style="display:inline-block;background:var(--primary);color:white;text-decoration:none;padding:12px 24px;border-radius:8px;font-weight:700;margin-top:.5rem;">Start the Planner 2.0 budget</a>
+          <p style="margin-bottom:0;">The restored copy kept the budget, quotes, selected vendor, payments, guest plan, scenarios, expenses, currency, and progress state. <a href="/#budget">Start with the Budget page</a>.</p>
         </section>
 
         <h2>FAQ</h2>
@@ -271,6 +343,6 @@
     <div class="footer-links"><a href="/about">About</a> <span>•</span> <a href="/blog">Blog</a> <span>•</span> <a href="/privacy">Privacy Policy</a> <span>•</span> <a href="/terms">Terms &amp; Conditions</a> <span>•</span> <a href="/contact">Contact</a></div>
     <p><small>Disclaimer: This site provides general wedding budgeting information only and does not provide personal financial or professional planning advice.</small></p>
   </footer>
-  <script>lucide.createIcons();</script>
+  <script>if (window.lucide) lucide.createIcons();</script>
 </body>
 </html>

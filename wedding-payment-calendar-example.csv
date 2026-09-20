@@ -1,0 +1,13 @@
+Contract,Payment Stage,Example Timing,Amount,Cumulative Paid,Remaining Contract Balance,Planner Status
+Venue,Booking payment,At signing,2200,2200,8800,Scheduled
+Venue,Progress payment,6 months before,3300,5500,5500,Scheduled
+Venue,Final balance,30 days before,5500,11000,0,Scheduled
+Catering and drinks,Booking payment,At signing,2600,2600,10400,Scheduled
+Catering and drinks,Progress payment,3 months before,3900,6500,6500,Scheduled
+Catering and drinks,Final balance,14 days before,6500,13000,0,Scheduled
+Photography,Booking payment,At signing,1000,1000,3000,Scheduled
+Photography,Final balance,7 days before,3000,4000,0,Scheduled
+Entertainment,Booking payment,At signing,875,875,2625,Scheduled
+Entertainment,Final balance,7 days before,2625,3500,0,Scheduled
+Decor and rentals,Booking payment,At signing,1200,1200,2300,Scheduled
+Decor and rentals,Final balance,14 days before,2300,3500,0,Scheduled

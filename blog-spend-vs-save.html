@@ -2,18 +2,28 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Where to Spend and Save in a Wedding Budget: A Priority-Based $40,000 Example | Wedding Budget Planner</title>
+  <title>Where to Spend and Save in a Wedding Budget: Upgrade Worksheet | Wedding Budget Planner</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Decide where to spend and save in a wedding budget with a priority framework, fixed versus per-guest trade-offs, a worked $40,000 example, and calculator checklists.">
+  <meta name="description" content="Use a downloadable wedding upgrade worksheet to compare fixed and per-guest costs, protect a reserve, and test the decision against a worked $40,000 plan.">
   <link rel="canonical" href="https://freeweddingbudget.com/blog-spend-vs-save">
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="content-v2.css?v=2.0.5">
   <script src="https://unpkg.com/lucide@latest"></script>
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4504023199353060" crossorigin="anonymous"></script>
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Where to Spend and Save in a Wedding Budget: A Priority-Based $40,000 Example","description":"A practical framework for protecting required wedding costs, choosing personal priorities, simplifying low-value extras, comparing per-guest and fixed upgrades, and keeping a budget reserve.","author":{"@type":"Person","name":"Dan. Liu"},"datePublished":"2026-05-01","dateModified":"2026-08-17","url":"https://freeweddingbudget.com/blog-spend-vs-save","mainEntityOfPage":"https://freeweddingbudget.com/blog-spend-vs-save","publisher":{"@type":"Organization","name":"Wedding Budget Planner"},"image":"https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?auto=format&fit=cover&w=1200&q=80"}</script>
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Where should couples spend more in a wedding budget?","acceptedAnswer":{"@type":"Answer","text":"There is no universal category that deserves more for every couple. Protect required costs and guest logistics first, then choose two or three personal priorities such as photography, food, music, attire, or decor. Spend more only when the upgrade adds clear value without removing the budget reserve."}},{"@type":"Question","name":"Which wedding costs are easiest to simplify?","acceptedAnswer":{"@type":"Answer","text":"Optional upgrades such as elaborate favors, premium packaging, multiple custom signs, complex floral installations, specialty linens, and extra stationery pieces are often easier to simplify than required venue, catering, access, staffing, transport, or contract costs."}},{"@type":"Question","name":"How do I compare a fixed wedding upgrade with a per-guest upgrade?","acceptedAnswer":{"@type":"Answer","text":"Calculate the complete total for both. A fixed $1,200 upgrade stays $1,200, while a $12-per-guest upgrade becomes $600 for 50 guests, $1,200 for 100 guests, and $1,800 for 150 guests. Compare the total effect on the remaining budget and reserve."}}]}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Where to Spend and Save in a Wedding Budget: Upgrade Worksheet","description":"A downloadable worksheet and worked example for comparing fixed and per-guest upgrades, funding priorities, and protecting a wedding budget reserve.","author":{"@type":"Person","name":"Dan. Liu"},"datePublished":"2026-05-01","dateModified":"2026-09-21","url":"https://freeweddingbudget.com/blog-spend-vs-save","mainEntityOfPage":"https://freeweddingbudget.com/blog-spend-vs-save","publisher":{"@type":"Organization","name":"Wedding Budget Planner"},"image":"https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?auto=format&fit=cover&w=1200&q=80"}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Where should couples spend more?","acceptedAnswer":{"@type":"Answer","text":"There is no universal category. Protect required costs and guest logistics first, then choose two or three priorities that genuinely matter to the couple. An upgrade should add clear value without removing the reserve."}},{"@type":"Question","name":"What is usually easier to simplify?","acceptedAnswer":{"@type":"Answer","text":"Optional presentation details such as favors, premium packaging, extra signs, complex installations, specialty rentals, and duplicated stationery pieces are often easier to reduce than required operational costs."}},{"@type":"Question","name":"Should we use a percentage rule for every category?","acceptedAnswer":{"@type":"Answer","text":"Percentages can provide a starting point, but they should not replace real quotes, guest count, local requirements, and personal priorities. The final category plan should add up to the spending ceiling and still leave room for uncertain costs."}}]}</script>
   <style>
     .priority-mobile-checklist { display:none; }
+    .upgrade-worked-example { background:#f3f7f2; border:1px solid #cddacb; border-radius:18px; padding:1.35rem; margin:2rem 0; }
+    .upgrade-worked-example h2 { margin-top:0; }
+    .upgrade-result-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:.8rem; margin:1rem 0; }
+    .upgrade-result { background:white; border:1px solid #dce5da; border-radius:13px; padding:.95rem; }
+    .upgrade-result strong { display:block; color:#355544; margin-bottom:.3rem; }
+    .upgrade-result code { color:#293f32; white-space:normal; }
+    .upgrade-actions { display:flex; flex-wrap:wrap; gap:.75rem; margin-top:1rem; }
+    .upgrade-actions a { display:inline-block; border-radius:9px; padding:.72rem 1rem; font-weight:800; text-decoration:none; }
+    .upgrade-actions .primary-download { background:var(--primary); color:white; }
+    .upgrade-actions .secondary-download { background:white; color:#355544; border:1px solid #9fb4a4; }
     @media (max-width:1100px) {
       .priority-mobile-checklist {
         display:block;
@@ -29,6 +39,7 @@
         line-height:1.7;
       }
       .priority-mobile-checklist strong { display:block;color:#831843;margin-bottom:.3rem; }
+      .upgrade-result-grid { grid-template-columns:1fr; }
     }
   </style>
 </head>
@@ -48,14 +59,14 @@
   <main class="dashboard-container">
     <div class="main-grid" style="grid-template-columns:2.2fr 1fr;">
       <article class="card" style="line-height:1.8;font-size:1.05rem;color:var(--text-main);">
-        <span style="color:var(--primary);font-weight:800;font-size:.8rem;text-transform:uppercase;letter-spacing:1.5px;">BUDGET PRIORITIES • PRACTICAL GUIDE • AUGUST 2026</span>
-        <h1 style="font-size:2.6rem;color:#1e293b;line-height:1.2;margin-top:.5rem;margin-bottom:1rem;font-weight:900;">Wedding Budget Breakdown: Where to Spend and Where to Save</h1>
+        <span style="color:var(--primary);font-weight:800;font-size:.8rem;text-transform:uppercase;letter-spacing:1.5px;">BUDGET PRIORITIES • UPGRADE WORKSHEET • SEPTEMBER 2026</span>
+        <h1 style="font-size:2.6rem;color:#1e293b;line-height:1.2;margin-top:.5rem;margin-bottom:1rem;font-weight:900;">Where to Spend and Save: Test Each Upgrade Against Your Reserve</h1>
 
         <div style="display:flex;align-items:center;gap:12px;margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:1px solid #f1f5f9;">
           <div style="width:44px;height:44px;border-radius:50%;background:#be185d;color:white;display:flex;align-items:center;justify-content:center;font-weight:800;">DL</div>
           <div>
             <div style="font-weight:700;color:#1e293b;">Written by Dan. Liu / Wedding Budget Planner</div>
-            <div style="font-size:.85rem;color:var(--text-muted);">Practical budgeting guide • Updated August 2026</div>
+            <div style="font-size:.85rem;color:var(--text-muted);">Worksheet calculations checked September 2026</div>
           </div>
         </div>
 
@@ -149,6 +160,22 @@
           </table>
         </div>
         <p>At 50 guests, the $12-per-person choice costs half as much as the fixed $1,200 upgrade. At 100 guests, they cost the same. At 150 guests, the per-person choice costs $600 more. This does not determine which is better; it shows why guest count must be part of the decision.</p>
+
+        <section class="upgrade-worked-example" aria-labelledby="upgradeWorksheetHeading">
+          <h2 id="upgradeWorksheetHeading">Reproduce the fixed versus per-guest comparison</h2>
+          <p>The downloadable worksheet starts with a $3,000 reserve and shows what remains if no lower-priority line is reduced. The amounts are fictional and can be replaced with current quotes.</p>
+          <div class="upgrade-result-grid">
+            <div class="upgrade-result"><strong>Fixed upgrade</strong><code>$3,000 - $1,200 = $1,800 reserve</code></div>
+            <div class="upgrade-result"><strong>50 guests at $12</strong><code>$3,000 - (50 x $12) = $2,400 reserve</code></div>
+            <div class="upgrade-result"><strong>100 guests at $12</strong><code>$3,000 - (100 x $12) = $1,800 reserve</code></div>
+            <div class="upgrade-result"><strong>150 guests at $12</strong><code>$3,000 - (150 x $12) = $1,200 reserve</code></div>
+          </div>
+          <p>To keep the full reserve, reduce another planned line by the complete upgrade amount. Do not change the total spending ceiling to make an optional upgrade appear affordable.</p>
+          <div class="upgrade-actions">
+            <a class="primary-download" href="/wedding-upgrade-tradeoff-example.csv" download>Download upgrade worksheet</a>
+            <a class="secondary-download" href="/#budget">Test category headroom</a>
+          </div>
+        </section>
 
         <h2>Worked $40,000 priority scenario</h2>
         <p>The current calculator default allocates the entire $40,000 across seven categories. The fictional scenario below gives photography a higher priority while simplifying several other categories and restoring a $3,000 reserve.</p>
@@ -247,6 +274,6 @@
     <div class="footer-links"><a href="/about">About</a> <span>•</span> <a href="/blog">Blog</a> <span>•</span> <a href="/privacy">Privacy Policy</a> <span>•</span> <a href="/terms">Terms &amp; Conditions</a> <span>•</span> <a href="/contact">Contact</a></div>
     <p><small>Disclaimer: This site provides general wedding budgeting information only and does not provide personal financial, legal, or professional planning advice.</small></p>
   </footer>
-  <script>lucide.createIcons();</script>
+  <script>if (window.lucide) lucide.createIcons();</script>
 </body>
 </html>

@@ -9,8 +9,20 @@
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="content-v2.css?v=2.0.5">
   <script src="https://unpkg.com/lucide@latest"></script>
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Wedding Catering Budget: 50, 100 and 150 Guest Examples","description":"A practical guide to wedding catering estimates, guest count, service charges, hidden food and drink costs, and how to test catering scenarios inside a wedding budget planner.","author":{"@type":"Person","name":"Dan. Liu"},"datePublished":"2026-06-18","dateModified":"2026-08-21","url":"https://freeweddingbudget.com/blog-catering-budget-guide","mainEntityOfPage":"https://freeweddingbudget.com/blog-catering-budget-guide","publisher":{"@type":"Organization","name":"Wedding Budget Planner"},"image":"https://images.unsplash.com/photo-1482275548304-a58859dc31b7?auto=format&fit=cover&w=1200&q=80"}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Wedding Catering Budget: 50, 100 and 150 Guest Examples","description":"A reproducible catering invoice example with guest-count calculations, unconfirmed lines, a downloadable worksheet, and the Planner 2.0 quote workflow.","author":{"@type":"Person","name":"Dan. Liu"},"datePublished":"2026-06-18","dateModified":"2026-09-21","url":"https://freeweddingbudget.com/blog-catering-budget-guide","mainEntityOfPage":"https://freeweddingbudget.com/blog-catering-budget-guide","publisher":{"@type":"Organization","name":"Wedding Budget Planner"},"image":"https://images.unsplash.com/photo-1482275548304-a58859dc31b7?auto=format&fit=cover&w=1200&q=80"}</script>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do I estimate a wedding catering budget?","acceptedAnswer":{"@type":"Answer","text":"Start with guest count multiplied by the food and drink cost per guest, then add service charge, tax, gratuity, rentals, vendor meals, delivery, setup, cleanup, and a small buffer."}},{"@type":"Question","name":"How much should I budget for catering for 100 wedding guests?","acceptedAnswer":{"@type":"Answer","text":"A simple planning example is 100 guests multiplied by the per-guest food and drink cost. At $85 per guest, the base is $8,500 before service charge, tax, rentals, vendor meals, and other fees. At $130 per guest, the base is $13,000 before extras."}},{"@type":"Question","name":"What catering costs are easy to forget?","acceptedAnswer":{"@type":"Answer","text":"Common forgotten catering costs include service charge, tax, gratuity, bartender fees, staffing, delivery, setup, cleanup, rentals, linens, glassware, cake cutting, corkage, coffee service, vendor meals, and overtime."}}]}</script>
+  <style>
+    .catering-invoice-evidence { background:#f3f7f2; border:1px solid #cddacb; border-radius:18px; padding:1.35rem; margin:2rem 0; }
+    .catering-invoice-evidence h2 { margin-top:0; }
+    .catering-total-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:.8rem; margin:1rem 0; }
+    .catering-total-line { background:white; border:1px solid #dce5da; border-radius:13px; padding:.95rem; }
+    .catering-total-line strong { display:block; color:#355544; margin-bottom:.3rem; }
+    .catering-actions { display:flex; flex-wrap:wrap; gap:.75rem; margin-top:1rem; }
+    .catering-actions a { display:inline-block; border-radius:9px; padding:.72rem 1rem; font-weight:800; text-decoration:none; }
+    .catering-actions .primary-download { background:var(--primary); color:white; }
+    .catering-actions .secondary-download { background:white; color:#355544; border:1px solid #9fb4a4; }
+    @media (max-width:1100px) { .catering-total-grid { grid-template-columns:1fr; } }
+  </style>
 </head>
 <body>
   <header class="top-nav">
@@ -28,14 +40,14 @@
   <main class="dashboard-container">
     <div class="main-grid" style="grid-template-columns:2.2fr 1fr;">
       <article class="card" style="line-height:1.8;font-size:1.05rem;color:var(--text-main);">
-        <span style="color:var(--primary);font-weight:800;font-size:.8rem;text-transform:uppercase;letter-spacing:1.5px;">CATERING BUDGET • PRACTICAL GUIDE • AUGUST 2026</span>
+        <span style="color:var(--primary);font-weight:800;font-size:.8rem;text-transform:uppercase;letter-spacing:1.5px;">CATERING BUDGET • INVOICE WORKSHEET • SEPTEMBER 2026</span>
         <h1 style="font-size:2.6rem;color:#1e293b;line-height:1.2;margin-top:.5rem;margin-bottom:1rem;font-weight:900;">Wedding Catering Budget for 50, 100, and 150 Guests</h1>
 
         <div style="display:flex;align-items:center;gap:12px;margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:1px solid #f1f5f9;">
           <div style="width:44px;height:44px;border-radius:50%;background:#be185d;color:white;display:flex;align-items:center;justify-content:center;font-weight:800;">DL</div>
           <div>
             <div style="font-weight:700;color:#1e293b;">Written by Dan. Liu / Wedding Budget Planner</div>
-            <div style="font-size:.85rem;color:var(--text-muted);">Practical budgeting guide • Updated August 2026</div>
+            <div style="font-size:.85rem;color:var(--text-muted);">Invoice calculations and source notes checked September 2026</div>
           </div>
         </div>
 
@@ -54,7 +66,7 @@
         </section>
 
         <p>A catering quote may start with a per-person price, but that number can leave out service charges, tax, rentals, staffing, delivery, or vendor meals. At 100 guests, even a small missing charge can change the budget quickly.</p>
-        <p>The examples below use USD for simple arithmetic. They are planning examples, not market averages. Replace them with local quotes and compare the likely full invoice, not only the menu price.</p>
+        <p>The examples below use USD for simple arithmetic. They are planning examples, not market averages. Replace them with local quotes and compare the likely full invoice instead of the menu price alone.</p>
 
         <section style="background:#fff7fb;border:1px solid #f3d4e2;border-radius:16px;padding:1.25rem;margin:2rem 0;">
           <h2 style="margin-top:0;">Build the catering budget from the invoice outward</h2>
@@ -119,6 +131,23 @@
           <p style="margin-bottom:0;">Ask the caterer which amounts are taxable and whether the service charge includes gratuity. Those rules depend on the contract and location.</p>
         </section>
 
+        <section class="catering-invoice-evidence" aria-labelledby="cateringInvoiceHeading">
+          <h2 id="cateringInvoiceHeading">Reproduce the $10,410 subtotal</h2>
+          <p>The worksheet keeps tax, rentals, delivery, gratuity, and overtime visibly unconfirmed. It does not turn an incomplete subtotal into a false final invoice.</p>
+          <div class="catering-total-grid">
+            <div class="catering-total-line"><strong>Food and drink package</strong>100 x $85 = $8,500</div>
+            <div class="catering-total-line"><strong>Mandatory service charge</strong>20% x $8,500 = $1,700</div>
+            <div class="catering-total-line"><strong>Vendor meals</strong>6 x $35 = $210</div>
+            <div class="catering-total-line"><strong>Subtotal before unconfirmed lines</strong>$8,500 + $1,700 + $210 = $10,410</div>
+          </div>
+          <p>For U.S. federal tax purposes, the IRS distinguishes a required service charge from a voluntary tip. Ask the caterer what the service charge covers and whether a separate tip is expected. Taxable amounts and contract wording vary by location.</p>
+          <div class="catering-actions">
+            <a class="primary-download" href="/wedding-catering-invoice-example.csv" download>Download invoice worksheet</a>
+            <a class="secondary-download" href="/?guide=catering#vendors">Compare catering quotes</a>
+          </div>
+          <p style="font-size:.9rem;margin:.9rem 0 0 0;"><a href="https://www.irs.gov/businesses/small-businesses-self-employed/tip-recordkeeping-and-reporting" rel="noopener">IRS service-charge and tip guidance</a></p>
+        </section>
+
         <h2>Separate the meal price from the real invoice</h2>
         <p>When a caterer gives a per-guest price, ask whether it includes staffing, service charge, tax, delivery, setup, cleanup, bar service, glassware, linens, gratuity, and vendor meals. A quote that says $85 per guest may not be the final catering cost.</p>
 
@@ -162,7 +191,7 @@
         </div>
 
         <h2>Buffet vs plated vs food truck vs DIY</h2>
-        <p>Menu style affects not only food cost, but also staffing, speed of service, rentals, cleanup, and guest experience. Compare the total setup, not only the headline food price.</p>
+        <p>Menu style affects food cost, staffing, speed of service, rentals, cleanup, and guest experience. Compare the complete setup instead of the headline food price alone.</p>
 
         <div class="table-responsive">
           <table class="spacious-table">
@@ -321,6 +350,6 @@
     <div class="footer-links"><a href="/about">About</a> <span>•</span> <a href="/blog">Blog</a> <span>•</span> <a href="/privacy">Privacy Policy</a> <span>•</span> <a href="/terms">Terms &amp; Conditions</a> <span>•</span> <a href="/contact">Contact</a></div>
     <p><small>Disclaimer: This site provides general wedding budgeting information only and does not provide personal financial or professional planning advice.</small></p>
   </footer>
-  <script>lucide.createIcons();</script>
+  <script>if (window.lucide) lucide.createIcons();</script>
 </body>
 </html>

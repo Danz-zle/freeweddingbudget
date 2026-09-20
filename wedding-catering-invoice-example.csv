@@ -1,0 +1,7 @@
+Invoice Line,Calculation Basis,Example Amount,Running Total,Planner Location,What to Confirm
+Food and drink package,100 guests x 85,8500,8500,Vendors: Package price,Items and service included in the per guest price
+Mandatory service charge,20 percent x 8500,1700,10200,Vendors: Required fees,What it covers and whether a voluntary tip is separate
+Vendor meals,6 meals x 35,210,10410,Vendors: Rentals / add-ons,Meal count menu and delivery timing
+Tax,Not calculated,,,Vendors: Tax rate or effective rate,Taxable subtotal and local treatment
+Rentals delivery or setup,Not provided,,,Vendors: Matching true-cost field,Required items and full written amount
+Total before unconfirmed lines,8500 + 1700 + 210,10410,10410,Comparison subtotal,Do not treat this subtotal as the final invoice
