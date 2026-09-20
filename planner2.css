@@ -136,11 +136,11 @@ body.planner2-active { background: #f4f1ec !important; }
 .planner2-heading-action { display:flex; justify-content:space-between; align-items:end; gap:20px; }
 .planner2-budget-banner { display:flex; justify-content:space-between; gap:18px; padding:14px 18px; margin-bottom:16px; border-radius:12px; background:#e8eee6; color:#455441; font-size:.82rem; }
 .planner2-budget-banner span { color:#6b7668; }
-.planner2-budget-form { display:grid; grid-template-columns:1.2fr 1.1fr repeat(3,1fr); gap:18px; align-items:end; }
+.planner2-budget-form { display:grid; grid-template-columns:1.2fr 1.1fr repeat(3,1fr); gap:18px; align-items:start; }
 .planner2-budget-form label { display:flex; flex-direction:column; gap:7px; color:#656259; font-size:.78rem; font-weight:800; }
 .planner2-budget-form label small { color:#8a877e; font-size:.65rem; font-weight:600; line-height:1.35; }
 .planner2-budget-form select { width:100%; box-sizing:border-box; background:#fbfaf8; border-color:#d9d5cd; }
-.planner2-budget-form > div { min-height:64px; padding:10px 14px; border-left:1px solid #e5e1d9; display:flex; flex-direction:column; gap:6px; }
+.planner2-budget-form > div { min-height:64px; padding:0 14px 10px; border-left:1px solid #e5e1d9; display:flex; flex-direction:column; gap:6px; }
 .planner2-budget-form span { color:#777469; font-size:.72rem; font-weight:800; text-transform:uppercase; }
 .planner2-budget-form strong { font:700 1.25rem Georgia,serif; }
 .planner2-category-input { width:120px !important; padding:8px 10px !important; text-align:right; }
@@ -191,9 +191,10 @@ body.planner2-active { background: #f4f1ec !important; }
 .planner2-export-card p { margin:0; color:#777469; font-size:.82rem; line-height:1.45; }
 .planner2-export-card button { white-space:nowrap; background:#3f5447; }
 .planner2-export-status { min-height:20px; margin:0 0 12px; color:#8a5b20; font-size:.8rem; font-weight:700; }
-.planner2-form { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; align-items: end; }
+.planner2-form { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; align-items: start; }
 .planner2-form label { display: flex; flex-direction: column; gap: 7px; color: #656259; font-size: .78rem; font-weight: 800; }
 .planner2-form input, .planner2-form select { background: #fbfaf8; border-color: #d9d5cd; }
+.planner2-form > button, .planner2-form-actions { align-self: end; }
 .planner2-form button { min-height: 44px; background: #3f5447; }
 .planner2-form-status { min-height:18px; margin:-10px 0 16px; color:#5f705f; font-size:.78rem; font-weight:700; }
 .planner2-form-status.is-warning { color:#8a6414; }
