@@ -77,6 +77,20 @@
     if (typeof window.zaraz?.track !== "function") return;
     Promise.resolve(window.zaraz.track(eventName, { planner_version: "2.0", ...properties })).catch(() => {});
   };
+  const openPrivacyChoices = () => {
+    try {
+      if (typeof window.zaraz?.showConsentModal === "function") {
+        window.zaraz.showConsentModal();
+        trackPlannerAction("planner_privacy_choices_opened");
+        return;
+      }
+    } catch (_) {
+      // Keep the privacy information reachable if a browser extension blocks Zaraz.
+    }
+    const isLocalPreview = ["localhost", "127.0.0.1"].includes(window.location.hostname);
+    window.location.href = isLocalPreview ? "/privacy.html" : "/privacy";
+  };
+  document.getElementById("p2PrivacyChoices")?.addEventListener("click", openPrivacyChoices);
   document.body.classList.add("planner2-active");
   const confirmDialog = document.getElementById("p2ConfirmDialog");
   const confirmTitle = document.getElementById("p2ConfirmTitle");
