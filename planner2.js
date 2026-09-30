@@ -5,6 +5,17 @@
   const SUPPORTED_CURRENCIES = new Set(["USD", "EUR", "GBP", "AUD", "CAD", "NZD", "SGD", "MYR", "TWD", "HKD"]);
   const numberValue = value => Math.max(0, Number(value) || 0);
   const defaultCategories = { Venue: 11000, Catering: 13000, Photography: 4000, Decor: 4000, Entertainment: 3500, Attire: 3000, Transportation: 1500, Other: 0 };
+  const suggestedCategories = total => {
+    // Allocate cents, then assign rounding remainder to the last funded category.
+    const cents = Math.round(numberValue(total) * 100);
+    const funded = Object.keys(defaultCategories).filter(name => defaultCategories[name] > 0);
+    let remaining = cents;
+    return Object.fromEntries(Object.entries(defaultCategories).map(([name, weight]) => {
+      const amount = name === funded.at(-1) ? remaining : Math.floor(cents * weight / 40000);
+      remaining -= amount;
+      return [name, amount / 100];
+    }));
+  };
   const defaultBudget = () => ({ total: 40000, categories: { ...defaultCategories }, expenses: [], importedAt: null });
   const defaultGuestCounts = () => ({ Family: 0, Friends: 0, Colleagues: 0, Others: 0 });
   const defaultGuests = () => ({ current: defaultGuestCounts(), cateringRate: 130, scenarios: [] });
@@ -153,7 +164,7 @@
   const guestTotalFor = counts => Object.values(counts || {}).reduce((sum, count) => sum + Math.max(0, Math.floor(Number(count) || 0)), 0);
   const hasStartedPlan = () => Boolean(state.progress.quickStarted || state.progress.budgetReviewed || state.budget.importedAt || state.vendors.length || state.payments.length || state.budget.expenses.length || guestTotalFor(state.guests.current) || state.guests.scenarios.length);
   const nextPlanningView = () => {
-    if (!state.progress.budgetReviewed && !state.budget.importedAt) return "budget";
+    if (!state.progress.budgetReviewed) return "budget";
     if (!state.vendors.length || !state.vendors.some(vendor => vendor.selected)) return "vendors";
     if (!state.payments.length) return "payments";
     if (!guestTotalFor(state.guests.current) && !state.guests.scenarios.length) return "guests";
@@ -167,11 +178,13 @@
     const projectedTotal = Math.max(0, trackedTotal() - trackedCatering) + catering;
     return { total, catering, projectedTotal, costPerGuest: total ? trackedTotal() / total : 0, headroom: numberValue(state.budget.total) - projectedTotal };
   };
-  const paymentStatus = payment => {
+  const paymentStatus = (payment, today = new Date()) => {
     if (payment.paid) return "paid";
-    const due = new Date(`${payment.dueDate}T23:59:59`);
-    const today = new Date();
-    const days = Math.ceil((due - today) / 86400000);
+    // Compare local calendar dates, not elapsed hours (including across DST).
+    const [year, month, day] = payment.dueDate.split("-").map(Number);
+    const due = Date.UTC(year, month - 1, day);
+    const current = Date.UTC(today.getFullYear(), today.getMonth(), today.getDate());
+    const days = (due - current) / 86400000;
     if (days < 0) return "overdue";
     if (days <= 14) return "due-soon";
     return "scheduled";
@@ -250,7 +263,7 @@
   const render = () => {
     const selected = state.vendors.filter(v => v.selected);
     const startSteps = [
-      { label: "Review your total and category limits", detail: "Set a working ceiling before comparing quotes.", view: "budget", done: state.progress.budgetReviewed || Boolean(state.budget.importedAt) },
+      { label: "Review your total and category limits", detail: "Set a working ceiling before comparing quotes.", view: "budget", done: state.progress.budgetReviewed },
       { label: "Add a vendor quote", detail: "Include required fees, delivery, rentals, overtime, and tax.", view: "vendors", done: state.vendors.length > 0 },
       { label: "Select a vendor commitment", detail: "Selected true cost becomes part of your committed budget.", view: "vendors", done: selected.length > 0 },
       { label: "Schedule a payment", detail: "Record a deposit, installment, or final balance with its due date.", view: "payments", done: state.payments.length > 0 },
@@ -356,6 +369,9 @@
     document.getElementById("p2PaymentProgress").textContent = `${money2(paid)} of ${money2(committed)}`;
     const plannedCategoryTotal = Object.values(state.budget.categories).reduce((sum, value) => sum + numberValue(value), 0);
     const allocationWarning = plannedCategoryTotal > state.budget.total ? ` Category limits exceed the total budget by ${money2(plannedCategoryTotal - state.budget.total)}.` : "";
+    const reviewButton = document.getElementById("p2ReviewBudget");
+    reviewButton.disabled = plannedCategoryTotal > state.budget.total + .005;
+    reviewButton.textContent = state.progress.budgetReviewed ? "Category limits reviewed" : "Confirm category limits";
     document.getElementById("p2BudgetSource").innerHTML = state.budget.importedAt
       ? `<strong>Migrated planner budget</strong><span>Your earlier calculator snapshot and subsequent Planner 2.0 changes are saved in this browser.${allocationWarning}</span>`
       : `<strong>Planner budget</strong><span>Your plan is saved privately in this browser.${allocationWarning}</span>`;
@@ -367,7 +383,7 @@
       const isUnset = planned === 0 && categoryCommitted === 0 && categorySpent === 0;
       const status = available < 0 ? "overdue" : !isUnset && available <= planned * .25 ? "due-soon" : isUnset ? "" : "selected";
       const label = available < 0 ? "Over" : isUnset ? "Not set" : available <= planned * .25 ? "Watch" : "Available";
-      return `<tr><td><strong>${safe(category)}</strong></td><td><input class="planner2-category-input" type="number" min="0" step="100" data-budget-category="${safe(category)}" value="${planned}"></td><td>${money2(categoryCommitted)}</td><td>${money2(categorySpent)}</td><td><strong>${available < 0 ? "-" : ""}${money2(Math.abs(available))}</strong></td><td><span class="planner2-badge ${status}">${label}</span></td></tr>`;
+      return `<tr><td><strong>${safe(category)}</strong></td><td><input class="planner2-category-input" type="number" min="0" step="0.01" aria-label="${safe(category)} planned amount" data-budget-category="${safe(category)}" value="${planned}"></td><td>${money2(categoryCommitted)}</td><td>${money2(categorySpent)}</td><td><strong>${available < 0 ? "-" : ""}${money2(Math.abs(available))}</strong></td><td><span class="planner2-badge ${status}">${label}</span></td></tr>`;
     }).join("");
     document.getElementById("p2ExpenseRows").innerHTML = state.budget.expenses.length ? state.budget.expenses.map(expense => `<tr><td><strong>${safe(expense.desc)}</strong></td><td>${safe(expense.cat)}</td><td><strong>${money2(expense.amount)}</strong></td><td><span class="planner2-badge">${safe(expense.source || "Planner 2.0")}</span></td><td><button data-edit-expense="${expense.id}">Edit</button> <button data-delete-expense="${expense.id}">Remove</button></td></tr>`).join("") : `<tr><td colspan="5" class="planner2-empty">No actual expenses recorded yet.</td></tr>`;
 
@@ -477,7 +493,7 @@
     return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}_${pad(date.getHours())}-${pad(date.getMinutes())}-${pad(date.getSeconds())}`;
   };
   const checklistProgressFor = plan => [
-    plan.progress.budgetReviewed || Boolean(plan.budget.importedAt),
+    plan.progress.budgetReviewed,
     plan.vendors.length > 0,
     plan.vendors.some(vendor => vendor.selected),
     plan.payments.length > 0,
@@ -555,7 +571,13 @@
   });
 
   document.getElementById("p2BudgetInput").addEventListener("input", event => {
-    state.budget.total = numberValue(event.target.value); state.progress.budgetReviewed = true; save(); render();
+    state.budget.total = numberValue(event.target.value); state.progress.budgetReviewed = false; save(); render();
+  });
+  document.getElementById("p2ReviewBudget").addEventListener("click", () => {
+    const planned = Object.values(state.budget.categories).reduce((sum, value) => sum + numberValue(value), 0);
+    if (planned > state.budget.total + .005) return;
+    state.progress.budgetReviewed = true;
+    save(); render();
   });
   document.getElementById("p2Currency").addEventListener("change", event => {
     if (!SUPPORTED_CURRENCIES.has(event.target.value)) return;
@@ -573,21 +595,26 @@
   });
   document.getElementById("p2QuickStartForm").addEventListener("submit", event => {
     event.preventDefault();
+    if (hasStartedPlan()) return;
     const data = Object.fromEntries(new FormData(event.currentTarget));
     const budget = numberValue(data.budget);
     const guests = Math.max(0, Math.floor(Number(data.guests) || 0));
     if (!budget || !guests) { event.currentTarget.reportValidity(); return; }
+    const untouchedCategories = Object.keys(state.budget.categories).length === Object.keys(defaultCategories).length
+      && Object.entries(defaultCategories).every(([name, amount]) => state.budget.categories[name] === amount);
+    if (untouchedCategories) state.budget.categories = suggestedCategories(budget);
     state.budget.total = budget;
     state.guests.current = { ...defaultGuestCounts(), Others: guests };
     state.guests.cateringRate = numberValue(data.cateringRate);
-    state.progress.budgetReviewed = true;
+    state.progress.budgetReviewed = false;
     state.progress.quickStarted = true;
     trackPlannerAction("planner_quick_start_completed");
     save(); render();
+    showView("budget", true);
   });
   document.getElementById("p2BudgetRows").addEventListener("input", event => {
     if (!event.target.dataset.budgetCategory) return;
-    state.budget.categories[event.target.dataset.budgetCategory] = numberValue(event.target.value); state.progress.budgetReviewed = true; save(); render();
+    state.budget.categories[event.target.dataset.budgetCategory] = numberValue(event.target.value); state.progress.budgetReviewed = false; save(); render();
   });
   const resetExpenseForm = () => {
     editingExpenseId = null;
@@ -650,7 +677,7 @@
     const addPayment = () => {
       state.payments.push(payment);
       paymentForm.reset(); save(); render();
-      const isPastDue = new Date(`${payment.dueDate}T23:59:59`) < new Date();
+      const isPastDue = paymentStatus(payment) === "overdue";
       const status = document.getElementById("p2PaymentStatus");
       status.classList.toggle("is-warning", isPastDue);
       status.textContent = isPastDue ? `${payment.name} was added as overdue. Mark it paid if it has already been settled.` : `${payment.name} was added to the payment schedule.`;
