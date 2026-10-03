@@ -1,4 +1,4 @@
-Contract,Payment Stage,Example Timing,Amount,Cumulative Paid,Remaining Contract Balance,Planner Status
+Contract,Payment Stage,Example Timing,Amount,Cumulative If Paid,Remaining After This Payment,Planner Status
 Venue,Booking payment,At signing,2200,2200,8800,Scheduled
 Venue,Progress payment,6 months before,3300,5500,5500,Scheduled
 Venue,Final balance,30 days before,5500,11000,0,Scheduled
