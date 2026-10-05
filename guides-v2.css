@@ -1,0 +1,36 @@
+/* Scoped to editorial guides; planner and shared site styles are unchanged. */
+.practical-guide .main-grid { grid-template-columns: minmax(0, 2.2fr) minmax(230px, 1fr) !important; align-items: start; }
+.practical-guide article.card, .practical-guide aside { min-width: 0; }
+.practical-guide article.card h1 { font-size: clamp(1.9rem, 3.5vw, 2.6rem); line-height: 1.2; margin: .5rem 0 1rem; }
+.practical-guide .guide-kicker { color: #965039; font-weight: 800; font-size: .8rem; text-transform: uppercase; letter-spacing: 1.5px; }
+.practical-guide .guide-checklist, .practical-guide .guide-action { background: #f3f7f2; border: 1px solid #cddacb; border-radius: 16px; padding: 1.2rem; margin: 1.5rem 0; }
+.practical-guide .guide-checklist h2, .practical-guide .guide-action h2 { margin-top: 0; }
+/* Old mobile styles injected a second checklist after the first section. */
+.practical-guide article.card > section:first-of-type::after { content: none !important; display: none !important; }
+.practical-guide li { margin: .45rem 0; }
+.practical-guide ul, .practical-guide ol { padding-left: 1.4rem; }
+.practical-guide .guide-downloads { display: flex; flex-wrap: wrap; gap: .75rem; margin: 1rem 0; }
+.practical-guide .guide-downloads a { display: inline-block; padding: .75rem 1rem; border-radius: 9px; font-weight: 700; text-decoration: none; background: #365447; color: white; }
+.practical-guide .guide-downloads .secondary-download { background: white; color: #253f34; border: 1px solid #9fb4a4; }
+.practical-guide .guide-note, .practical-guide .guide-table-hint { color: #52655a; font-size: .9rem; }
+.practical-guide .guide-table-hint { display: none; }
+.practical-guide .guide-caution { border-left: 4px solid #987138; padding-left: .9rem; }
+.practical-guide .guide-detail { border: 1px solid #dedbd2; border-radius: 12px; margin: 1rem 0; padding: 1rem; }
+.practical-guide .guide-detail summary { cursor: pointer; font-weight: 700; color: #253f34; }
+.practical-guide .guide-detail[open] summary { margin-bottom: 1rem; }
+.practical-guide :is(summary, a, .table-responsive):focus-visible { outline: 3px solid #b85d45; outline-offset: 3px; }
+.practical-guide .table-responsive { max-width: 100%; overflow-x: auto; margin: 1rem 0; }
+.practical-guide article.card .spacious-table { display: table !important; min-width: 520px !important; width: 100% !important; max-width: none !important; overflow: visible !important; }
+.practical-guide .spacious-table th, .practical-guide .spacious-table td { white-space: normal; vertical-align: top; padding: .8rem; }
+.practical-guide .guide-nav a { display: block; padding: .45rem 0; }
+.practical-guide h2[id] { scroll-margin-top: 1rem; }
+@media (max-width: 1100px) {
+  .practical-guide .main-grid { grid-template-columns: minmax(0, 1fr) !important; }
+}
+@media (max-width: 760px) {
+  .practical-guide article.card { padding: 1.1rem; }
+  .practical-guide .guide-checklist, .practical-guide .guide-action { padding: 1rem; }
+  .practical-guide .guide-downloads a { width: 100%; text-align: center; box-sizing: border-box; }
+  .practical-guide .guide-table-hint { display: block; }
+  .practical-guide .spacious-table th, .practical-guide .spacious-table td { padding: .65rem; }
+}

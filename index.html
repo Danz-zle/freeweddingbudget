@@ -77,7 +77,7 @@
           <p>Your wedding plan is stored in this browser and is not attached to a personal profile. Analytics may count general site use according to your consent choice, but your saved budget, vendor, payment, and guest records are not sent as analytics details.</p>
         </details>
         <section id="p2QuickStart" class="planner2-card planner2-quick-start" aria-labelledby="p2QuickStartTitle">
-          <div><span class="planner2-eyebrow">Two-minute setup</span><h2 id="p2QuickStartTitle">Start with the three numbers you know</h2><p>You can refine categories, guest groups, and quotes later.</p></div>
+          <div><span class="planner2-eyebrow">Two-minute setup</span><h2 id="p2QuickStartTitle">Start with the three numbers you know</h2><p>We'll fit the starting category limits to your total budget, then ask you to review them. These are editable examples, not price recommendations.</p></div>
           <form id="p2QuickStartForm">
             <label>Total budget<input name="budget" type="number" min="1" step="1" required></label>
             <label>Estimated guests<input name="guests" type="number" min="1" step="1" required></label>
@@ -143,6 +143,7 @@
           <div><span>Payment progress</span><strong id="p2PaymentProgress">$0 of $0</strong></div>
         </form>
         <div class="planner2-card"><div class="planner2-table-wrap"><table class="planner2-table"><thead><tr><th>Category</th><th>Planned</th><th>Committed</th><th>Other expenses</th><th>Available</th><th>Status</th></tr></thead><tbody id="p2BudgetRows"></tbody></table></div></div>
+        <div class="planner2-note"><p>Review these category limits against your priorities and quotes. Keep room for costs you have not priced yet; you can leave part of the total unallocated. Later changes to your total budget will not automatically change these limits.</p><button id="p2ReviewBudget" type="button">Confirm category limits</button></div>
         <div class="planner2-section-heading planner2-subsection-heading"><div><span class="planner2-eyebrow">Permanent expense ledger</span><h2>Actual expenses</h2><p>Record costs that are not already represented by a selected vendor commitment or payment.</p></div></div>
         <form id="p2ExpenseForm" class="planner2-card planner2-form planner2-expense-form">
           <label>Description<input name="description" type="text" required placeholder="e.g. Marriage licence"></label>
@@ -268,6 +269,6 @@
     </div>
   </div>
 
-  <script src="planner2.js?v=2.1.1"></script>
+  <script src="planner2.js?v=2.1.2-20261001"></script>
 </body>
 </html>
