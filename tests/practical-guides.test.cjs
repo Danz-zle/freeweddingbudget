@@ -180,3 +180,28 @@ test('guide hub titles, links and dates match the reviewed guides', () => {
   assert.equal((hub.match(/Checklist and worked example • Updated October 4, 2026/g) || []).length, 9);
   assert.ok(hub.includes('Checklist and worked example • Updated October 1, 2026'));
 });
+
+test('every monetized guide carries the AdSense publisher code', () => {
+  const monetizedGuides = [...Object.keys(guides), 'blog-vendor-quotes'];
+  for (const slug of monetizedGuides) {
+    assert.match(
+      read(slug + '.html'),
+      /pagead2\.googlesyndication\.com\/pagead\/js\/adsbygoogle\.js\?client=ca-pub-4504023199353060/,
+      slug
+    );
+  }
+});
+
+test('sitemap lastmod dates match the substantive October revisions', () => {
+  const sitemap = read('sitemap.xml');
+  const expectedDates = {
+    '': '2026-10-01',
+    blog: '2026-10-04',
+    'blog-vendor-quotes': '2026-10-01',
+    ...Object.fromEntries(Object.keys(guides).map(slug => [slug, '2026-10-04']))
+  };
+  for (const [slug, date] of Object.entries(expectedDates)) {
+    const url = 'https://freeweddingbudget.com/' + slug;
+    assert.ok(sitemap.includes(`<loc>${url}</loc><lastmod>${date}</lastmod>`), slug || 'homepage');
+  }
+});
