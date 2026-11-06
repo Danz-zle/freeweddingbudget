@@ -1,9 +1,14 @@
 .git
 .github
+.assetsignore
+.gitignore
 node_modules
-tests
+tests/
+tmp/
 wrangler.toml
 package.json
 package-lock.json
-README.md
+pnpm-lock.yaml
+yarn.lock
+npm-shrinkwrap.json
 *.md
