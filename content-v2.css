@@ -64,9 +64,29 @@ body:not(.planner2-active) article [style*="border-left:5px solid var(--primary)
 .contact-option h2 { margin:0 0 .4rem; font-size:1.05rem; }
 .contact-option p { margin:0; line-height:1.65; }
 .contact-email { display:inline-flex; margin-top:1rem; padding:.8rem 1rem; border-radius:10px; background:var(--content-green); color:white !important; text-decoration:none; font-weight:800; }
+.logo { text-decoration:none; }
+.landing-hero p + p { margin-top:.85rem; }
+.landing-hero-actions { display:flex; flex-wrap:wrap; align-items:center; gap:1rem; margin-top:1.35rem; }
+.landing-hero-actions span { color:var(--content-green-dark); font-weight:700; }
+.landing-primary-link { display:inline-flex; align-items:center; justify-content:center; padding:.8rem 1.05rem; border-radius:10px; background:var(--content-green); color:white !important; text-decoration:none; font-weight:800; }
+.landing-grid { grid-template-columns:minmax(0,2.2fr) minmax(240px,.8fr); }
+.landing-content { line-height:1.75; }
+.landing-content section + section { margin-top:2.3rem; }
+.landing-content h2 { margin-bottom:.75rem; }
+.landing-formula { padding:1rem; border-left:4px solid var(--content-green); background:#f3f7f2; }
+.landing-guide-list h3 { margin:1.1rem 0 .2rem; font-size:1.05rem; }
+.landing-guide-list p { margin:.2rem 0; }
+.landing-final-cta { padding:1.35rem; border:1px solid var(--content-line); border-radius:16px; background:#f3f7f2; }
+.landing-aside { position:sticky; top:100px; }
+.landing-aside h2 { margin-top:0; font-size:1.25rem; }
+.landing-aside li { margin:.65rem 0; }
+.footer-privacy-button { margin:0 4px; padding:0; border:0; border-radius:0; background:none !important; color:white; font:inherit; font-weight:500; text-decoration:none; cursor:pointer; }
+.footer-privacy-button:hover { text-decoration:underline; }
 @media (max-width:760px) {
   body:not(.planner2-active) .nav-links { column-gap:.55rem; }
   body:not(.planner2-active) .nav-links a { font-size:.8rem; }
   .content-page-hero { padding:1.5rem; border-radius:18px; }
   .contact-layout { grid-template-columns:1fr; }
+  .landing-grid { grid-template-columns:1fr; }
+  .landing-aside { position:static; }
 }

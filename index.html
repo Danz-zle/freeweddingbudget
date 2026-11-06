@@ -3,272 +3,187 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Free Wedding Budget Planner 2.0 | Vendors, Payments &amp; Guests</title>
-  <meta name="description" content="Plan your wedding budget in one free browser workspace. Compare full vendor costs, schedule payments, test guest counts, track expenses, and export reports.">
+  <title>Wedding Budget Planner | Free, No Account Needed</title>
+  <meta name="description" content="Compare vendor costs, track payments, test guest counts and export reports. Free, no account needed, with data saved only in your browser.">
   <meta name="keywords" content="wedding budget calculator, wedding budget planner, wedding cost tracker, wedding expenses, wedding planning budget">
   <meta name="google-adsense-account" content="ca-pub-4504023199353060">
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4504023199353060" crossorigin="anonymous"></script>
   <link rel="canonical" href="https://freeweddingbudget.com/">
   <link rel="sitemap" type="application/xml" href="/sitemap.xml">
   <link rel="alternate" type="text/plain" title="Ads.txt" href="/ads.txt">
-  <meta property="og:title" content="Free Wedding Budget Planner 2.0">
-  <meta property="og:description" content="Compare vendor costs, schedule payments, test guest counts, track expenses, and export your wedding plan from one private browser workspace.">
+  <meta property="og:title" content="Wedding Budget Planner | Free, No Account Needed">
+  <meta property="og:description" content="Compare vendor costs, track payments, test guest counts and export reports. Free, no account needed, with data saved only in your browser.">
   <meta property="og:url" content="https://freeweddingbudget.com/">
   <meta property="og:type" content="website">
   <link rel="icon" href="/favicon.ico">
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"Free Wedding Budget Planner","alternateName":"Wedding Budget Planner 2.0","url":"https://freeweddingbudget.com/"}</script>
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Free Wedding Budget Planner 2.0","operatingSystem":"Web","applicationCategory":"FinanceApplication","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"A free browser-based wedding planning workspace for category budgets, full vendor-cost comparisons, payment schedules, expenses, guest scenarios, reports, and portable backups.","featureList":["Wedding category budget planning","Vendor true-cost comparison","Payment schedule tracking","Wedding expense tracking","Guest-count scenarios","CSV, Excel, and PDF reports","Browser backup and recovery"],"url":"https://freeweddingbudget.com/","publisher":{"@type":"Organization","name":"Wedding Budget Planner"}}</script>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"Wedding Budget Planner","url":"https://freeweddingbudget.com/","logo":"https://freeweddingbudget.com/favicon.ico","contactPoint":[{"@type":"ContactPoint","contactType":"support","email":"liubigcow@yahoo.com"}]}</script>
-  <link rel="stylesheet" href="style.css?v=2.0.0">
-  <link rel="stylesheet" href="planner2.css?v=2.1.3">
-  <script src="https://unpkg.com/lucide@latest"></script>
-  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+  <link rel="stylesheet" href="/style.css?v=2.0.0">
+  <link rel="stylesheet" href="/content-v2.css?v=2.0.5">
 </head>
-<body>
-  <div class="print-only report-header" aria-hidden="true"></div>
+<body class="landing-page">
+  <header class="top-nav">
+    <a class="logo" href="/">Wedding Budget Planner</a>
+    <nav class="nav-links" aria-label="Main navigation">
+      <a href="/" class="active">Home</a>
+      <a href="/planner">Open Planner</a>
+      <a href="/blog">Blog</a>
+      <a href="/about">About</a>
+      <a href="/privacy">Privacy</a>
+      <a href="/terms">Terms</a>
+      <a href="/contact">Contact</a>
+    </nav>
+  </header>
 
-  <div id="planner2Workspace" class="planner2-shell no-print">
-    <aside class="planner2-sidebar" aria-label="Planner workspace">
-      <div class="planner2-brand"><span>Wedding Budget</span><strong>Planner 2.0</strong></div>
-      <div class="planner2-trust planner2-sidebar-trust" aria-label="Planner benefits">
-        <span><i data-lucide="badge-check"></i>Free</span>
-        <span><i data-lucide="user-round-check"></i>No account needed</span>
-        <button type="button" class="planner2-trust-link" data-go-view="my-data"><i data-lucide="shield-check"></i>Saved in this browser</button>
+  <main class="dashboard-container">
+    <section class="content-page-hero landing-hero">
+      <span class="content-kicker">Free browser-based planning tool</span>
+      <h1>Plan the full cost of your wedding</h1>
+      <p>Wedding Budget Planner helps couples set category limits, compare the full cost of vendor quotes, track payments, test different guest counts and download planning reports. It is free, requires no account and saves your plan only in your browser, not on a server.</p>
+      <p>Start with your total budget, then record what each vendor will actually cost after required fees, delivery, rentals, likely overtime and tax. Deposits and later payments remain connected to the original commitment, so the same cost is not counted twice.</p>
+      <div class="landing-hero-actions">
+        <a class="landing-primary-link" href="/planner">Open the planner</a>
+        <span>Free · No account needed · Saved in your browser</span>
       </div>
-      <nav class="planner2-nav">
-        <button class="active" aria-label="Overview" data-workspace-view="overview"><i data-lucide="layout-dashboard"></i><span>Overview</span></button>
-        <button aria-label="Budget" data-workspace-view="budget"><i data-lucide="wallet-cards"></i><span>Budget</span></button>
-        <button aria-label="Vendors" data-workspace-view="vendors"><i data-lucide="store"></i><span>Vendors</span></button>
-        <button aria-label="Payments" data-workspace-view="payments"><i data-lucide="calendar-clock"></i><span>Payments</span></button>
-        <button aria-label="Guests" data-workspace-view="guests"><i data-lucide="users"></i><span>Guests</span></button>
-        <button aria-label="Reports" data-workspace-view="reports"><i data-lucide="file-chart-column"></i><span>Reports</span></button>
-        <button aria-label="My Data" data-workspace-view="my-data"><i data-lucide="database-backup"></i><span>My Data</span></button>
-      </nav>
-      <nav class="planner2-utility-nav" aria-label="Website information">
-        <a href="/blog"><i data-lucide="book-open"></i><span>Guides</span></a>
-        <a href="/about"><i data-lucide="circle-user-round"></i><span>About</span></a>
-        <a href="/privacy"><i data-lucide="shield-check"></i><span>Privacy</span></a>
-        <button id="p2PrivacyChoices" type="button" aria-haspopup="dialog"><i data-lucide="sliders-horizontal"></i><span class="planner2-utility-desktop-label">Privacy choices</span><span class="planner2-utility-mobile-label">Choices</span></button>
-        <a href="/terms"><i data-lucide="scroll-text"></i><span>Terms</span></a>
-        <a href="/contact"><i data-lucide="mail"></i><span>Contact</span></a>
-      </nav>
-      <span class="planner2-exit">Your plan stays on this device</span>
-    </aside>
+    </section>
 
-    <div class="planner2-main">
-      <header class="planner2-topbar">
-        <div class="planner2-topbar-identity">
-          <span class="planner2-eyebrow planner2-desktop-eyebrow">Private browser workspace</span>
-          <span class="planner2-mobile-brand">Wedding Budget Planner 2.0</span>
-          <div class="planner2-trust planner2-mobile-trust" aria-label="Planner benefits">
-            <span><i data-lucide="badge-check"></i>Free</span>
-            <span><i data-lucide="user-round-check"></i>No account needed</span>
-            <button type="button" class="planner2-trust-link" data-go-view="my-data"><i data-lucide="shield-check"></i>Saved in this browser</button>
+    <div class="main-grid landing-grid">
+      <article class="card landing-content">
+        <section>
+          <h2>Why I built it</h2>
+          <p>I am an independent site builder, not a wedding professional. I have been married for over ten years, and I built this planner as a project to make the full cost of vendor quotes easier to compare.</p>
+          <p>I plan to add real vendor price information and couple interviews to the guides, and I will label them clearly when I do.</p>
+        </section>
+
+        <section>
+          <h2>Start with a budget you can control</h2>
+          <p>The budget control center separates different types of wedding costs instead of placing everything into one total.</p>
+          <p>You can set a planned limit for each category and compare it with selected vendor commitments and other expenses. This helps you see how much remains available in categories such as venue, catering, photography, decor, entertainment, attire and transportation.</p>
+          <p>The overview brings the main figures together:</p>
+          <ul>
+            <li>Total wedding budget</li>
+            <li>Selected vendor commitments</li>
+            <li>Completed payments</li>
+            <li>Other expenses</li>
+            <li>Uncommitted budget</li>
+            <li>Next payment due</li>
+          </ul>
+          <p>The currency selector supports USD, EUR, GBP, AUD, CAD, NZD, SGD, MYR, TWD and HKD. Changing the currency changes the displayed symbol only. It does not convert your amounts or apply an exchange rate.</p>
+        </section>
+
+        <section>
+          <h2>Compare the true cost, not only the package price</h2>
+          <p>A lower advertised package does not always mean a lower final cost.</p>
+          <p>Wedding Budget Planner uses this method:</p>
+          <p class="landing-formula"><strong>Package price + required fees + travel or delivery + rentals + likely overtime + tax on that subtotal</strong></p>
+          <p>In a fictional photography example, Silverline starts with a package price that is $300 lower, but Willow ends $108 lower after the same extras and an 8% tax assumption are included. <a href="/blog-vendor-quotes">See the full fictional comparison and calculation</a>.</p>
+          <p>You can save several quotes while comparing them. When a vendor is selected as a commitment, its true cost becomes part of the budget. A deposit or installment is recorded as a payment against that commitment, not as another copy of the contract cost.</p>
+          <p><a href="/planner#vendors">Compare a vendor quote</a></p>
+        </section>
+
+        <section>
+          <h2>Keep payment dates connected to the plan</h2>
+          <p>A signed contract and a paid invoice are not the same thing. The payment tracker keeps the committed vendor cost separate from the amounts already paid.</p>
+          <p>You can record deposits, installments and remaining balances with their due dates. The tracker shows each payment's due date and status, plus the next payment due.</p>
+          <p>Marking a payment as paid reduces the amount still payable, but it does not change the vendor's contract cost. This makes it possible to see both the complete cost of the agreement and the amount that still needs to be paid.</p>
+        </section>
+
+        <section>
+          <h2>Test what happens when the guest count changes</h2>
+          <p>The guest-count scenario planner lets you compare different attendance assumptions before changing your main plan.</p>
+          <p>It keeps your non-catering costs fixed and replaces the catering cost with your guest count multiplied by your estimated catering cost per guest, then compares the total with your budget.</p>
+          <p>A guest-count scenario is a planning comparison. It does not replace a vendor quote or automatically convert an estimate into a commitment.</p>
+        </section>
+
+        <section>
+          <h2>Your plan stays in your browser</h2>
+          <p>Wedding Budget Planner does not require registration. Your wedding plan is saved only in the browser you are using, not on a server.</p>
+          <p>This also means that the plan does not automatically appear on another device or browser. Clearing the browser's saved data may remove it.</p>
+          <p>The backup feature lets you download a copy of the complete Wedding Budget Planner record. You can keep that file and restore it later in a compatible browser session. The reset option removes the Wedding Budget Planner data saved in the current browser.</p>
+          <p>Use the backup function before clearing browser data or moving your plan to another browser.</p>
+        </section>
+
+        <section>
+          <h2>Download a planning report</h2>
+          <p>When you are ready to review or share the figures, the Reports section can export the plan as:</p>
+          <ul>
+            <li>Excel workbook</li>
+            <li>Print-ready PDF</li>
+            <li>CSV files (vendors, payments, expenses)</li>
+          </ul>
+          <p>Wedding Budget Planner also provides a backup and restore file for moving the complete saved planning record. A report is for reviewing the figures; the backup file is for restoring the planner data later.</p>
+        </section>
+
+        <section>
+          <h2>Six practical wedding budget guides</h2>
+          <div class="landing-guide-list">
+            <h3><a href="/blog-create-budget">How to build a wedding budget you can use</a></h3>
+            <p>Set a total you can work with, divide it into category limits and keep commitments separate from payments.</p>
+
+            <h3><a href="/blog-vendor-quotes">How to compare wedding vendor quotes</a></h3>
+            <p>Compare package prices, required extras, tax assumptions and payment terms using the same structure for each vendor.</p>
+
+            <h3><a href="/blog-hidden-costs">Hidden wedding costs to check before you sign</a></h3>
+            <p>Review required fees, delivery, rentals, overtime and other costs that may sit outside the advertised package.</p>
+
+            <h3><a href="/blog-50-vs-100-guests">Wedding budget for 50 guests vs 100 guests</a></h3>
+            <p>See why guest-dependent costs may rise while some fixed vendor packages remain unchanged.</p>
+
+            <h3><a href="/blog-catering-budget-guide">Wedding catering budget for 50, 100 and 150 guests</a></h3>
+            <p>Compare different guest-count assumptions while keeping service charges, tax and other required costs visible.</p>
+
+            <h3><a href="/blog-venue-cost-checklist">Wedding venue cost checklist before you sign</a></h3>
+            <p>Check what the venue price includes and identify services, rentals or charges that may still be missing.</p>
           </div>
-          <h1 id="planner2Title">Overview</h1>
-        </div>
-        <span class="planner2-save-state"><i data-lucide="hard-drive"></i> Saved on this device</span>
-      </header>
-
-      <section class="planner2-view active" data-workspace-panel="overview">
-        <div class="planner2-intro"><div><span class="planner2-eyebrow">Wedding budget workspace</span><h2>See the full cost before you commit.</h2><p>Compare complete vendor quotes, schedule deposits and balances, test guest counts, and keep each cost in the budget once.</p></div><button id="p2IntroAction">Start my plan</button></div>
-        <details class="planner2-privacy-note">
-          <summary><i data-lucide="shield-check"></i> Free, private planning: how browser saving works</summary>
-          <p>Your wedding plan is stored in this browser and is not attached to a personal profile. Analytics may count general site use according to your consent choice, but your saved budget, vendor, payment, and guest records are not sent as analytics details.</p>
-        </details>
-        <section id="p2QuickStart" class="planner2-card planner2-quick-start" aria-labelledby="p2QuickStartTitle">
-          <div><span class="planner2-eyebrow">Two-minute setup</span><h2 id="p2QuickStartTitle">Start with the three numbers you know</h2><p>We'll fit the starting category limits to your total budget, then ask you to review them. These are editable examples, not price recommendations.</p></div>
-          <form id="p2QuickStartForm">
-            <label>Total budget<input name="budget" type="number" min="1" step="1" required></label>
-            <label>Estimated guests<input name="guests" type="number" min="1" step="1" required></label>
-            <label>Catering per guest<input name="cateringRate" type="number" min="0" step="1" required></label>
-            <button type="submit">Create my starting plan</button>
-          </form>
-          <p class="planner2-quick-start-note"><i data-lucide="shield-check"></i> These numbers stay in this browser. No account is needed.</p>
+          <p><a href="/blog">Browse all guides</a></p>
         </section>
-        <section id="p2QuickStartSummary" class="planner2-quick-summary" hidden aria-live="polite">
-          <div><span class="planner2-eyebrow">Your starting point</span><strong id="p2QuickStartSummaryText"></strong></div>
-          <div><button class="planner2-secondary-button" data-go-view="budget">Adjust budget</button><button class="planner2-secondary-button" data-go-view="guests">Refine guests</button></div>
+
+        <section class="landing-final-cta">
+          <h2>Build the plan one step at a time</h2>
+          <p>You do not need an account to begin. Open Wedding Budget Planner, enter the total amount you want to work with and review the category limits. You can then compare vendor quotes, select commitments, schedule payments, test guest counts and download reports.</p>
+          <p>Your figures remain in your browser unless you download a backup file for later restoration.</p>
+          <a class="landing-primary-link" href="/planner">Start my wedding budget</a>
         </section>
-        <section class="planner2-card planner2-start-card" aria-labelledby="p2StartTitle">
-          <div class="planner2-card-heading"><div><span class="planner2-eyebrow">Start here</span><h2 id="p2StartTitle">Build your plan in six steps</h2><p>Follow this order once, then return to any section whenever your plans change.</p></div><strong id="p2StartProgress" class="planner2-progress-count">0 of 6 complete</strong></div>
-          <div id="p2StartSteps" class="planner2-start-steps"></div>
-        </section>
-        <div class="planner2-stats">
-          <article id="p2TotalBudgetCard"><span>Total budget</span><strong id="p2TotalBudget">$0</strong><small>Working ceiling</small></article>
-          <article id="p2CommittedCard"><span>Vendor commitments</span><strong id="p2Committed">$0</strong><small id="p2CommittedMeta">Selected true-cost quotes</small></article>
-          <article id="p2PaidCard"><span>Paid</span><strong id="p2Paid">$0</strong><small id="p2PaidMeta">Completed payments</small></article>
-          <article id="p2ActualSpentCard"><span>Actual expenses</span><strong id="p2ActualSpent">$0</strong><small id="p2ActualSpentMeta">Expense ledger</small></article>
-          <article id="p2UncommittedCard"><span>Uncommitted</span><strong id="p2Uncommitted">$0</strong><small id="p2UncommittedMeta">After commitments and other expenses</small></article>
-          <article id="p2NextDueCard"><span>Next due</span><strong id="p2NextDue">Not set</strong><small id="p2NextDueMeta">Add a payment date</small></article>
-        </div>
-        <div id="p2OverviewAlerts" class="planner2-alert-stack" aria-live="polite"></div>
-        <div class="planner2-grid-2">
-          <article class="planner2-card"><div class="planner2-card-heading"><div><span class="planner2-eyebrow">Vendor decision</span><h2>Quote comparison</h2></div><button class="planner2-text-button" data-go-view="vendors">View comparison</button></div><div id="p2BestVendor" class="planner2-empty">Add two quotes in the same category to compare their complete costs.</div></article>
-          <article class="planner2-card"><div class="planner2-card-heading"><div><span class="planner2-eyebrow">Cash flow</span><h2>Payment status</h2></div><button class="planner2-text-button" data-go-view="payments">Open tracker</button></div><div id="p2PaymentSummary" class="planner2-empty">No payments scheduled yet.</div></article>
-        </div>
-        <aside class="planner2-guides" aria-labelledby="p2OverviewGuides"><div class="planner2-guides-heading"><span class="planner2-eyebrow">Planning guidance</span><h2 id="p2OverviewGuides">Build a reliable starting plan</h2></div><div class="planner2-guide-grid"><a href="/blog-create-budget"><strong>Create a wedding budget</strong><span>Set priorities and category limits before comparing quotes.</span></a><a href="/blog-planning-timeline"><strong>Budget planning timeline</strong><span>Connect decisions and payment dates to each planning stage.</span></a><a href="/blog-50-vs-100-guests"><strong>50 guests vs 100 guests</strong><span>See how guest count changes the shape of the budget.</span></a></div></aside>
+      </article>
 
-        <section class="planner2-evidence-grid" aria-label="Planner method and worked example">
-          <article class="planner2-card planner2-method-card">
-            <span class="planner2-eyebrow">Calculation method</span>
-            <h2>How the planner handles your numbers</h2>
-            <dl>
-              <div><dt>Vendor true cost</dt><dd>Package price + required fees + travel or delivery + rentals + likely overtime + tax on that subtotal.</dd></div>
-              <div><dt>Committed budget</dt><dd>Only selected quotes count as commitments. Other saved quotes remain available for comparison.</dd></div>
-              <div><dt>Payments</dt><dd>Deposits and balances show cash flow. They do not add a second copy of the vendor contract to the budget.</dd></div>
-              <div><dt>Guest projection</dt><dd>The planner keeps non-catering costs, replaces tracked catering with guest count × catering per guest, then compares the result with the total budget.</dd></div>
-            </dl>
-            <p class="planner2-method-note">Planning estimates are not vendor quotes. Check the taxable subtotal, payment terms, service scope, and local rules before signing.</p>
-          </article>
-          <article class="planner2-card planner2-example-card">
-            <span class="planner2-eyebrow">Worked example</span>
-            <h2>A higher package price can still produce a lower total</h2>
-            <div class="planner2-table-wrap"><table class="planner2-table"><thead><tr><th>Photography quote</th><th>Package</th><th>Extras</th><th>Tax</th><th>True cost</th></tr></thead><tbody><tr><td>Silverline</td><td>$3,200</td><td>$850</td><td>$324</td><td><strong>$4,374</strong></td></tr><tr><td>Willow</td><td>$3,500</td><td>$450</td><td>$316</td><td><strong>$4,266</strong></td></tr></tbody></table></div>
-            <p>Silverline starts $300 lower, but Willow finishes $108 lower after the same cost fields and an 8% tax assumption are included. These fictional numbers demonstrate the calculator method; they are not market averages.</p>
-            <div class="planner2-example-actions"><button id="p2DownloadExampleCsv" class="planner2-secondary-button" type="button">Download example CSV</button><button class="planner2-text-button" data-go-view="vendors" type="button">Compare my quotes</button></div>
-          </article>
-        </section>
-        <p class="planner2-verification-note">Planner method and core workflows last checked September 18, 2026. The test covers fresh setup, vendor replacement, payment tracking, guest scenarios, reports, backup, and restore.</p>
-      </section>
-
-      <section class="planner2-view" data-workspace-panel="budget">
-        <div class="planner2-section-heading"><div><span class="planner2-eyebrow">Budget workspace</span><h2>Budget control center</h2><p>Keep planned amounts, selected commitments, payments, and actual expenses separate.</p></div></div>
-        <div class="planner2-budget-banner" id="p2BudgetSource"><strong>Planner budget</strong><span>Saved privately in this browser.</span></div>
-        <form id="p2BudgetForm" class="planner2-card planner2-budget-form">
-          <label>Total wedding budget<input id="p2BudgetInput" type="number" min="0" step="100"></label>
-          <label>Display currency<select id="p2Currency"><option value="USD">USD ($)</option><option value="EUR">EUR (€)</option><option value="GBP">GBP (£)</option><option value="AUD">AUD ($)</option><option value="CAD">CAD ($)</option><option value="NZD">NZD ($)</option><option value="SGD">SGD ($)</option><option value="MYR">MYR (RM)</option><option value="TWD">TWD (NT$)</option><option value="HKD">HKD ($)</option></select><small>Changes the display symbol only. Amounts are not converted.</small></label>
-          <div><span>Committed and spent</span><strong id="p2BudgetUsed">$0</strong></div>
-          <div><span>Still uncommitted</span><strong id="p2BudgetRemaining">$0</strong></div>
-          <div><span>Payment progress</span><strong id="p2PaymentProgress">$0 of $0</strong></div>
-        </form>
-        <div class="planner2-card"><div class="planner2-table-wrap"><table class="planner2-table"><thead><tr><th>Category</th><th>Planned</th><th>Committed</th><th>Other expenses</th><th>Available</th><th>Status</th></tr></thead><tbody id="p2BudgetRows"></tbody></table></div></div>
-        <div class="planner2-note"><p>Review these category limits against your priorities and quotes. Keep room for costs you have not priced yet; you can leave part of the total unallocated. Later changes to your total budget will not automatically change these limits.</p><button id="p2ReviewBudget" type="button">Confirm category limits</button></div>
-        <div class="planner2-section-heading planner2-subsection-heading"><div><span class="planner2-eyebrow">Permanent expense ledger</span><h2>Actual expenses</h2><p>Record costs that are not already represented by a selected vendor commitment or payment.</p></div></div>
-        <form id="p2ExpenseForm" class="planner2-card planner2-form planner2-expense-form">
-          <label>Description<input name="description" type="text" required placeholder="e.g. Marriage licence"></label>
-          <label>Category<select name="category"><option>Venue</option><option>Catering</option><option>Photography</option><option>Decor</option><option>Entertainment</option><option>Attire</option><option>Transportation</option><option>Other</option></select></label>
-          <label>Amount<input name="amount" type="number" min="0" step="0.01" required></label>
-          <div class="planner2-form-actions"><button id="p2ExpenseSubmit" type="submit">Add expense</button><button id="p2ExpenseCancel" class="planner2-secondary-button" type="button" hidden>Cancel edit</button></div>
-        </form>
-        <div class="planner2-card"><div class="planner2-table-wrap"><table class="planner2-table"><thead><tr><th>Expense</th><th>Category</th><th>Amount</th><th>Source</th><th></th></tr></thead><tbody id="p2ExpenseRows"></tbody></table></div></div>
-        <div class="planner2-note"><strong>How totals work:</strong> selected vendor true cost is a commitment. Payments reduce the amount still payable but do not increase contract cost. Other expenses reduce available budget separately.</div>
-        <aside class="planner2-guides" aria-labelledby="p2BudgetGuides"><div class="planner2-guides-heading"><span class="planner2-eyebrow">Budget guides</span><h2 id="p2BudgetGuides">Plan with fewer surprises</h2></div><div class="planner2-guide-grid"><a href="/blog-create-budget"><strong>Create your category plan</strong><span>Turn the total budget into realistic working limits.</span></a><a href="/blog-hidden-costs"><strong>Check hidden wedding costs</strong><span>Allow for fees and charges that are easy to overlook.</span></a><a href="/blog-spend-vs-save"><strong>Choose where to spend or save</strong><span>Protect the priorities that matter most to you.</span></a></div></aside>
-      </section>
-
-      <section class="planner2-view" data-workspace-panel="vendors">
-        <div class="planner2-section-heading"><div><span class="planner2-eyebrow">Priority workflow</span><h2>Vendor true-cost comparator</h2><p>Enter the same cost fields for quotes in one category so the final totals are easier to compare.</p></div></div>
-        <div class="planner2-guide-context" data-guide-context="vendors" hidden></div>
-        <div class="planner2-note planner2-selection-note"><strong>What "Selected" means:</strong> selecting a quote adds its true cost to your commitments and makes that vendor available in the payment tracker. Unselected quotes stay here for comparison.</div>
-        <form id="p2VendorForm" class="planner2-card planner2-form">
-          <label>Vendor name<input name="name" type="text" required placeholder="e.g. Silverline Photography"></label>
-          <label>Category<select name="category"><option>Venue</option><option>Catering</option><option>Photography</option><option>Decor</option><option>Entertainment</option><option>Attire</option><option>Transportation</option><option>Other</option></select></label>
-          <label>Package price<input name="packagePrice" type="number" min="0" step="0.01" value="0"></label>
-          <label>Required fees<input name="fees" type="number" min="0" step="0.01" value="0"></label>
-          <label>Travel / delivery<input name="travel" type="number" min="0" step="0.01" value="0"></label>
-          <label>Rentals / add-ons<input name="rentals" type="number" min="0" step="0.01" value="0"></label>
-          <label>Likely overtime<input name="overtime" type="number" min="0" step="0.01" value="0"></label>
-          <label>Tax rate on subtotal (%)<input name="taxRate" type="number" min="0" max="100" step="0.01" value="0"></label>
-          <button type="submit">Add quote</button>
-        </form>
-        <div class="planner2-note"><strong>Tax assumption:</strong> the rate is applied to the package price and every extra entered above. If a quote taxes a different subtotal, ask the vendor for the tax amount and use an effective rate that reproduces that amount.</div>
-        <p id="p2VendorStatus" class="planner2-form-status" role="status" aria-live="polite"></p>
-        <div class="planner2-card"><div class="planner2-table-wrap"><table class="planner2-table"><thead><tr><th>Vendor</th><th>Package</th><th>Extras</th><th>Tax</th><th>True cost</th><th>Status</th><th></th></tr></thead><tbody id="p2VendorRows"></tbody></table></div></div>
-        <aside class="planner2-guides" aria-labelledby="p2VendorGuides"><div class="planner2-guides-heading"><span class="planner2-eyebrow">Help with this step</span><h2 id="p2VendorGuides">Which charges belong in true cost?</h2></div><div class="planner2-guide-grid"><a href="/blog-vendor-quotes"><strong>Which quote questions reveal missing fees?</strong><span>Compare scope, deposits, overtime, cancellation terms, and excluded charges.</span></a><a href="/blog-venue-cost-checklist"><strong>What should a venue quote include?</strong><span>Review service, rental, timing, access, and venue-specific costs.</span></a><a href="/blog-catering-budget-guide"><strong>How do I estimate catering per guest?</strong><span>Connect menu choices, staffing, service fees, tax, and guest count.</span></a></div></aside>
-      </section>
-
-      <section class="planner2-view" data-workspace-panel="payments">
-        <div class="planner2-section-heading"><div><span class="planner2-eyebrow">Priority workflow</span><h2>Payment tracker</h2><p>Track deposits, installments, and final balances without counting a deposit as the full contract cost.</p></div></div>
-        <form id="p2PaymentForm" class="planner2-card planner2-form planner2-payment-form">
-          <label>Payment name<input name="name" type="text" required placeholder="e.g. Venue deposit"></label>
-          <label>Vendor<input name="vendor" type="text" list="p2SelectedVendorOptions" required placeholder="Choose a selected vendor"><datalist id="p2SelectedVendorOptions"></datalist></label>
-          <label>Amount<input name="amount" type="number" min="0" step="0.01" required></label>
-          <label>Due date<input name="dueDate" type="date" required></label>
-          <button type="submit">Add payment</button>
-        </form>
-        <p id="p2PaymentStatus" class="planner2-form-status" role="status" aria-live="polite"></p>
-        <div id="p2VendorPaymentBalances" class="planner2-payment-balances" aria-live="polite"></div>
-        <div class="planner2-card"><div class="planner2-table-wrap"><table class="planner2-table"><thead><tr><th>Payment</th><th>Vendor</th><th>Due</th><th>Amount</th><th>Status</th><th></th></tr></thead><tbody id="p2PaymentRows"></tbody></table></div></div>
-        <aside class="planner2-guides" aria-labelledby="p2PaymentGuides"><div class="planner2-guides-heading"><span class="planner2-eyebrow">Help with this step</span><h2 id="p2PaymentGuides">How should deposits and balances be tracked?</h2></div><div class="planner2-guide-grid"><a href="/blog-planning-timeline"><strong>When do major payments usually become due?</strong><span>Connect vendor decisions, deposits, installments, and final balances to your timeline.</span></a><a href="/blog-vendor-quotes"><strong>Which payment terms should I check?</strong><span>Review deposits, installments, cancellation terms, and remaining balances.</span></a><a href="/blog-hidden-costs"><strong>How much reserve should I protect?</strong><span>Keep room for charges outside the advertised package.</span></a></div></aside>
-      </section>
-
-      <section class="planner2-view" data-workspace-panel="guests">
-        <div class="planner2-section-heading"><div><span class="planner2-eyebrow">Guest scenarios</span><h2>Guest count planner</h2><p>Compare guest lists before catering and venue-capacity decisions become commitments.</p></div></div>
-        <div class="planner2-guide-context" data-guide-context="guests" hidden></div>
-        <div class="planner2-stats planner2-guest-stats">
-          <article><span>Current guests</span><strong id="p2GuestTotal">0</strong><small>Active guest plan</small></article>
-          <article><span>Tracked cost / guest</span><strong id="p2GuestCost">$0</strong><small>Commitments plus other expenses</small></article>
-          <article><span>Catering estimate</span><strong id="p2GuestCatering">$0</strong><small id="p2GuestCateringMeta">Using $0 per guest</small></article>
-          <article><span>Projected headroom</span><strong id="p2GuestHeadroom">$0</strong><small>After replacing catering with estimate</small></article>
+      <aside class="no-print landing-aside">
+        <div class="card">
+          <h2>Open the planner</h2>
+          <p>Set your budget, compare quotes and keep payment dates together in one browser workspace.</p>
+          <a class="landing-primary-link" href="/planner">Start my plan</a>
         </div>
-        <form id="p2GuestPlanForm" class="planner2-card planner2-guest-form">
-          <label>Family<input name="Family" type="number" min="0" step="1"></label>
-          <label>Friends<input name="Friends" type="number" min="0" step="1"></label>
-          <label>Colleagues<input name="Colleagues" type="number" min="0" step="1"></label>
-          <label>Others<input name="Others" type="number" min="0" step="1"></label>
-          <label>Estimated catering / guest<input id="p2CateringRate" type="number" min="0" step="1"></label>
-        </form>
-        <form id="p2ScenarioForm" class="planner2-card planner2-form planner2-scenario-form">
-          <label>Scenario name<input name="name" type="text" required placeholder="e.g. Intimate 60"></label>
-          <label>Family<input name="Family" type="number" min="0" step="1" value="0"></label>
-          <label>Friends<input name="Friends" type="number" min="0" step="1" value="0"></label>
-          <label>Colleagues<input name="Colleagues" type="number" min="0" step="1" value="0"></label>
-          <label>Others<input name="Others" type="number" min="0" step="1" value="0"></label>
-          <button type="submit">Save scenario</button>
-        </form>
-        <div class="planner2-card"><div class="planner2-table-wrap"><table class="planner2-table"><thead><tr><th>Scenario</th><th>Guests</th><th>Catering estimate</th><th>Tracked cost / guest</th><th>Projected total</th><th>Headroom</th><th></th></tr></thead><tbody id="p2ScenarioRows"></tbody></table></div></div>
-        <div class="planner2-note"><strong>Scenario method:</strong> projected total keeps non-catering commitments and expenses fixed, then replaces tracked catering with guest count × your catering estimate. It is a planning comparison, not a vendor quote.</div>
-        <aside class="planner2-guides" aria-labelledby="p2GuestGuides"><div class="planner2-guides-heading"><span class="planner2-eyebrow">Help with this step</span><h2 id="p2GuestGuides">How does guest count change the budget?</h2></div><div class="planner2-guide-grid planner2-guide-grid-2"><a href="/blog-50-vs-100-guests"><strong>What changes between 50 and 100 guests?</strong><span>See which costs rise per person and which may stay fixed.</span></a><a href="/blog-catering-budget-guide"><strong>What belongs in a per-guest catering estimate?</strong><span>Build a more useful food, drink, staffing, fee, and tax assumption.</span></a></div></aside>
-      </section>
-
-      <section class="planner2-view" data-workspace-panel="reports">
-        <div class="planner2-section-heading"><div><span class="planner2-eyebrow">Planning records</span><h2>Reports and exports</h2><p>Take a complete planning snapshot or download focused ledgers for vendor and payment work.</p></div></div>
-        <div class="planner2-stats planner2-report-stats">
-          <article><span>Budget</span><strong id="p2ReportBudget">$0</strong><small>Working ceiling</small></article>
-          <article><span>Selected vendors</span><strong id="p2ReportVendors">0</strong><small>Included in commitments</small></article>
-          <article><span>Payments</span><strong id="p2ReportPayments">0</strong><small id="p2ReportPaymentMeta">0 completed</small></article>
-          <article><span>Guest scenarios</span><strong id="p2ReportScenarios">0</strong><small>Saved comparisons</small></article>
+        <div class="card">
+          <h2>Read the method first</h2>
+          <ul>
+            <li><a href="/blog-create-budget">Build a usable budget</a></li>
+            <li><a href="/blog-vendor-quotes">Compare vendor quotes</a></li>
+            <li><a href="/blog-hidden-costs">Check hidden costs</a></li>
+          </ul>
         </div>
-        <div class="planner2-report-grid">
-          <article class="planner2-card planner2-export-card"><i data-lucide="file-spreadsheet"></i><div><h2>Complete Excel workbook</h2><p>Summary, budget, expenses, vendors, payments, guest plan, and guest scenarios.</p></div><button id="p2ExportExcel">Export Excel</button></article>
-          <article class="planner2-card planner2-export-card"><i data-lucide="file-text"></i><div><h2>Planning PDF</h2><p>Print-ready overview with financial, vendor, payment, and guest sections.</p></div><button id="p2PrintReport">Print PDF</button></article>
-          <article class="planner2-card planner2-export-card"><i data-lucide="table-2"></i><div><h2>Vendor comparison CSV</h2><p>Raw quote components, true cost, and selection status.</p></div><button id="p2ExportVendorCsv">Export Vendor CSV</button></article>
-          <article class="planner2-card planner2-export-card"><i data-lucide="calendar-days"></i><div><h2>Payment schedule CSV</h2><p>Payment names, vendors, dates, amounts, and current status.</p></div><button id="p2ExportPaymentCsv">Export Payment CSV</button></article>
-          <article class="planner2-card planner2-export-card"><i data-lucide="receipt-text"></i><div><h2>Actual expense CSV</h2><p>Descriptions, categories, amounts, and Planner 2.0 source.</p></div><button id="p2ExportExpenseCsv">Export Expense CSV</button></article>
-        </div>
-        <p id="p2ExportStatus" class="planner2-export-status" role="status" aria-live="polite"></p>
-        <div class="planner2-note"><strong>Export rule:</strong> payments are reported as cash flow and are not added on top of selected vendor true cost. This keeps the exported totals consistent with the workspace.</div>
-        <aside class="planner2-guides" aria-labelledby="p2ReportGuides"><div class="planner2-guides-heading"><span class="planner2-eyebrow">Before you share</span><h2 id="p2ReportGuides">What should I verify before exporting?</h2></div><div class="planner2-guide-grid planner2-guide-grid-2"><a href="/blog-create-budget"><strong>Are the budget limits still realistic?</strong><span>Confirm priorities and category limits before relying on the report.</span></a><a href="/blog-vendor-quotes"><strong>Do selected quotes use complete true costs?</strong><span>Confirm that each selected commitment includes the same required items.</span></a></div></aside>
-      </section>
-
-      <section class="planner2-view" data-workspace-panel="my-data">
-        <div class="planner2-data-hero">
-          <div><span class="planner2-eyebrow">Private browser data</span><h2>Your plan belongs to you.</h2><p>Your budget, vendors, payments, and guest records stay in this browser. No account is required, and your planner records are not stored on our servers.</p></div>
-          <i data-lucide="shield-check"></i>
-        </div>
-        <div class="planner2-ownership-note"><i data-lucide="hard-drive"></i><div><strong>Saved locally on this device</strong><span>Clearing browser data can remove the plan. Download a backup before changing browsers, clearing site data, or moving to another device.</span></div></div>
-        <div class="planner2-section-heading planner2-subsection-heading"><div><span class="planner2-eyebrow">Backup and recovery</span><h2>Keep a portable copy of your planner</h2><p>The backup includes your complete Planner 2.0 workspace and can be restored in another supported browser.</p></div><strong id="p2LastBackup" class="planner2-backup-meta">No backup downloaded from this browser yet</strong></div>
-        <div class="planner2-data-grid">
-          <article class="planner2-card planner2-data-card"><i data-lucide="download"></i><div><h2>Download Planner backup</h2><p>Save your budget, expenses, vendor quotes, payments, guest plans, scenarios, settings, and checklist progress.</p></div><button id="p2ExportBackup">Download backup</button></article>
-          <article class="planner2-card planner2-data-card"><i data-lucide="upload"></i><div><h2>Restore Planner backup</h2><p>Replace this browser's planner with a previously downloaded Planner 2.0 backup.</p></div><button id="p2ImportBackupButton">Choose backup</button><input id="p2ImportBackup" type="file" accept="application/json,.json" hidden></article>
-          <article class="planner2-card planner2-data-card planner2-data-card-danger"><i data-lucide="trash-2"></i><div><h2>Reset this browser</h2><p>Remove the Planner 2.0 data saved in this browser after a final confirmation.</p></div><button id="p2ResetPlanner">Reset planner</button></article>
-        </div>
-        <p id="p2DataStatus" class="planner2-export-status" role="status" aria-live="polite"></p>
-        <div class="planner2-note"><strong>About the backup file:</strong> it is a readable JSON file containing the planning information you entered. Keep it somewhere private if your vendor names or wedding costs are sensitive.</div>
-      </section>
+      </aside>
     </div>
+  </main>
 
-    <div id="p2ConfirmDialog" class="planner2-dialog-backdrop" hidden>
-      <section class="planner2-dialog" role="dialog" aria-modal="true" aria-labelledby="p2ConfirmTitle" aria-describedby="p2ConfirmMessage">
-        <span class="planner2-eyebrow">Please confirm</span>
-        <h2 id="p2ConfirmTitle">Review this change</h2>
-        <p id="p2ConfirmMessage"></p>
-        <dl id="p2ConfirmDetails" class="planner2-dialog-details" hidden></dl>
-        <div class="planner2-dialog-actions"><button id="p2ConfirmCancel" class="planner2-secondary-button" type="button">Keep current plan</button><button id="p2ConfirmAccept" type="button">Confirm change</button></div>
-      </section>
+  <footer class="site-footer">
+    <p>&copy; 2026 Wedding Budget Planner. All rights reserved.</p>
+    <div class="footer-links">
+      <a href="/about">About</a> <span>•</span>
+      <a href="/blog">Blog</a> <span>•</span>
+      <a href="/privacy">Privacy Policy</a> <span>•</span>
+      <button id="privacyChoices" class="footer-privacy-button" type="button">Privacy choices</button> <span>•</span>
+      <a href="/terms">Terms &amp; Conditions</a> <span>•</span>
+      <a href="/contact">Contact</a>
     </div>
-  </div>
-
-  <script src="planner2.js?v=2.1.2-20261001"></script>
+    <p><small>Disclaimer: This site provides general wedding budgeting information only and does not provide personal financial or professional planning advice.</small></p>
+  </footer>
+  <script>
+    document.getElementById('privacyChoices').addEventListener('click', function () {
+      if (window.zaraz && typeof window.zaraz.showConsentModal === 'function') {
+        window.zaraz.showConsentModal();
+      } else {
+        window.location.href = '/privacy';
+      }
+    });
+  </script>
 </body>
 </html>
