@@ -9,7 +9,7 @@ Repository: https://github.com/Danz-zle/freeweddingbudget
 
 ## Project purpose
 
-Free Wedding Budget Planner is a personal, transparent, low-budget project by **Dan. Liu / Wedding Budget Planner**.
+Free Wedding Budget Planner is a personal, transparent, low-budget project by **Dan Liu / Wedding Budget Planner**.
 
 The site is positioned as a **global English wedding budget planner**. It uses USD examples for clarity, but it should not claim to be US-only.
 
@@ -77,7 +77,7 @@ The site needs stability for crawling and AdSense review.
 
 Keep the site identity honest and simple:
 
-- Author/site identity: **Dan. Liu / Wedding Budget Planner**
+- Author/site identity: **Dan Liu / Wedding Budget Planner**
 - No fake company
 - No fake address
 - No fake team
@@ -369,7 +369,7 @@ Do not adjust Cloudflare rules during AdSense review unless logs prove Google/Ad
   - Expense History
   - Guest Count
   - Smart Tips
-- About page updated to **Dan. Liu**.
+- About page updated to **Dan Liu**.
 - Privacy and Terms titles changed to large bold h1.
 - Blog images restored.
 - Blog bylines restored.
