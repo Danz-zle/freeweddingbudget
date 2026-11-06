@@ -34,7 +34,7 @@ test('local navigation targets exist and the action opens Vendors', () => {
     const filename = target === '/' ? 'index.html' : target.slice(1) + (path.extname(target) ? '' : '.html');
     assert.ok(fs.existsSync(path.join(root, filename)), href);
   }
-  assert.match(html, /href="\/\?guide=vendors#vendors">Compare my vendor quotes/);
+  assert.match(html, /href="\/planner\?guide=vendors#vendors">Compare my vendor quotes/);
 });
 
 test('worked example matches the existing downloadable fixture', () => {

@@ -6,47 +6,47 @@ const root = path.resolve(__dirname, '..');
 const guides = {
   "blog-create-budget": {
     "published": "2026-05-01",
-    "href": "/#budget",
+    "href": "/planner#budget",
     "download": "/wedding-budget-starter-example.csv"
   },
   "blog-hidden-costs": {
     "published": "2026-05-01",
-    "href": "/?guide=hidden#vendors",
+    "href": "/planner?guide=hidden#vendors",
     "download": "/wedding-hidden-cost-audit.csv"
   },
   "blog-50-vs-100-guests": {
     "published": "2026-06-18",
-    "href": "/?guide=guest-count#guests",
+    "href": "/planner?guide=guest-count#guests",
     "download": "/guest-count-scenario-example.csv"
   },
   "blog-catering-budget-guide": {
     "published": "2026-06-18",
-    "href": "/?guide=catering#vendors",
+    "href": "/planner?guide=catering#vendors",
     "download": "/wedding-catering-invoice-example.csv"
   },
   "blog-venue-cost-checklist": {
     "published": "2026-06-18",
-    "href": "/?guide=venue#vendors",
+    "href": "/planner?guide=venue#vendors",
     "download": "/venue-same-scope-comparison.csv"
   },
   "blog-spend-vs-save": {
     "published": "2026-05-01",
-    "href": "/#budget",
+    "href": "/planner#budget",
     "download": "/wedding-upgrade-tradeoff-example.csv"
   },
   "blog-planning-timeline": {
     "published": "2026-05-01",
-    "href": "/#payments",
+    "href": "/planner#payments",
     "download": "/wedding-payment-calendar-example.csv"
   },
   "blog-diy-decor": {
     "published": "2026-04-15",
-    "href": "/#budget",
+    "href": "/planner#budget",
     "download": "/diy-decor-option-comparison.csv"
   },
   "blog-average-cost-2026": {
     "published": "2026-05-01",
-    "href": "/#budget",
+    "href": "/planner#budget",
     "download": "/average-wedding-cost-source-check.csv"
   }
 };
@@ -192,13 +192,15 @@ test('every monetized guide carries the AdSense publisher code', () => {
   }
 });
 
-test('sitemap lastmod dates match the substantive October revisions', () => {
+test('sitemap lastmod dates match the November restructure', () => {
   const sitemap = read('sitemap.xml');
   const expectedDates = {
-    '': '2026-10-01',
-    blog: '2026-10-04',
-    'blog-vendor-quotes': '2026-10-01',
-    ...Object.fromEntries(Object.keys(guides).map(slug => [slug, '2026-10-04']))
+    '': '2026-11-06',
+    planner: '2026-11-06',
+    blog: '2026-11-06',
+    author: '2026-11-06',
+    'blog-vendor-quotes': '2026-11-06',
+    ...Object.fromEntries(Object.keys(guides).map(slug => [slug, '2026-11-06']))
   };
   for (const [slug, date] of Object.entries(expectedDates)) {
     const url = 'https://freeweddingbudget.com/' + slug;
