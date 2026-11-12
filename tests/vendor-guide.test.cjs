@@ -10,8 +10,8 @@ test('vendor guide keeps its canonical and has truthful matching revision dates'
   const scripts = [...html.matchAll(/<script type="application\/ld\+json">(.*?)<\/script>/gs)];
   const article = scripts.map(match => JSON.parse(match[1])).find(value => value['@type'] === 'Article');
   assert.equal(article.datePublished, '2026-06-18');
-  assert.equal(article.dateModified, '2026-10-01');
-  assert.match(html, /<time datetime="2026-10-01">October 1, 2026<\/time>/);
+  assert.equal(article.dateModified, '2026-11-06');
+  assert.match(html, /<time datetime="2026-11-06">November 6, 2026<\/time>/);
 });
 
 test('checklist, worked example and planner action precede optional details', () => {

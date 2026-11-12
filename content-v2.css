@@ -66,6 +66,8 @@ body:not(.planner2-active) article [style*="border-left:5px solid var(--primary)
 .contact-email { display:inline-flex; margin-top:1rem; padding:.8rem 1rem; border-radius:10px; background:var(--content-green); color:white !important; text-decoration:none; font-weight:800; }
 .logo { text-decoration:none; }
 .landing-hero p + p { margin-top:.85rem; }
+body:not(.planner2-active) .landing-hero p { max-width:1100px; font-size:1.1rem; color:#2f3b35; }
+body:not(.planner2-active) .landing-hero { background:linear-gradient(135deg,rgba(232,238,232,.78) 0%,rgba(246,240,231,.74) 100%),url('https://images.unsplash.com/photo-1709880945165-d2208c6ad2ec?auto=format&fit=crop&w=1800&h=900&q=75') center 60%/cover no-repeat; }
 .landing-hero-actions { display:flex; flex-wrap:wrap; align-items:center; gap:1rem; margin-top:1.35rem; }
 .landing-hero-actions span { color:var(--content-green-dark); font-weight:700; }
 .landing-primary-link { display:inline-flex; align-items:center; justify-content:center; padding:.8rem 1.05rem; border-radius:10px; background:var(--content-green); color:white !important; text-decoration:none; font-weight:800; }
