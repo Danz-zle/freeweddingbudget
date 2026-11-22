@@ -54,8 +54,9 @@ const read = file => fs.readFileSync(path.join(root, file), 'utf8');
 // Guides that received a cited public-sources section on 2026-11-06 carry that modified date.
 const revisedNov6 = new Set(['blog-hidden-costs', 'blog-catering-budget-guide', 'blog-venue-cost-checklist', 'blog-average-cost-2026', 'blog-planning-timeline', 'blog-create-budget', 'blog-50-vs-100-guests', 'blog-spend-vs-save', 'blog-diy-decor']);
 const revisedNov8 = new Set(['blog-average-cost-2026', 'blog-50-vs-100-guests', 'blog-create-budget', 'blog-diy-decor', 'blog-spend-vs-save']);
-const modifiedIso = slug => revisedNov8.has(slug) ? '2026-11-08' : revisedNov6.has(slug) ? '2026-11-06' : '2026-10-04';
-const modifiedText = slug => revisedNov8.has(slug) ? 'November 8, 2026' : revisedNov6.has(slug) ? 'November 6, 2026' : 'October 4, 2026';
+const revisedNov16 = new Set(['blog-catering-budget-guide']);
+const modifiedIso = slug => revisedNov16.has(slug) ? '2026-11-16' : revisedNov8.has(slug) ? '2026-11-08' : revisedNov6.has(slug) ? '2026-11-06' : '2026-10-04';
+const modifiedText = slug => revisedNov16.has(slug) ? 'November 16, 2026' : revisedNov8.has(slug) ? 'November 8, 2026' : revisedNov6.has(slug) ? 'November 6, 2026' : 'October 4, 2026';
 for (const [slug, fixture] of Object.entries(guides)) {
   const html = read(slug + '.html');
   test(slug + ': revision metadata and original canonical', () => {
@@ -195,8 +196,9 @@ test('guide hub titles, links and dates match the reviewed guides', () => {
   }
   assert.equal((hub.match(/Checklist and worked example • Updated October 4, 2026/g) || []).length, 9 - revisedNov6.size);
   // blog-vendor-quotes is outside the nine-guide fixture but shares the hub and was also revised on 2026-11-06.
-  assert.equal((hub.match(/Checklist and worked example • Updated November 6, 2026/g) || []).length, revisedNov6.size + 1 - revisedNov8.size);
+  assert.equal((hub.match(/Checklist and worked example • Updated November 6, 2026/g) || []).length, revisedNov6.size + 1 - revisedNov8.size - revisedNov16.size);
   assert.equal((hub.match(/Checklist and worked example • Updated November 8, 2026/g) || []).length, revisedNov8.size);
+  assert.equal((hub.match(/Checklist and worked example • Updated November 16, 2026/g) || []).length, revisedNov16.size);
   assert.ok(!hub.includes('Updated October 1, 2026'));
 });
 
@@ -219,7 +221,7 @@ test('sitemap lastmod dates match the November restructure', () => {
     blog: '2026-11-06',
     author: '2026-11-08',
     'blog-vendor-quotes': '2026-11-06',
-    ...Object.fromEntries(Object.keys(guides).map(slug => [slug, revisedNov8.has(slug) ? '2026-11-08' : '2026-11-06']))
+    ...Object.fromEntries(Object.keys(guides).map(slug => [slug, revisedNov16.has(slug) ? '2026-11-16' : revisedNov8.has(slug) ? '2026-11-08' : '2026-11-06']))
   };
   for (const [slug, date] of Object.entries(expectedDates)) {
     const url = 'https://freeweddingbudget.com/' + slug;
@@ -424,10 +426,10 @@ test('two-currency guide recomputes from its worksheet and is listed everywhere'
   assert.match(html, /1\.2776/);
   const hub = read('blog.html');
   assert.ok(hub.includes('href="/' + slug + '" class="premium-blog-card"'));
-  assert.equal((hub.match(/"@type":"ListItem"/g) || []).length, 16);
+  assert.equal((hub.match(/"@type":"ListItem"/g) || []).length, 18);
   const imgs = [...hub.matchAll(/class="premium-blog-card"[^>]*>\s*<img src="([^"?]+)/g)].map(m => m[1]);
-  assert.equal(imgs.length, 16);
-  assert.equal(new Set(imgs).size, 16);
+  assert.equal(imgs.length, 18);
+  assert.equal(new Set(imgs).size, 18);
   assert.ok(read('author.html').includes('href="/' + slug + '"'));
   assert.ok(read('sitemap.xml').includes('<loc>https://freeweddingbudget.com/' + slug + '</loc><lastmod>2026-11-08</lastmod>'));
 });
@@ -475,4 +477,83 @@ test('real-couple-budgets guide recomputes every sum from its CSV and is listed 
   assert.ok(hub.includes('href="/' + slug + '" class="premium-blog-card"'));
   assert.ok(read('author.html').includes('href="/' + slug + '"'));
   assert.ok(read('sitemap.xml').includes('<loc>https://freeweddingbudget.com/' + slug + '</loc><lastmod>2026-11-08</lastmod>'));
+});
+
+test('catering cost for 100 guests guide matches its worksheet and cites dated sources', () => {
+  const slug = 'blog-catering-cost-for-100-guests';
+  const html = read(slug + '.html');
+  assert.match(html, /"datePublished":"2026-11-17"/);
+  assert.match(html, /Written by <a href="\/author">Dan Liu<\/a>/);
+  assert.match(html, /<section aria-labelledby="guideSources">/);
+  assert.ok((html.match(/href="https:\/\//g) || []).length >= 5);
+  assert.ok(html.includes('November 17, 2026'));
+  assert.ok((html.match(/href="\/planner/g) || []).length <= 2);
+  const words = html.replace(/<script[\s\S]*?<\/script>/g, ' ').replace(/<[^>]+>/g, ' ').split(/\s+/).filter(Boolean).length;
+  assert.ok(words >= 1200, 'guide length ' + words);
+  const hub = read('blog.html');
+  assert.ok(hub.includes('href="/' + slug + '" class="premium-blog-card"'));
+  assert.ok(read('author.html').includes('href="/' + slug + '"'));
+  assert.ok(read('sitemap.xml').includes('<loc>https://freeweddingbudget.com/' + slug + '</loc><lastmod>2026-11-17</lastmod>'));
+  assert.ok(html.includes('/catering-fee-stack-100-guests.csv'));
+  const { header, rows } = csv('catering-fee-stack-100-guests.csv');
+  assert.equal(rows.length, 5);
+  const col = name => header.indexOf(name);
+  const round = x => Math.round((x + Number.EPSILON) * 100) / 100;
+  for (const r of rows) {
+    const menu = +r[col('Guests')] * +r[col('Illustrative menu price per guest ($)')];
+    assert.equal(menu, +r[col('Menu subtotal ($)')]);
+    const charge = menu * +r[col('Charge rate (%)')] / 100;
+    assert.equal(round(charge), +r[col('Charge amount ($)')]);
+    const tax = r[col('Sales tax rate (%)')];
+    const both = r[col('Total if tax applies to the food and the charge ($)')];
+    const foodOnly = r[col('Total if tax applies to the food only ($)')];
+    if (tax) {
+      assert.equal(round((menu + charge) * (1 + +tax / 100) + 1e-9), +both);
+      if (foodOnly) assert.equal(round(menu * (1 + +tax / 100) + charge + 1e-9), +foodOnly);
+    } else {
+      assert.equal(both, '');
+    }
+  }
+  for (const figure of ['$12,520.63', '$13,926.40', '$13,000.00', '$13,161.00', '$13,250.00', '$13,419.00', '$12,300.00', '$10,448.85', '$9,710.85', '$738.00', '$7,895.00']) assert.ok(html.includes(figure), figure);
+  assert.equal(round(100 * 84.95), 8495);
+  assert.equal(round(8495 * 0.23), 1953.85);
+  assert.equal(round(90 * 84.95 + 10 * 24.95), 7895);
+  assert.equal(round(7895 * 1.23), 9710.85);
+  assert.equal(round(8495 * 1.23 - 7895 * 1.23), 738);
+});
+
+test('wedding cost for 100 people guide matches its worksheet and cites dated sources', () => {
+  const slug = 'blog-wedding-cost-for-100-people';
+  const html = read(slug + '.html');
+  assert.match(html, /"datePublished":"2026-11-19"/);
+  assert.match(html, /Written by <a href="\/author">Dan Liu<\/a>/);
+  assert.match(html, /<section aria-labelledby="guideSources">/);
+  const sources = html.split('<section aria-labelledby="guideSources">')[1];
+  assert.ok((sources.match(/href="https:\/\//g) || []).length >= 4);
+  assert.ok(html.includes('November 19, 2026'));
+  assert.ok((html.match(/href="\/planner/g) || []).length <= 2);
+  const words = html.replace(/<script[\s\S]*?<\/script>/g, ' ').replace(/<[^>]+>/g, ' ').split(/\s+/).filter(Boolean).length;
+  assert.ok(words >= 1200, 'guide length ' + words);
+  const hub = read('blog.html');
+  assert.ok(hub.includes('href="/' + slug + '" class="premium-blog-card"'));
+  assert.ok(read('author.html').includes('href="/' + slug + '"'));
+  assert.ok(read('sitemap.xml').includes('<loc>https://freeweddingbudget.com/' + slug + '</loc><lastmod>2026-11-19</lastmod>'));
+  assert.ok(html.includes('/wedding-100-people-published-averages.csv'));
+  const { header, rows } = csv('wedding-100-people-published-averages.csv');
+  assert.equal(rows.length, 11);
+  const knot = rows.reduce((t, r) => t + +r[header.indexOf('The Knot average ($)')], 0);
+  const zola = rows.reduce((t, r) => t + +r[header.indexOf('Zola average ($)')], 0);
+  assert.equal(knot, 38910);
+  assert.equal(zola, 43136);
+  assert.equal(80 * 100, 8000);
+  assert.equal(2800 + 1900, 4700);
+  assert.equal(292 * 100, 29200);
+  assert.equal(150 * 100, 15000);
+  assert.equal(300 * 100, 30000);
+  assert.equal(43300 - 27200, 16100);
+  assert.equal(292 * 117, 34164);
+  assert.equal(Math.round(36000 / 145), 248);
+  assert.equal(12900 - 8573, 4327);
+  assert.equal(5542 - 2800, 2742);
+  for (const figure of ['$27,200', '$43,300', '$29,200', '$38,910', '$43,136', '$34,200', '$36,000', '$16,100', '$4,327', '$2,742', '$17,100']) assert.ok(html.includes(figure), figure);
 });
