@@ -1,3 +1,7 @@
+/
+  Link: <https://freeweddingbudget.com/>; rel="canonical"
+/planner
+  Link: <https://freeweddingbudget.com/planner>; rel="canonical"
 /blog
   Link: <https://freeweddingbudget.com/blog>; rel="canonical"
 /blog-create-budget
@@ -22,7 +26,11 @@
   Link: <https://freeweddingbudget.com/blog-vendor-quotes>; rel="canonical"
 /about
   Link: <https://freeweddingbudget.com/about>; rel="canonical"
+/author
+  Link: <https://freeweddingbudget.com/author>; rel="canonical"
 /privacy
   Link: <https://freeweddingbudget.com/privacy>; rel="canonical"
 /terms
   Link: <https://freeweddingbudget.com/terms>; rel="canonical"
+/contact
+  Link: <https://freeweddingbudget.com/contact>; rel="canonical"
