@@ -1,6 +1,6 @@
 # Free Wedding Budget Planner
 
-A free, no-account wedding budget planner that runs entirely in the browser, plus 18 budgeting guides that cite dated public sources and show their arithmetic.
+A free, no-account wedding budget planner that runs entirely in the browser, plus 19 budgeting guides that cite dated public sources and show their arithmetic.
 
 **Live site:** https://freeweddingbudget.com
 **Author:** Dan Liu ([about page](https://freeweddingbudget.com/author))
@@ -17,11 +17,11 @@ A free, no-account wedding budget planner that runs entirely in the browser, plu
 - Exports: Excel workbook, planning PDF, and vendor, payment and expense CSV files.
 - Privacy: data stays in the browser (`localStorage`). A planner backup can be downloaded and restored, and the browser copy can be reset.
 
-**Guides** (18 static pages under `/blog-*`)
+**Guides** (19 static pages under `/blog-*`)
 
 - Each guide states its sources with links and the date they were read, and labels illustrative examples as fictional.
 - Many guides ship a downloadable CSV worksheet with the inputs behind their tables.
-- Topics include catering cost for 100 guests, what a 100-guest wedding costs according to The Knot and Zola, per-table vs per-guest pricing, courthouse wedding fees, and banquet pricing in Taiwan and Singapore.
+- Topics include catering cost for 50 guests, catering cost for 100 guests, what a 100-guest wedding costs according to The Knot and Zola, per-table vs per-guest pricing, courthouse wedding fees, and banquet pricing in Taiwan and Singapore.
 
 ## Tech
 
@@ -50,7 +50,7 @@ flowchart TD
     CLEAN --> WORKER
 
     WORKER --> HOME["/ landing page"]
-    WORKER --> GUIDES["/blog hub and 18 guides, with CSV worksheets"]
+    WORKER --> GUIDES["/blog hub and 19 guides, with CSV worksheets"]
     WORKER --> PLANNER["/planner (browser-only tool, data in localStorage)"]
     WORKER --> INFO["/author, /about, /privacy, /terms, /contact"]
     WORKER --> SEO["sitemap.xml, robots.txt, ads.txt"]
@@ -92,7 +92,7 @@ flowchart TD
 | Route | Role |
 |---|---|
 | `/` | Text landing page that introduces the site and links to the guides and the planner |
-| `/blog`, `/blog-*` | Guide hub and 18 sourced guides |
+| `/blog`, `/blog-*` | Guide hub and 19 sourced guides |
 | `/planner` | The planner tool, running entirely in the browser |
 | `/author`, `/about`, `/privacy`, `/terms`, `/contact` | Author and site information |
 
@@ -118,7 +118,7 @@ npx serve .
 npx wrangler deploy
 ```
 
-The 71 tests cover three areas:
+The 72 tests cover three areas:
 
 - `planner-regressions`: planner calculations, routing, exports and local navigation targets.
 - `vendor-guide`: the vendor comparison guide and its worksheet.
