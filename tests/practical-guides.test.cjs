@@ -426,10 +426,10 @@ test('two-currency guide recomputes from its worksheet and is listed everywhere'
   assert.match(html, /1\.2776/);
   const hub = read('blog.html');
   assert.ok(hub.includes('href="/' + slug + '" class="premium-blog-card"'));
-  assert.equal((hub.match(/"@type":"ListItem"/g) || []).length, 18);
+  assert.equal((hub.match(/"@type":"ListItem"/g) || []).length, 19);
   const imgs = [...hub.matchAll(/class="premium-blog-card"[^>]*>\s*<img src="([^"?]+)/g)].map(m => m[1]);
-  assert.equal(imgs.length, 18);
-  assert.equal(new Set(imgs).size, 18);
+  assert.equal(imgs.length, 19);
+  assert.equal(new Set(imgs).size, 19);
   assert.ok(read('author.html').includes('href="/' + slug + '"'));
   assert.ok(read('sitemap.xml').includes('<loc>https://freeweddingbudget.com/' + slug + '</loc><lastmod>2026-11-08</lastmod>'));
 });
@@ -556,4 +556,61 @@ test('wedding cost for 100 people guide matches its worksheet and cites dated so
   assert.equal(12900 - 8573, 4327);
   assert.equal(5542 - 2800, 2742);
   for (const figure of ['$27,200', '$43,300', '$29,200', '$38,910', '$43,136', '$34,200', '$36,000', '$16,100', '$4,327', '$2,742', '$17,100']) assert.ok(html.includes(figure), figure);
+});
+
+test('catering for 50 guests guide matches its worksheet and cites dated sources', () => {
+  const slug = 'blog-catering-cost-for-50-guests';
+  const html = read(slug + '.html');
+  assert.match(html, /"datePublished":"2026-11-26"/);
+  assert.match(html, /Written by <a href="\/author">Dan Liu<\/a>/);
+  assert.match(html, /<section aria-labelledby="guideSources">/);
+  const sources = html.split('<section aria-labelledby="guideSources">')[1];
+  assert.ok((sources.match(/href="https:\/\//g) || []).length >= 5);
+  assert.ok(html.includes('November 26, 2026'));
+  assert.ok((html.match(/href="\/planner/g) || []).length <= 2);
+  const words = html.replace(/<script[\s\S]*?<\/script>/g, ' ').replace(/<[^>]+>/g, ' ').split(/\s+/).filter(Boolean).length;
+  assert.ok(words >= 1200, 'guide length ' + words);
+  const hub = read('blog.html');
+  assert.ok(hub.includes('href="/' + slug + '" class="premium-blog-card"'));
+  assert.ok(read('author.html').includes('href="/' + slug + '"'));
+  assert.ok(read('sitemap.xml').includes('<loc>https://freeweddingbudget.com/' + slug + '</loc><lastmod>2026-11-26</lastmod>'));
+  assert.ok(html.includes('/catering-50-guests-price-lists.csv'));
+  const { header, rows } = csv('catering-50-guests-price-lists.csv');
+  assert.equal(rows.length, 5);
+  const col = name => header.indexOf(name);
+  const round = x => Math.round((x + Number.EPSILON) * 100) / 100;
+  for (const r of rows) {
+    const guests = +r[col('Guests')], price = +r[col('Price per guest ($)')], sub = +r[col('Menu subtotal ($)')];
+    assert.equal(guests * price, sub);
+    const rate = r[col('Charge rate (%)')];
+    const total = +r[col('Total before tax ($)')];
+    if (rate) {
+      const charge = round(sub * +rate / 100);
+      assert.equal(charge, +r[col('Charge amount ($)')]);
+      assert.equal(round(sub + charge), total);
+    } else {
+      assert.equal(sub, total);
+    }
+    assert.equal(round(total / guests), +r[col('Per guest before tax ($)')]);
+    const tax = r[col('Tax rate (%)')];
+    if (tax) {
+      const charge = +r[col('Charge amount ($)')];
+      assert.equal(round(sub * (1 + +tax / 100) + charge + 1e-9), +r[col('Total if tax applies to the food only ($)')]);
+      assert.equal(round((sub + charge) * (1 + +tax / 100) + 1e-9), +r[col('Total if tax applies to the food and the charge ($)')]);
+    }
+  }
+  for (const figure of ['$8,450.00', '$1,521.00', '$9,971.00', '$199.42', '$11,069.50', '$11,267.23', '$197.73', '$4,900.00', '$1,274.00', '$6,174.00', '$123.48', '$5,400.00', '$1,242.00', '$6,642.00', '$132.84', '$11,500.00', '$8,680.00', '$56.40', '$2,820.00', '$8,700.00', '$225', '$4.50', '$3.00', '$7,900', '$9,954.00']) assert.ok(html.includes(figure), figure);
+  assert.equal(round(11267.23 - 11069.5), 197.73);
+  assert.equal(150 * 1.5, 225);
+  assert.equal(225 / 50, 4.5);
+  assert.equal(225 / 75, 3);
+  assert.equal(round(173.6 * 50), 8680);
+  assert.equal(round(230 - 173.6), 56.4);
+  assert.equal(round((230 - 173.6) * 50), 2820);
+  assert.equal((98 + 60) * 50, 7900);
+  assert.equal(round(7900 * 1.26), 9954);
+  assert.equal(10 * 50, 500);
+  assert.equal(5 * 50, 250);
+  assert.equal(18 * 50, 900);
+  assert.equal(60 * 50, 3000);
 });
